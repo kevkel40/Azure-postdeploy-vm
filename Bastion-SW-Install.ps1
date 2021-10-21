@@ -58,7 +58,7 @@ switch( hostname ){
 		write-host "datavm detected, selecting software" -Foregroundcolor Green
 		$urls += @{
 			"url" = 'https://sqlopsbuilds.azureedge.net/stable/4a45ba7cf20dd4129f1a08e5e776dfb33e3d1d1e/azuredatastudio-windows-setup-1.32.0.exe'
-			"arguments" = @("/VERYSILENT","/NORESTART","/CURRENTUSERS","/MERGETASKS=!runcode")
+			"arguments" = @("/VERYSILENT","/NORESTART","/CURRENTUSER","/MERGETASKS=!runcode")
 		}
 		$urls += @{
 			"url" = 'https://download.microsoft.com/download/A/E/3/AE32C485-B62B-4437-92F7-8B6B2C48CB40/StorageExplorer.exe'
