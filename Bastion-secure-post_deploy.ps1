@@ -169,7 +169,7 @@ Write-Host "Ensuring SMB1 is off" -Foregroundcolor Yellow
 if((Get-WindowsOptionalFeature -Online -FeatureName smb1protocol).state -notlike "DisabledWithPayloadRemoved"){Disable-WindowsOptionalFeature -Online -FeatureName smb1protocol}
 Write-Host "Renaming Guest Account" -Foregroundcolor Yellow
 wmic useraccount where "name='Guest'" rename "GuessThis"
-Write-Host "Setting netowrk profile to public" -Foregroundcolor Yellow
+Write-Host "Setting network profile to public" -Foregroundcolor Yellow
 Set-NetConnectionProfile -InterfaceAlias Ethernet -NetworkCategory "Public"
 Write-Host "Adding Nuget" -Foregroundcolor Yellow
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force | Out-Null
