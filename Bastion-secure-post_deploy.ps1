@@ -1,3 +1,26 @@
+<#
+    .SYNOPSIS
+    Configure required security on bastion vm's
+
+    .DESCRIPTION
+	Set a selection of security specific registry keys
+	Rename Guest Account
+	Set netowrk profile to public
+	Add Nuget
+	Set PSGallery as trusted repository
+	Install Windows Update PowerShell module
+	Schedule Windows updates to run on system boot
+	Set Windows Defender preferences: 
+		FullScan:Everyday, -DisableIntrusionPreventionSystem 0, -DisableRealtimeMonitoring 0, -DisableEmailScanning 0,
+		-DisableRemovableDriveScanning 0, -EnableNetworkProtection Enabled, -EnableControlledFolderAccess Enabled
+	Run Windows updates, system may reboot
+    .OUTPUTS
+    Screen as collection of tabulated text
+
+    .EXAMPLE
+    PS> .\Bastion-SW-Install.ps1
+    
+#>
 #post deploy commands
 
 ######################################
