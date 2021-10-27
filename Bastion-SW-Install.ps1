@@ -110,6 +110,10 @@ switch( hostname ){
 			"arguments" = @("/VERYSILENT","/NORESTART","/CURRENTUSER","/MERGETASKS=!runcode")
 		}
 		$urls += @{
+			"url" = 'https://download-cdn.jetbrains.com/idea/ideaIC-2021.2.3.exe'
+			"arguments" = @("/VERYSILENT","/NORESTART","/CURRENTUSER","/MERGETASKS=!runcode")
+		}
+		$urls += @{
 			"url" = 'https://ninite.com/eclipse-filezilla-notepadplusplus-putty-sumatrapdf-winscp/ninite.exe'
 			"arguments" = ""
 		}
