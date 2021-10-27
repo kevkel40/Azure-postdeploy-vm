@@ -147,7 +147,7 @@ switch( hostname ){
 		}
 	}
 	{$_ -match "infravm"}{
-		write-host "webvm detected, selecting software" -Foregroundcolor Green
+		write-host "Infravm detected, selecting software" -Foregroundcolor Green
 		#Web/API team software
 		$urls += @{
 			"url" = 'https://sqlopsbuilds.azureedge.net/stable/4a45ba7cf20dd4129f1a08e5e776dfb33e3d1d1e/azuredatastudio-windows-setup-1.32.0.exe'
