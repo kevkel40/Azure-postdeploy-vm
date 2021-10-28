@@ -143,9 +143,8 @@ switch( hostname ){
 			"arguments" = @("/VERYSILENT","/NORESTART","/CURRENTUSER","/MERGETASKS=!runcode")
 		}
 		#intellij
-		$configdata = @("mode=admin","launcher64=1")
 		$configfile = "$($env:TEMP)\silent.config"
-		$configdata | Out-File -Filepath $configfile
+		Invoke-WebRequest -Uri 'https://download.jetbrains.com/idea/silent.config' -OutFile $configfile
 		$urls += @{
 			"url" = 'https://download-cdn.jetbrains.com/idea/ideaIC-2021.2.3.exe'
 			"arguments" = @("/S","/CONFIG=$($configfile)","/D=C:\Program Files\IntelliJ IDEA 2021")
