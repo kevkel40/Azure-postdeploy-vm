@@ -42,6 +42,7 @@ try{
 	if((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PowerShellCore\InstalledVersions\31ab5147-9a97-4452-8443-d9709f0516e1" -Name "SemanticVersion")."SemanticVersion" -match $version){
 		Write-Host "PowerShell version $($version) is already installed, no further action required."
 	}else{
+		Write-Host "PowerShell version $($version) is currently installed, update required."
 		get-powershelllatest $realTagUrl $version
 	}
 }catch{
