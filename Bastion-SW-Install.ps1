@@ -50,20 +50,20 @@ try{
 	get-powershelllatest $realTagUrl $version
 }
 
-##### - Git CLI - #####
+##### - Git Win - #####
 
-$url = 'https://github.com/cli/cli/releases/latest'
+$url = 'https://github.com/git-for-windows/git/releases/latest'
 $realTagUrl = (([System.Net.WebRequest]::Create($url)).GetResponse()).ResponseUri.OriginalString
 $version = $realTagUrl.split('/')[-1].Trim('v')
-$fileName = "gh_$($version)_windows_amd64.msi"
+$fileName = "git-$($version)-64-bit.exe".replace('.windows.1','')
 $Outfile = "$($env:TEMP)\$($fileName)"
 $realDownloadUrl = "$($realTagUrl.Replace('tag', 'download'))/$($fileName)"
 Write-Host "Downloading $($fileName) from github..." -Foregroundcolor Yellow
 Invoke-WebRequest -Uri $realDownloadUrl -OutFile $Outfile
 if(Test-Path $env:TEMP/$fileName){
 	Write-Host "Installing $($fileName)..." -Foregroundcolor Yellow
-	$arguments = "/i `"$($Outfile)`" /qn"
-	Start-Process msiexec.exe -ArgumentList $arguments -Wait
+	$arguments = @("/VERYSILENT","/NORESTART","/CURRENTUSER")
+	Start-Process $Outfile -ArgumentList $arguments -Wait
 }
 
 ##################################
