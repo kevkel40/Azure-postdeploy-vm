@@ -145,9 +145,10 @@ switch( hostname ){
 		#intellij
 		$configfile = "$($env:TEMP)\silent.config"
 		Invoke-WebRequest -Uri 'https://download.jetbrains.com/idea/silent.config' -OutFile $configfile
+			#doesn't work "arguments" = @("/S","/CONFIG=$($configfile)","/D=C:\Program Files\IntelliJ IDEA 2021")
 		$urls += @{
 			"url" = 'https://download-cdn.jetbrains.com/idea/ideaIC-2021.2.3.exe'
-			"arguments" = @("/S","/CONFIG=$($configfile)","/D=C:\Program Files\IntelliJ IDEA 2021")
+			"arguments" = ""
 		}
 		$urls += @{
 			"url" = 'https://dbvis.com/product_download/dbvis-12.1.4/media/dbvis_windows-x64_12_1_4_jre.exe'
