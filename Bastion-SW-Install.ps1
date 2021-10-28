@@ -142,17 +142,21 @@ switch( hostname ){
 			"url" = 'https://az764295.vo.msecnd.net/stable/6cba118ac49a1b88332f312a8f67186f7f3c1643/VSCodeUserSetup-x64-1.61.2.exe'
 			"arguments" = @("/VERYSILENT","/NORESTART","/CURRENTUSER","/MERGETASKS=!runcode")
 		}
+		#intellij
+		$configdata = @("mode=admin","launcher64=1")
+		$configfile = "$($env:TEMP)\silent.config"
+		$configdata | Out-File -Filepath $configfile
 		$urls += @{
 			"url" = 'https://download-cdn.jetbrains.com/idea/ideaIC-2021.2.3.exe'
-			"arguments" = @("/VERYSILENT","/NORESTART","/CURRENTUSER","/MERGETASKS=!runcode")
-		}
-		$urls += @{
-			"url" = 'https://ninite.com/eclipse-filezilla-notepadplusplus-putty-sumatrapdf-winscp/ninite.exe'
-			"arguments" = ""
+			"arguments" = @("/S","/CONFIG=$($configfile)","/D=C:\Program Files\IntelliJ IDEA 2021")
 		}
 		$urls += @{
 			"url" = 'https://dbvis.com/product_download/dbvis-12.1.4/media/dbvis_windows-x64_12_1_4_jre.exe'
 			"arguments" = "-q"
+		}
+		$urls += @{
+			"url" = 'https://ninite.com/eclipse-filezilla-notepadplusplus-putty-sumatrapdf-winscp/ninite.exe'
+			"arguments" = ""
 		}
 	}
 	{$_ -match "webvm"}{
