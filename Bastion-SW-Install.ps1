@@ -15,6 +15,20 @@
     
 #>
 
+function get-powershelllatest ($realTagUrl, $version){
+	$fileName = "PowerShell-$($version)-win-x64.msi"
+	$Outfile = "$($env:TEMP)\$($fileName)"
+	$realDownloadUrl = "$($realTagUrl.Replace('tag', 'download'))/$($fileName)"
+
+	Write-Host "Downloading $($fileName) from github..." -Foregroundcolor Yellow
+	Invoke-WebRequest -Uri $realDownloadUrl -OutFile $Outfile
+	if(Test-Path $env:TEMP/$fileName){
+		Write-Host "Installing $($fileName)..." -Foregroundcolor Yellow
+		$arguments = "/i `"$($Outfile)`" /passive"
+		Start-Process msiexec.exe -ArgumentList $arguments -Wait
+	}
+}
+
 ##### - PowerShell Core - #####
 #Check latest version of PowerShell Core from github
 $url = 'https://github.com/PowerShell/PowerShell/releases/latest'
@@ -33,20 +47,6 @@ try{
 }catch{
 	Write-Host "PowerShell Core install not detected, preparing to download from github"
 	get-powershelllatest $realTagUrl $version
-}
-
-function get-powershelllatest ($realTagUrl, $version){
-	$fileName = "PowerShell-$($version)-win-x64.msi"
-	$Outfile = "$($env:TEMP)\$($fileName)"
-	$realDownloadUrl = "$($realTagUrl.Replace('tag', 'download'))/$($fileName)"
-
-	Write-Host "Downloading $($fileName) from github..." -Foregroundcolor Yellow
-	Invoke-WebRequest -Uri $realDownloadUrl -OutFile $Outfile
-	if(Test-Path $env:TEMP/$fileName){
-		Write-Host "Installing $($fileName)..." -Foregroundcolor Yellow
-		$arguments = "/i `"$($Outfile)`" /passive"
-		Start-Process msiexec.exe -ArgumentList $arguments -Wait
-	}
 }
 
 ##### - Git CLI - #####
@@ -73,17 +73,20 @@ function DownloadAndRunExeMSI($url, $arguments){
 	$OutPutFile = $url.Split("/")[-1]
 	Invoke-WebRequest -Uri $url -OutFile "$($env:TEMP)\$($OutPutFile)"
 	switch($arguments){
-		{$_ -like "MSI"}{
+		{$_ -match "MSI"}{
 			Write-Host "Attempting to install $($url) with no arguments" -Foregroundcolor Yellow
 			Start-Process -filepath MsiExec.exe -wait -ArgumentList ("/i","$($env:TEMP)\$($OutPutFile)","/qn")
+			break
 		}
-		{$_ -like ""}{
-			Write-Host "Attempting to install $($url) with no arguments" -Foregroundcolor Yellow
-			Start-Process -filepath "$($env:TEMP)\$($OutPutFile)" -wait 			
-		}
-		default {
+		{$_ -match "/"} {
 			Write-Host "Attempting to install $($url) with arguments" -Foregroundcolor Yellow
 			Start-Process -filepath "$($env:TEMP)\$($OutPutFile)" -wait -ArgumentList $arguments		
+			break
+		}
+		{($_ -like "") -or ($_ -like $null)}{
+			Write-Host "Attempting to install $($url) with no arguments" -Foregroundcolor Yellow
+			Start-Process -filepath "$($env:TEMP)\$($OutPutFile)" -wait 			
+			break
 		}
 	}
 }
