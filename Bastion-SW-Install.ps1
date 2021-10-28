@@ -72,7 +72,7 @@ function DownloadAndRunExeMSI($url, $arguments){
 	Write-Host "Downloading $($url)" -Foregroundcolor Yellow
 	#get output filename from URL
 	$OutPutFile = $url.Split("/")[-1]
-	Invoke-WebRequest -Uri $url -OutFile "$($env:TEMP)\$($OutPutFile)"
+	Invoke-WebRequest -Uri $url -OutFile "$($env:TEMP)\$($OutPutFile)" -timeoutsec 1200
 	switch($arguments){
 		{$_ -match "MSI"}{
 			Write-Host "Attempting to install $($url) with no arguments" -Foregroundcolor Yellow
