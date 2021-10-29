@@ -148,13 +148,13 @@ $RegSetting = @{
 }
 $RegSettings += $RegSetting
 
-#turn off autoplay for default user
+#install sfotware based on VM name HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce
 $RegSetting = @{
-	"Hive" = "HKEY_USERS"
-	"Path" = "DEFAULT\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
-	"Name" = "NoDriveTypeAutoRun"
-	"Type" = "REG_DWORD"
-	"Value" = 255
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Microsoft\Windows\CurrentVersion\RunOnce"
+	"Name" = "InstallSoftware"
+	"Type" = "REG_SZ"
+	"Value" = "IEX(New-Object Net.WebClient).downloadString('https://raw.githubusercontent.com/LeighdePaor/Azure-postdeploy-vm/main/Bastion-SW-Install.ps1')"
 }
 #$RegSettings += $RegSetting
 ######################################
@@ -167,8 +167,12 @@ foreach($Item in $RegSettings){
 ######################################
 Write-Host "Ensuring SMB1 is off" -Foregroundcolor Yellow
 if((Get-WindowsOptionalFeature -Online -FeatureName smb1protocol).state -notlike "DisabledWithPayloadRemoved"){Disable-WindowsOptionalFeature -Online -FeatureName smb1protocol}
+#generate random 16 character name for guest acocunt
+$Array = @();$Array+=@(48..57);$array+=@(65..90);$array+=@(97..122)
+$alphanumericstring = ""
+for ($i=1; $i -le 16; $i++) {$alphanumericstring += [char](get-random $array)}
 Write-Host "Renaming Guest Account" -Foregroundcolor Yellow
-wmic useraccount where "name='Guest'" rename "GuessThis"
+wmic useraccount where "name='Guest'" rename $alphanumericstring
 Write-Host "Setting network profile to public" -Foregroundcolor Yellow
 Set-NetConnectionProfile -InterfaceAlias Ethernet -NetworkCategory "Public"
 Write-Host "Adding Nuget" -Foregroundcolor Yellow
