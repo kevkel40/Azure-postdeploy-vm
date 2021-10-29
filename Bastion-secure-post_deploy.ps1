@@ -167,10 +167,10 @@ foreach($Item in $RegSettings){
 ######################################
 Write-Host "Ensuring SMB1 is off" -Foregroundcolor Yellow
 if((Get-WindowsOptionalFeature -Online -FeatureName smb1protocol).state -notlike "DisabledWithPayloadRemoved"){Disable-WindowsOptionalFeature -Online -FeatureName smb1protocol}
-#generate random 16 character name for guest acocunt
+#generate random 16-32 character name for guest account
 $Array = @();$Array+=@(48..57);$array+=@(65..90);$array+=@(97..122)
 $alphanumericstring = ""
-for ($i=1; $i -le 16; $i++) {$alphanumericstring += [char](get-random $array)}
+for ($i=1; $i -le (get-random @(16..32)); $i++) {$alphanumericstring += [char](get-random $array)}
 Write-Host "Renaming Guest Account" -Foregroundcolor Yellow
 wmic useraccount where "name='Guest'" rename $alphanumericstring
 Write-Host "Setting network profile to public" -Foregroundcolor Yellow
