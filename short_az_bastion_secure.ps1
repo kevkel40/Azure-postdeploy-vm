@@ -121,7 +121,12 @@ foreach($Item in $RegSettings){
 }
 ######################################
 if((Get-WindowsOptionalFeature -Online -FeatureName smb1protocol).state -notlike "DisabledWithPayloadRemoved"){Disable-WindowsOptionalFeature -Online -FeatureName smb1protocol}
-wmic useraccount where "name='Guest'" rename "GuessThis"
+#generate random 16 character name for guest acocunt
+$Array = @();$Array+=@(48..57);$array+=@(65..90);$array+=@(97..122)
+$alphanumericstring = ""
+for ($i=1; $i -le 16; $i++) {$alphanumericstring += [char](get-random $array)}
+Write-Host "Renaming Guest Account" -Foregroundcolor Yellow
+wmic useraccount where "name='Guest'" rename $alphanumericstring
 Set-NetConnectionProfile -InterfaceAlias Ethernet -NetworkCategory "Public"
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force | Out-Null
 Set-PSRepository -name PSGallery -InstallationPolicy trusted
