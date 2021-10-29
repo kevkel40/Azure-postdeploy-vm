@@ -75,7 +75,7 @@ function DownloadAndRunExeMSI($url, $arguments){
 	Invoke-WebRequest -Uri $url -OutFile "$($env:TEMP)\$($OutPutFile)" -timeoutsec 1200
 	switch($arguments){
 		{$_ -match "MSI"}{
-			Write-Host "Attempting to install $($url) with no arguments" -Foregroundcolor Yellow
+			Write-Host "Attempting to install $($url) with silent MSI arguments" -Foregroundcolor Yellow
 			Start-Process -filepath MsiExec.exe -wait -ArgumentList ("/i","$($env:TEMP)\$($OutPutFile)","/qn")
 			break
 		}
