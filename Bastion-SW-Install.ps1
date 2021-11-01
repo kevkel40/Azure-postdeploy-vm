@@ -15,6 +15,7 @@
     
 #>
 
+##### - PowerShell Core - #####
 function get-powershelllatest ($realTagUrl, $version){
 	$fileName = "PowerShell-$($version)-win-x64.msi"
 	$Outfile = "$($env:TEMP)\$($fileName)"
@@ -52,18 +53,38 @@ try{
 
 ##### - Git Win - #####
 
+function get-gitwinlatest ($realTagUrl, $version){
+	$fileName = "git-$($version)-64-bit.exe"
+	$Outfile = "$($env:TEMP)\$($fileName)"
+	$realDownloadUrl = "$($realTagUrl.Replace('tag', 'download'))/$($fileName)"
+	Write-Host "Downloading $($fileName) from github..." -Foregroundcolor Yellow
+	Invoke-WebRequest -Uri $realDownloadUrl -OutFile $Outfile
+	if(Test-Path $env:TEMP/$fileName){
+		Write-Host "Installing $($fileName)..." -Foregroundcolor Yellow
+		$arguments = @("/VERYSILENT","/NORESTART","/CURRENTUSER")
+		Start-Process $Outfile -ArgumentList $arguments -Wait
+	}
+}
+
+##### - Git Win - #####
+#Check latest version of Git win from github
 $url = 'https://github.com/git-for-windows/git/releases/latest'
 $realTagUrl = (([System.Net.WebRequest]::Create($url)).GetResponse()).ResponseUri.OriginalString
-$version = $realTagUrl.split('/')[-1].Trim('v')
-$fileName = "git-$($version)-64-bit.exe".replace('.windows.1','')
-$Outfile = "$($env:TEMP)\$($fileName)"
-$realDownloadUrl = "$($realTagUrl.Replace('tag', 'download'))/$($fileName)"
-Write-Host "Downloading $($fileName) from github..." -Foregroundcolor Yellow
-Invoke-WebRequest -Uri $realDownloadUrl -OutFile $Outfile
-if(Test-Path $env:TEMP/$fileName){
-	Write-Host "Installing $($fileName)..." -Foregroundcolor Yellow
-	$arguments = @("/VERYSILENT","/NORESTART","/CURRENTUSER")
-	Start-Process $Outfile -ArgumentList $arguments -Wait
+$version = $realTagUrl.split('/')[-1].Trim('v').replace('.windows.1','')
+#todo check if already installed
+
+#Check version of Git win installed
+try{
+	Get-Item -path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Git_is1" -erroraction stop
+	if((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Git_is1" -Name "DisplayVersion")."DisplayVersion" -match $version){
+		Write-Host "Git Windows version $($version) is already installed, no further action required."
+	}else{
+		Write-Host "Git Windows version $($version) is currently installed, update required."
+		get-gitwinlatest $realTagUrl $version
+	}
+}catch{
+	Write-Host "PowerShell Core install not detected, preparing to download from github"
+	get-gitwinlatest $realTagUrl $version
 }
 
 ##################################
@@ -142,6 +163,10 @@ switch( hostname ){
 			"url" = 'https://az764295.vo.msecnd.net/stable/6cba118ac49a1b88332f312a8f67186f7f3c1643/VSCodeUserSetup-x64-1.61.2.exe'
 			"arguments" = @("/VERYSILENT","/NORESTART","/CURRENTUSER","/MERGETASKS=!runcode")
 		}
+		$urls += @{
+			"url" = 'https://dbvis.com/product_download/dbvis-12.1.4/media/dbvis_windows-x64_12_1_4_jre.exe'
+			"arguments" = "-q"
+		}
 		#intellij
 		$configfile = "$($env:TEMP)\silent.config"
 		Invoke-WebRequest -Uri 'https://download.jetbrains.com/idea/silent.config' -OutFile $configfile
@@ -151,13 +176,15 @@ switch( hostname ){
 			"arguments" = ""
 		}
 		$urls += @{
-			"url" = 'https://dbvis.com/product_download/dbvis-12.1.4/media/dbvis_windows-x64_12_1_4_jre.exe'
-			"arguments" = "-q"
-		}
-		$urls += @{
 			"url" = 'https://ninite.com/eclipse-filezilla-notepadplusplus-putty-sumatrapdf-winscp/ninite.exe'
 			"arguments" = ""
 		}
+		#add routine to install maven 3.8.3
+		Invoke-WebRequest -Uri 'https://dlcdn.apache.org/maven/maven-3/3.8.3/binaries/apache-maven-3.8.3-bin.zip' -OutFile "$($env:TEMP)\apache-maven-3.8.3-bin.zip"
+		Expand-Archive -Path "$($env:TEMP)\apache-maven-3.8.3-bin.zip" -DestinationPath "$($env:APPDATA)"
+		[System.Environment]::SetEnvironmentVariable('MAVEN_HOME',"$($env:APPDATA)\apache-maven-3.8.3")
+		[System.Environment]::SetEnvironmentVariable('M2_HOME',"$($env:APPDATA)\apache-maven-3.8.3")
+		[System.Environment]::SetEnvironmentVariable('PATH',"$($PATH),$($env:APPDATA)\apache-maven-3.8.3\bin")
 	}
 	{$_ -match "webvm"}{
 		write-host "webvm detected, selecting software" -Foregroundcolor Green
