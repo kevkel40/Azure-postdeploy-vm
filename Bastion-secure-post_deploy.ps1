@@ -148,7 +148,26 @@ $RegSetting = @{
 }
 $RegSettings += $RegSetting
 
-#install sfotware based on VM name HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce
+#restrict anonymous access
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SYSTEM\CurrentControlSet\Control\Lsa"
+	"Name" = "restrictanonymoussam"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SYSTEM\CurrentControlSet\Control\Lsa"
+	"Name" = "restrictanonymous"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+#install software based on VM name HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce
 $RegSetting = @{
 	"Hive" = "HKEY_LOCAL_MACHINE"
 	"Path" = "Software\Microsoft\Windows\CurrentVersion\RunOnce"
@@ -181,10 +200,10 @@ Write-Host "Setting PSGallery as trusted repository" -Foregroundcolor Yellow
 Set-PSRepository -name PSGallery -InstallationPolicy trusted
 Write-Host "Installing Windows Update PowerShell module" -Foregroundcolor Yellow
 Install-Module -Name PSWindowsUpdate
-Write-Host "Scheduling Windows updates to run on system boot" -Foregroundcolor Yellow
-$trigger = New-JobTrigger -AtStartup -RandomDelay 00:00:30
-$ScheduledJobOption = New-ScheduledJobOption -RunElevated
-Register-ScheduledJob -Trigger $trigger -Name WindowsUpdate -ScriptBlock {Get-WindowsUpdate -Install -confirm:$false -forceinstall -autoreboot -acceptall} -ScheduledJobOption $ScheduledJobOption -credential (Get-Credential -message "enter password for scheduled updates command" -username (whoami))
+#Write-Host "Scheduling Windows updates to run on system boot" -Foregroundcolor Yellow
+#$trigger = New-JobTrigger -AtStartup -RandomDelay 00:00:30
+#$ScheduledJobOption = New-ScheduledJobOption -RunElevated
+#Register-ScheduledJob -Trigger $trigger -Name WindowsUpdate -ScriptBlock {Get-WindowsUpdate -Install -confirm:$false -forceinstall -autoreboot -acceptall} -ScheduledJobOption $ScheduledJobOption -credential (Get-Credential -message "enter password for scheduled updates command" -username (whoami))
 Write-Host "Setting Windows Defender preferences" -Foregroundcolor Yellow
 Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -verbose
 Write-Host "Running Windows updates, system may reboot" -Foregroundcolor Yellow
