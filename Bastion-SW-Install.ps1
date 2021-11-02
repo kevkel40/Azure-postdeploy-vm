@@ -180,11 +180,14 @@ switch( hostname ){
 			"arguments" = ""
 		}
 		#add routine to install maven 3.8.3
+		Write-Host "Downloading Maven 3.8.3"
 		Invoke-WebRequest -Uri 'https://dlcdn.apache.org/maven/maven-3/3.8.3/binaries/apache-maven-3.8.3-bin.zip' -OutFile "$($env:TEMP)\apache-maven-3.8.3-bin.zip"
+		Write-Host "Expanding Maven 3.8.3"
 		Expand-Archive -Path "$($env:TEMP)\apache-maven-3.8.3-bin.zip" -DestinationPath "$($env:APPDATA)"
-		[System.Environment]::SetEnvironmentVariable('MAVEN_HOME',"$($env:APPDATA)\apache-maven-3.8.3")
-		[System.Environment]::SetEnvironmentVariable('M2_HOME',"$($env:APPDATA)\apache-maven-3.8.3")
-		[System.Environment]::SetEnvironmentVariable('PATH',"$($PATH),$($env:APPDATA)\apache-maven-3.8.3\bin")
+		Write-Host "Setting Maven environment variables"
+		[System.Environment]::SetEnvironmentVariable('MAVEN_HOME',"$($env:APPDATA)\apache-maven-3.8.3", 'Machine')
+		[System.Environment]::SetEnvironmentVariable('M2_HOME',"$($env:APPDATA)\apache-maven-3.8.3", 'Machine')
+		[System.Environment]::SetEnvironmentVariable('PATH',"$($env:PATH),$($env:APPDATA)\apache-maven-3.8.3\bin", 'Machine')
 	}
 	{$_ -match "webvm"}{
 		write-host "webvm detected, selecting software" -Foregroundcolor Green
