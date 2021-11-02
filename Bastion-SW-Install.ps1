@@ -83,7 +83,7 @@ try{
 		get-gitwinlatest $realTagUrl $version
 	}
 }catch{
-	Write-Host "PowerShell Core install not detected, preparing to download from github"
+	Write-Host "Git Windows install not detected, preparing to download from github"
 	get-gitwinlatest $realTagUrl $version
 }
 
