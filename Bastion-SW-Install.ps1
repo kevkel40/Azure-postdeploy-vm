@@ -187,7 +187,9 @@ switch( hostname ){
 		Write-Host "Setting Maven environment variables"
 		[System.Environment]::SetEnvironmentVariable('MAVEN_HOME',"$($env:APPDATA)\apache-maven-3.8.3", 'Machine')
 		[System.Environment]::SetEnvironmentVariable('M2_HOME',"$($env:APPDATA)\apache-maven-3.8.3", 'Machine')
-		[System.Environment]::SetEnvironmentVariable('PATH',"$($env:PATH),$($env:APPDATA)\apache-maven-3.8.3\bin", 'Machine')
+		if(!($env:path -match "apache-maven-3.8.3")){
+			[System.Environment]::SetEnvironmentVariable('PATH',"$($env:PATH);$($env:APPDATA)\apache-maven-3.8.3\bin", 'Machine')
+		}
 	}
 	{$_ -match "webvm"}{
 		write-host "webvm detected, selecting software" -Foregroundcolor Green
