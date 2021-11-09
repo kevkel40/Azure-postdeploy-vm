@@ -87,6 +87,16 @@ try{
 	get-gitwinlatest $realTagUrl $version
 }
 
+##### - Postman Win - #####
+$url = 'https://dl.pstmn.io/download/latest/win64'
+$fileName = "Postman-win64-Setup.exe"
+$Outfile = "$($env:TEMP)\$($fileName)"
+Invoke-WebRequest -Uri $url -Outfile $Outfile
+if(Test-Path $env:TEMP/$fileName){
+  Write-Host "Installing $($fileName)..." -Foregroundcolor Yellow
+  $arguments = @("/s") #??
+  Start-Process $Outfile -ArgumentList $arguments -Wait
+}
 ##################################
 
 function DownloadAndRunExeMSI($url, $arguments){
