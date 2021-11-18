@@ -176,6 +176,10 @@ $RegSetting = @{
 	"Value" = "IEX(New-Object Net.WebClient).downloadString('https://raw.githubusercontent.com/LeighdePaor/Azure-postdeploy-vm/main/Bastion-SW-Install.ps1')"
 }
 #$RegSettings += $RegSetting
+
+#Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PolicyManager\default\Experience\AllowCortana REG_DWORD value 0
+#Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PolicyManager\default\Privacy\AllowInputPersonalization REG_DWORD value 0
+
 ######################################
 Clear-Host
 Write-Host "Setting reg keys" -Foregroundcolor Yellow
@@ -206,5 +210,10 @@ Install-Module -Name PSWindowsUpdate
 #Register-ScheduledJob -Trigger $trigger -Name WindowsUpdate -ScriptBlock {Get-WindowsUpdate -Install -confirm:$false -forceinstall -autoreboot -acceptall} -ScheduledJobOption $ScheduledJobOption -credential (Get-Credential -message "enter password for scheduled updates command" -username (whoami))
 Write-Host "Setting Windows Defender preferences" -Foregroundcolor Yellow
 Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -verbose
+Write-Host "Downloading Policies"
+Invoke-WebRequest -Uri 'https://github.com/LeighdePaor/Azure-postdeploy-vm/raw/main/GroupPolicy.zip' -OutFile "$($env:TEMP)\GroupPolicy.zip"
+Write-Host "Deploying Policies"
+Expand-Archive -Path "$($env:TEMP)\GroupPolicy.zip" -DestinationPath "C:\Windows\System32\GroupPolicy" -force
+gpupdate /force
 Write-Host "Running Windows updates, system may reboot" -Foregroundcolor Yellow
 Get-WindowsUpdate -Install -confirm:$false -forceinstall -autoreboot -acceptall
