@@ -112,7 +112,7 @@ function DownloadAndRunExeMSI($url, $arguments){
 		}
 		{$_ -match "/"} {
 			Write-Host "Attempting to install $($url) with arguments" -Foregroundcolor Yellow
-			Start-Process -filepath "$($env:TEMP)\$($OutPutFile)" -wait -ArgumentList $arguments		
+			Start-Process -filepath "$($env:TEMP)\$($OutPutFile)" -wait -ArgumentList $arguments
 			break
 		}
 		{($_ -like "") -or ($_ -like $null)}{
