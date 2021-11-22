@@ -189,15 +189,50 @@ switch( hostname ){
 			"url" = 'https://ninite.com/eclipse-filezilla-notepadplusplus-putty-sumatrapdf-winscp/ninite.exe'
 			"arguments" = ""
 		}
-		Write-Host "Downloading Maven 3.8.4"
-		Invoke-WebRequest -Uri 'https://dlcdn.apache.org/maven/maven-3/3.8.4/binaries/apache-maven-3.8.4-bin.zip' -OutFile "$($env:TEMP)\apache-maven-3.8.4-bin.zip"
-		Write-Host "Expanding Maven 3.8.4"
-		Expand-Archive -Path "$($env:TEMP)\apache-maven-3.8.4-bin.zip" -DestinationPath "$($env:APPDATA)"
+		Write-Host "Checking latest stable version of Maven available"
+		$url = "https://dlcdn.apache.org/maven/maven-3/"
+		$maven_versions = ((Invoke-WebRequest -Uri $url).links.href -match '\d.\d.\d').replace("/","")
+		#get highest major version 
+		$Major_version = @()
+		foreach($version in $maven_versions){
+			$Major_version += [int]$version.split(".")[0]
+		}
+		$Highest_Version = ($Major_version | Sort-Object | get-unique)[-1]
+		$Current_Majors = @($maven_versions | where-object{$_ -like "$($Highest_Version).*"})
+		if($Current_Majors.count -gt 1){
+			#get highest minor version 
+			$Minor_version = @()
+			foreach($version in $Current_Majors){
+				$Minor_version += [int]$version.split(".")[1]
+			}
+			$Highest_MinVersion = ($Minor_version | Sort-Object | get-unique)[-1]
+			$Current_Minors = @($maven_versions | where-object{$_ -like "$($Highest_Version).$($Highest_MinVersion).*"})
+			
+			if($Current_Minors.count -gt 1){
+				#get highest sub version 
+				$Sub_version = @()
+				foreach($version in $Current_Minors){
+					$Sub_version += [int]$version.split(".")[-1]
+				}
+				$Highest_SubVersion = ($Sub_version | Sort-Object | get-unique)[-1]
+			$desired_version = $maven_versions | where-object{$_ -like "$($Highest_Version).$($Highest_MinVersion).$($Highest_SubVersion)"}
+			}else{
+				$desired_version = $Current_Minors 
+			}
+		}else{
+			$desired_version = $Current_Majors[0]
+		}
+		#build url for desired version
+		$desiredurl = "$($url)$desired_version/binaries/apache-maven-$($desired_version)-bin.zip"
+		Write-Host "Downloading Maven version $($desired_version)"
+		Invoke-WebRequest -Uri $desiredurl -OutFile "$($env:TEMP)\apache-maven-$($desired_version)-bin.zip"
+		Write-Host "Expanding Maven version $($desired_version)"
+		Expand-Archive -Path "$($env:TEMP)\apache-maven-$($desired_version)-bin.zip" -DestinationPath "$($env:APPDATA)"
 		Write-Host "Setting Maven environment variables"
-		[System.Environment]::SetEnvironmentVariable('MAVEN_HOME',"$($env:APPDATA)\apache-maven-3.8.4", 'Machine')
-		[System.Environment]::SetEnvironmentVariable('M2_HOME',"$($env:APPDATA)\apache-maven-3.8.4", 'Machine')
-		if(!($env:path -match "apache-maven-3.8.4")){
-			[System.Environment]::SetEnvironmentVariable('PATH',"$($env:PATH);$($env:APPDATA)\apache-maven-3.8.4\bin", 'Machine')
+		[System.Environment]::SetEnvironmentVariable('MAVEN_HOME',"$($env:APPDATA)\apache-maven-$($desired_version)", 'Machine')
+		[System.Environment]::SetEnvironmentVariable('M2_HOME',"$($env:APPDATA)\apache-maven-$($desired_version)", 'Machine')
+		if(!($env:path -match "apache-maven-$($desired_version)")){
+			[System.Environment]::SetEnvironmentVariable('PATH',"$($env:PATH);$($env:APPDATA)\apache-maven-$($desired_version)\bin", 'Machine')
 		}
 	}
 	{$_ -match "webvm"}{
