@@ -189,16 +189,15 @@ switch( hostname ){
 			"url" = 'https://ninite.com/eclipse-filezilla-notepadplusplus-putty-sumatrapdf-winscp/ninite.exe'
 			"arguments" = ""
 		}
-		#add routine to install maven 3.8.3
-		Write-Host "Downloading Maven 3.8.3"
-		Invoke-WebRequest -Uri 'https://dlcdn.apache.org/maven/maven-3/3.8.3/binaries/apache-maven-3.8.3-bin.zip' -OutFile "$($env:TEMP)\apache-maven-3.8.3-bin.zip"
-		Write-Host "Expanding Maven 3.8.3"
-		Expand-Archive -Path "$($env:TEMP)\apache-maven-3.8.3-bin.zip" -DestinationPath "$($env:APPDATA)"
+		Write-Host "Downloading Maven 3.8.4"
+		Invoke-WebRequest -Uri 'https://dlcdn.apache.org/maven/maven-3/3.8.4/binaries/apache-maven-3.8.4-bin.zip' -OutFile "$($env:TEMP)\apache-maven-3.8.4-bin.zip"
+		Write-Host "Expanding Maven 3.8.4"
+		Expand-Archive -Path "$($env:TEMP)\apache-maven-3.8.4-bin.zip" -DestinationPath "$($env:APPDATA)"
 		Write-Host "Setting Maven environment variables"
-		[System.Environment]::SetEnvironmentVariable('MAVEN_HOME',"$($env:APPDATA)\apache-maven-3.8.3", 'Machine')
-		[System.Environment]::SetEnvironmentVariable('M2_HOME',"$($env:APPDATA)\apache-maven-3.8.3", 'Machine')
-		if(!($env:path -match "apache-maven-3.8.3")){
-			[System.Environment]::SetEnvironmentVariable('PATH',"$($env:PATH);$($env:APPDATA)\apache-maven-3.8.3\bin", 'Machine')
+		[System.Environment]::SetEnvironmentVariable('MAVEN_HOME',"$($env:APPDATA)\apache-maven-3.8.4", 'Machine')
+		[System.Environment]::SetEnvironmentVariable('M2_HOME',"$($env:APPDATA)\apache-maven-3.8.4", 'Machine')
+		if(!($env:path -match "apache-maven-3.8.4")){
+			[System.Environment]::SetEnvironmentVariable('PATH',"$($env:PATH);$($env:APPDATA)\apache-maven-3.8.4\bin", 'Machine')
 		}
 	}
 	{$_ -match "webvm"}{
