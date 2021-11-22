@@ -209,7 +209,7 @@ Install-Module -Name PSWindowsUpdate
 #$ScheduledJobOption = New-ScheduledJobOption -RunElevated
 #Register-ScheduledJob -Trigger $trigger -Name WindowsUpdate -ScriptBlock {Get-WindowsUpdate -Install -confirm:$false -forceinstall -autoreboot -acceptall} -ScheduledJobOption $ScheduledJobOption -credential (Get-Credential -message "enter password for scheduled updates command" -username (whoami))
 Write-Host "Setting Windows Defender preferences" -Foregroundcolor Yellow
-Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -verbose
+Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -ScanScheduleTime 12:00 -RemediationScheduleTime 13:00 -SignatureScheduleTime 11:00  -verbose
 Write-Host "Downloading Policies"
 Invoke-WebRequest -Uri 'https://github.com/LeighdePaor/Azure-postdeploy-vm/raw/main/GroupPolicy.zip' -OutFile "$($env:TEMP)\GroupPolicy.zip"
 Write-Host "Deploying Policies"
