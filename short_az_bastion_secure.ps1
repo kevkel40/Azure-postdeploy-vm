@@ -60,7 +60,16 @@ Param(
 		$Path = $RegSet.Path
 		$Name = $RegSet.Name
 		$Value = $RegSet.Value
-		#set-location -path "$($Hive):\$($Path)"
+		#store current location setting
+		Push-Location
+		#Test reg path exists, create if not
+		set-location "$($Hive):"
+		if(!(Test-Path ".\$($Path)")){
+			New-Item -path ".\$($Path)"
+		}
+		#restore location setting
+		Pop-Location
+
 		try{
 			Get-Item -path "$($Hive):\$($Path)\$($Name)" -erroraction stop
 			if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name -eq $Value){
@@ -101,15 +110,6 @@ $RegSettings += $RegSetting
 $RegSetting = @{
 	"Hive" = "HKEY_CURRENT_USER"
 	"Path" = "Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
-	"Name" = "NoDriveTypeAutoRun"
-	"Type" = "REG_DWORD"
-	"Value" = 255
-}
-$RegSettings += $RegSetting
-
-$RegSetting = @{
-	"Hive" = "HKEY_USER"
-	"Path" = "DEFAULT\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
 	"Name" = "NoDriveTypeAutoRun"
 	"Type" = "REG_DWORD"
 	"Value" = 255
@@ -204,15 +204,6 @@ $RegSetting = @{
 }
 $RegSettings += $RegSetting
 
-#install software based on VM name HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce
-$RegSetting = @{
-	"Hive" = "HKEY_LOCAL_MACHINE"
-	"Path" = "Software\Microsoft\Windows\CurrentVersion\RunOnce"
-	"Name" = "InstallSoftware"
-	"Type" = "REG_SZ"
-	"Value" = "IEX(New-Object Net.WebClient).downloadString('https://raw.githubusercontent.com/LeighdePaor/Azure-postdeploy-vm/main/Bastion-SW-Install.ps1')"
-}
-#$RegSettings += $RegSetting
 ######################################
 Clear-Host
 Write-Host "Setting reg keys" -Foregroundcolor Yellow
@@ -220,6 +211,23 @@ Write-Host "Setting reg keys" -Foregroundcolor Yellow
 foreach($Item in $RegSettings){
 	set-reg_keys -RegSet $Item
 }
+
+#default user setting change
+
+$arguments = "load HKLM\ntuser.dat c:\users\default\ntuser.dat"
+Start-Process reg.exe -ArgumentList $arguments -Wait
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "ntuser.dat\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+	"Name" = "NoDriveTypeAutoRun"
+	"Type" = "REG_DWORD"
+	"Value" = 255
+}
+set-reg_keys -RegSet $RegSetting
+
+$arguments = "unload HKLM\ntuser.dat"
+Start-Process reg.exe -ArgumentList $arguments -Wait
+
 ######################################
 Write-Host "Ensuring SMB1 is off" -Foregroundcolor Yellow
 if((Get-WindowsOptionalFeature -Online -FeatureName smb1protocol).state -notlike "DisabledWithPayloadRemoved"){Disable-WindowsOptionalFeature -Online -FeatureName smb1protocol}
