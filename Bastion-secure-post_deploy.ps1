@@ -98,6 +98,23 @@ $RegSetting = @{
 }
 $RegSettings += $RegSetting
 
+$RegSetting = @{
+	"Hive" = "HKEY_CURRENT_USER"
+	"Path" = "Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+	"Name" = "NoDriveTypeAutoRun"
+	"Type" = "REG_DWORD"
+	"Value" = 255
+}
+$RegSettings += $RegSetting
+
+$RegSetting = @{
+	"Hive" = "HKEY_USER"
+	"Path" = "DEFAULT\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+	"Name" = "NoDriveTypeAutoRun"
+	"Type" = "REG_DWORD"
+	"Value" = 255
+}
+$RegSettings += $RegSetting
 
 #turn off autoplay for nonvolume devices
 $RegSetting = @{
@@ -148,6 +165,16 @@ $RegSetting = @{
 }
 $RegSettings += $RegSetting
 
+#Enable SMB2 signing
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters"
+	"Name" = "EnableSecuritySignature"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
 #restrict anonymous access
 $RegSetting = @{
 	"Hive" = "HKEY_LOCAL_MACHINE"
@@ -167,6 +194,16 @@ $RegSetting = @{
 }
 $RegSettings += $RegSetting
 
+#No cached logons
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Microsoft\Windows Nt\CurrentVersion\Winlogon"
+	"Name" = "CachedLogonsCount"
+	"Type" = "REG_SZ"
+	"Value" = 0
+}
+$RegSettings += $RegSetting
+
 #install software based on VM name HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce
 $RegSetting = @{
 	"Hive" = "HKEY_LOCAL_MACHINE"
@@ -176,10 +213,6 @@ $RegSetting = @{
 	"Value" = "IEX(New-Object Net.WebClient).downloadString('https://raw.githubusercontent.com/LeighdePaor/Azure-postdeploy-vm/main/Bastion-SW-Install.ps1')"
 }
 #$RegSettings += $RegSetting
-
-#Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PolicyManager\default\Experience\AllowCortana REG_DWORD value 0
-#Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PolicyManager\default\Privacy\AllowInputPersonalization REG_DWORD value 0
-
 ######################################
 Clear-Host
 Write-Host "Setting reg keys" -Foregroundcolor Yellow
