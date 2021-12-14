@@ -98,6 +98,23 @@ $RegSetting = @{
 }
 $RegSettings += $RegSetting
 
+$RegSetting = @{
+	"Hive" = "HKEY_CURRENT_USER"
+	"Path" = "Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+	"Name" = "NoDriveTypeAutoRun"
+	"Type" = "REG_DWORD"
+	"Value" = 255
+}
+$RegSettings += $RegSetting
+
+$RegSetting = @{
+	"Hive" = "HKEY_USER"
+	"Path" = "DEFAULT\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+	"Name" = "NoDriveTypeAutoRun"
+	"Type" = "REG_DWORD"
+	"Value" = 255
+}
+$RegSettings += $RegSetting
 
 #turn off autoplay for nonvolume devices
 $RegSetting = @{
@@ -148,6 +165,16 @@ $RegSetting = @{
 }
 $RegSettings += $RegSetting
 
+#Enable SMB2 signing
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters"
+	"Name" = "EnableSecuritySignature"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
 #restrict anonymous access
 $RegSetting = @{
 	"Hive" = "HKEY_LOCAL_MACHINE"
@@ -164,6 +191,16 @@ $RegSetting = @{
 	"Name" = "restrictanonymous"
 	"Type" = "REG_DWORD"
 	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+#No cached logons
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Microsoft\Windows Nt\CurrentVersion\Winlogon"
+	"Name" = "CachedLogonsCount"
+	"Type" = "REG_SZ"
+	"Value" = 0
 }
 $RegSettings += $RegSetting
 
