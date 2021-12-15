@@ -60,16 +60,6 @@ Param(
 		$Path = $RegSet.Path
 		$Name = $RegSet.Name
 		$Value = $RegSet.Value
-		#store current location setting
-		Push-Location
-		#Test reg path exists, create if not
-		set-location "$($Hive):"
-		if(!(Test-Path ".\$($Path)")){
-			New-Item -path ".\$($Path)"
-		}
-		#restore location setting
-		Pop-Location
-
 		try{
 			Get-Item -path "$($Hive):\$($Path)\$($Name)" -erroraction stop
 			if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name -eq $Value){
@@ -213,17 +203,14 @@ foreach($Item in $RegSettings){
 }
 
 #default user setting change
-
 $arguments = "load HKLM\ntuser.dat c:\users\default\ntuser.dat"
 Start-Process reg.exe -ArgumentList $arguments -Wait
-$RegSetting = @{
-	"Hive" = "HKEY_LOCAL_MACHINE"
-	"Path" = "ntuser.dat\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
-	"Name" = "NoDriveTypeAutoRun"
-	"Type" = "REG_DWORD"
-	"Value" = 255
-}
-set-reg_keys -RegSet $RegSetting
+
+$arguments = "add HKLM\ntuser.dat\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+Start-Process reg.exe -ArgumentList $arguments -Wait
+
+$arguments = "add HKLM\ntuser.dat\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer /v NoDriveTypeAutoRun /t REG_DWORD /d 255"
+Start-Process reg.exe -ArgumentList $arguments -Wait
 
 $arguments = "unload HKLM\ntuser.dat"
 Start-Process reg.exe -ArgumentList $arguments -Wait
