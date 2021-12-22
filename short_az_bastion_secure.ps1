@@ -77,7 +77,7 @@ Param(
     }
 
     try{
-			Get-Item -path "$($Hive):\$($Path)\$($Name)" -erroraction stop
+			#Get-Item -path "$($Hive):\$($Path)\$($Name)" -erroraction stop
 			if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name -eq $Value){
 				Write-Host "$($Name) is already set to $($Value), no further action required."
 			}else{
