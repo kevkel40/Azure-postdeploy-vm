@@ -60,7 +60,23 @@ Param(
 		$Path = $RegSet.Path
 		$Name = $RegSet.Name
 		$Value = $RegSet.Value
-		try{
+    #see if reg path works, create if not
+    $pathitems = $Path.split("\")
+    $pathlength = $pathitems.count
+    $CurrentPath = ""
+    $ItemNumber = 0
+    foreach($Item in $pathitems){
+      if($ItemNumber -eq 0){$CurrentPath = $Item}else{$CurrentPath = "$($CurrentPath)\$($Item)"}
+      try{
+        Write-Host "Testing $($Hive):\$($CurrentPath)"
+        Test-Path -path "$($Hive):\$($CurrentPath)" -erroraction stop
+      }catch{
+        Write-Host "Failed at $($Hive):\$($CurrentPath)"
+      } 
+      $ItemNumber ++ 
+    }
+
+    try{
 			Get-Item -path "$($Hive):\$($Path)\$($Name)" -erroraction stop
 			if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name -eq $Value){
 				Write-Host "$($Name) is already set to $($Value), no further action required."
@@ -86,19 +102,218 @@ Param(
 ######################################
 
 $RegSettings = @()
-
-#turn off autoplay
+#NTLM
 $RegSetting = @{
 	"Hive" = "HKEY_LOCAL_MACHINE"
-	"Path" = "Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
-	"Name" = "NoDriveTypeAutoRun"
+	"Path" = "SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0"
+	"Name" = "NtlmMinClientSec"
 	"Type" = "REG_DWORD"
-	"Value" = 255
+	"Value" = 20080000
 }
 $RegSettings += $RegSetting
 
 $RegSetting = @{
-	"Hive" = "HKEY_CURRENT_USER"
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0"
+	"Name" = "NtlmMinServerSec"
+	"Type" = "REG_DWORD"
+	"Value" = 20080000
+}
+$RegSettings += $RegSetting
+
+#RDS
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services"
+	"Name" = "DisablePasswordSaving"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+#credentials delegation
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\Windows\CredentialsDelegation"
+	"Name" = "AllowDefCredentialsWhenNTLMOnly"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+#Microsoft data harvest
+# Do not show feedback notifications
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\Windows\DataCollection"
+	"Name" = "DoNotShowFeedbackNotifications"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+#WindowsDefender
+# Scan removable drives
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\Windows Defender\Scan"
+	"Name" = "DisableRemovableDriveScanning"
+	"Type" = "REG_DWORD"
+	"Value" = 0
+}
+$RegSettings += $RegSetting
+
+#Prohibit unicast response to multicast or broadcast requests
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\WindowsFirewall\PrivateProfile"
+	"Name" = "DisableUnicastResponsesToMulticastBroadcast"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SOFTWARE\Policies\Microsoft\WindowsFirewall\StandardProfile"
+	"Name" = "DisableUnicastResponsesToMulticastBroadcast"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile"
+	"Name" = "DisableUnicastResponsesToMulticastBroadcast"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile"
+	"Name" = "DisableUnicastResponsesToMulticastBroadcast"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+#Enable firewall
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\WindowsFirewall\PrivateProfile"
+	"Name" = "EnableFirewall"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SOFTWARE\Policies\Microsoft\WindowsFirewall\StandardProfile"
+	"Name" = "EnableFirewall"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile"
+	"Name" = "EnableFirewall"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile"
+	"Name" = "EnableFirewall"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+#Set firewall outbound action
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\WindowsFirewall\PrivateProfile"
+	"Name" = "DefaultOutboundAction"
+	"Type" = "REG_DWORD"
+	"Value" = 0
+}
+$RegSettings += $RegSetting
+
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SOFTWARE\Policies\Microsoft\WindowsFirewall\StandardProfile"
+	"Name" = "DefaultOutboundAction"
+	"Type" = "REG_DWORD"
+	"Value" = 0
+}
+$RegSettings += $RegSetting
+
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile"
+	"Name" = "DefaultOutboundAction"
+	"Type" = "REG_DWORD"
+	"Value" = 0
+}
+$RegSettings += $RegSetting
+
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile"
+	"Name" = "DefaultOutboundAction"
+	"Type" = "REG_DWORD"
+	"Value" = 0
+}
+$RegSettings += $RegSetting
+
+#Set firewall inbound action
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\WindowsFirewall\PrivateProfile"
+	"Name" = "DefaultInboundAction"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SOFTWARE\Policies\Microsoft\WindowsFirewall\StandardProfile"
+	"Name" = "DefaultInboundAction"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile"
+	"Name" = "DefaultInboundAction"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile"
+	"Name" = "DefaultInboundAction"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+#turn off autoplay
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
 	"Path" = "Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
 	"Name" = "NoDriveTypeAutoRun"
 	"Type" = "REG_DWORD"
@@ -194,6 +409,17 @@ $RegSetting = @{
 }
 $RegSettings += $RegSetting
 
+$RegSetting = @{
+	"Hive" = "HKEY_CURRENT_USER"
+	"Path" = "Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+	"Name" = "NoDriveTypeAutoRun"
+	"Type" = "REG_DWORD"
+	"Value" = 255
+}
+
+$RegSettings += $RegSetting
+
+
 ######################################
 Clear-Host
 Write-Host "Setting reg keys" -Foregroundcolor Yellow
@@ -215,6 +441,19 @@ Start-Process reg.exe -ArgumentList $arguments -Wait
 $arguments = "unload HKLM\ntuser.dat"
 Start-Process reg.exe -ArgumentList $arguments -Wait
 
+
+# $RegSetting = @{
+# 	"Hive" = "HKEY_CURRENT_USER"
+# 	"Path" = "Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+# 	"Name" = "NoDriveTypeAutoRun"
+# 	"Type" = "REG_DWORD"
+# 	"Value" = 255
+# }
+
+#$arguments = "add HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer /v NoDriveTypeAutoRun /t REG_DWORD /d 255"
+#Start-Process reg.exe -ArgumentList $arguments -Wait
+
+
 ######################################
 Write-Host "Ensuring SMB1 is off" -Foregroundcolor Yellow
 if((Get-WindowsOptionalFeature -Online -FeatureName smb1protocol).state -notlike "DisabledWithPayloadRemoved"){Disable-WindowsOptionalFeature -Online -FeatureName smb1protocol}
@@ -232,10 +471,6 @@ Write-Host "Setting PSGallery as trusted repository" -Foregroundcolor Yellow
 Set-PSRepository -name PSGallery -InstallationPolicy trusted
 Write-Host "Installing Windows Update PowerShell module" -Foregroundcolor Yellow
 Install-Module -Name PSWindowsUpdate
-#Write-Host "Scheduling Windows updates to run on system boot" -Foregroundcolor Yellow
-#$trigger = New-JobTrigger -AtStartup -RandomDelay 00:00:30
-#$ScheduledJobOption = New-ScheduledJobOption -RunElevated
-#Register-ScheduledJob -Trigger $trigger -Name WindowsUpdate -ScriptBlock {Get-WindowsUpdate -Install -confirm:$false -forceinstall -autoreboot -acceptall} -ScheduledJobOption $ScheduledJobOption -credential (Get-Credential -message "enter password for scheduled updates command" -username (whoami))
 Write-Host "Setting Windows Defender preferences" -Foregroundcolor Yellow
 Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -ScanScheduleTime 12:00 -RemediationScheduleTime 13:00 -SignatureScheduleTime 11:00  -verbose
 Write-Host "Downloading Policies"
