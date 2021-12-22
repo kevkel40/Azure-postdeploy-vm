@@ -66,19 +66,25 @@ Param(
     $CurrentPath = ""
     $ItemNumber = 0
     foreach($Item in $pathitems){
-      if($ItemNumber -eq 0){$CurrentPath = $Item}else{$CurrentPath = "$($CurrentPath)\$($Item)"}
+      if($ItemNumber -eq 0){
+        $CurrentPath = $Item
+      }else{
+        $OldPath = $CurrentPath
+        $CurrentPath = "$($CurrentPath)\$($Item)"
+      }
       try{
         Write-Host "Testing $($Hive):\$($CurrentPath)"
         Test-Path -path "$($Hive):\$($CurrentPath)" -erroraction stop
       }catch{
-        Write-Host "Failed at $($Hive):\$($CurrentPath)"
+        Write-Host "Failed at $($Hive):\$($CurrentPath), attempting to create"
+        New-Item –Path "$($Hive):\$($OldPath)" –Name $Item
       } 
       $ItemNumber ++ 
     }
 
     try{
 			#Get-Item -path "$($Hive):\$($Path)\$($Name)" -erroraction stop
-			if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name -eq $Value){
+			if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -erroraction stop).$Name -eq $Value){
 				Write-Host "$($Name) is already set to $($Value), no further action required."
 			}else{
 				Set-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -Value $Value -Type $Type
