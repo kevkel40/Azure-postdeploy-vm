@@ -76,7 +76,7 @@ Param(
         Write-Host "Testing $($Hive):\$($CurrentPath)"
         Test-Path -path "$($Hive):\$($CurrentPath)" -erroraction stop
       }catch{
-        Write-Host "Failed at $($Hive):\$($CurrentPath), attempting to create"
+        Write-Host "Failed at $($Hive):\$($CurrentPath), attempting to create $($Item) at $($Hive):\$($OldPath)"
         New-Item –Path "$($Hive):\$($OldPath)" –Name $Item
       } 
       $ItemNumber ++ 
@@ -96,7 +96,11 @@ Param(
 			}
 		}catch{
 			Write-Host "Item $($Name) does not exist at $($Hive):\$($Path), attempting to create"
-			Set-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -Value $Value -Type $Type
+			try{
+        Set-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -Value $Value -Type $Type -ErrorAction Stop
+      }catch{
+
+      }
 			if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name -eq $Value){
 				Write-Host "$($Name) succesfully set to $($Value), no further action required." -Foregroundcolor Green
 			}else{
