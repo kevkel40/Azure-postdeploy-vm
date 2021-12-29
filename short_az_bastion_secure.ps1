@@ -74,11 +74,15 @@ Param(
       }
       try{
         Write-Host "Testing $($Hive):\$($CurrentPath)"
-        Test-Path -path "$($Hive):\$($CurrentPath)" -erroraction stop
+        $path = Test-Path -path "$($Hive):\$($CurrentPath)" -erroraction stop
       }catch{
         Write-Host "Failed at $($Hive):\$($CurrentPath), attempting to create $($Item) at $($Hive):\$($OldPath)"
         New-Item –Path "$($Hive):\$($OldPath)" –Name $Item
       } 
+      if(!$path){
+        Write-Host "Reg path $($Hive):\$($CurrentPath) not found, attempting to create $($Item) at $($Hive):\$($OldPath)"
+        New-Item –Path "$($Hive):\$($OldPath)" –Name $Item
+      }
       $ItemNumber ++ 
     }
 
