@@ -57,12 +57,11 @@ Param(
 			Write-Host "Error with type or hive specified, cannot continue" -Foregroundcolor Red
 			break
 		}
-		$Path = $RegSet.Path
-		$Name = $RegSet.Name
+		[string]$Path = $RegSet.Path
+		[string]$Name = $RegSet.Name
 		$Value = $RegSet.Value
     #see if reg path works, create if not
     $pathitems = $Path.split("\")
-    $pathlength = $pathitems.count
     $CurrentPath = ""
     $ItemNumber = 0
     foreach($Item in $pathitems){
@@ -77,11 +76,11 @@ Param(
         $testpath = Test-Path -path "$($Hive):\$($CurrentPath)" -erroraction stop
         if(!$testpath){
           Write-Host "Reg path $($Hive):\$($CurrentPath) not found, attempting to create $($Item) at $($Hive):\$($OldPath)"
-          New-Item –Path "$($Hive):\$($OldPath)" –Name $Item
+          New-Item -Path "$($Hive):\$($OldPath)\" -Name $Item
         }
       }catch{
         Write-Host "Failed at $($Hive):\$($CurrentPath), attempting to create $($Item) at $($Hive):\$($OldPath)"
-        New-Item –Path "$($Hive):\$($OldPath)" –Name $Item
+        New-Item -Path "$($Hive):\$($OldPath)\" -Name $Item
       } 
       $ItemNumber ++ 
     }
