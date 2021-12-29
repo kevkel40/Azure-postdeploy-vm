@@ -88,7 +88,7 @@ Param(
     try{
 			#Get-Item -path "$($Hive):\$($Path)\$($Name)" -erroraction stop
 			if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -erroraction stop).$Name -eq $Value){
-				Write-Host "$($Name) is already set to $($Value), no further action required."
+  			Write-Host "$($Name) is already set to $($Value), no further action required."
 			}else{
 				Set-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -Value $Value -Type $Type
 				if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name -eq $Value){
@@ -454,19 +454,6 @@ Start-Process reg.exe -ArgumentList $arguments -Wait
 $arguments = "unload HKLM\ntuser.dat"
 Start-Process reg.exe -ArgumentList $arguments -Wait
 
-
-# $RegSetting = @{
-# 	"Hive" = "HKEY_CURRENT_USER"
-# 	"Path" = "Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
-# 	"Name" = "NoDriveTypeAutoRun"
-# 	"Type" = "REG_DWORD"
-# 	"Value" = 255
-# }
-
-#$arguments = "add HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer /v NoDriveTypeAutoRun /t REG_DWORD /d 255"
-#Start-Process reg.exe -ArgumentList $arguments -Wait
-
-
 ######################################
 Write-Host "Ensuring SMB1 is off" -Foregroundcolor Yellow
 if((Get-WindowsOptionalFeature -Online -FeatureName smb1protocol).state -notlike "DisabledWithPayloadRemoved"){Disable-WindowsOptionalFeature -Online -FeatureName smb1protocol}
@@ -486,6 +473,22 @@ Write-Host "Installing Windows Update PowerShell module" -Foregroundcolor Yellow
 Install-Module -Name PSWindowsUpdate
 Write-Host "Setting Windows Defender preferences" -Foregroundcolor Yellow
 Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -ScanScheduleTime 12:00 -RemediationScheduleTime 13:00 -SignatureScheduleTime 11:00  -verbose
+Write-Host "Setting Windows Defender attack surface reduction rules" -Foregroundcolor Yellow
+#Configure the following attack surface reduction rules: 
+#ref https://docs.microsoft.com/en-us/microsoft-365/security/defender-endpoint/attack-surface-reduction-rules-reference?view=o365-worldwide
+	# 'Block executable content from email client and webmail' = "be9ba2d9-53ea-4cdc-84e5-9b1eeee46550"
+	# 'Block untrusted and unsigned processes that run from USB' = "b2b3f03d-6a65-4f7b-a9c7-1c7ef74a9ba4"
+	# 'Block credential stealing from the Windows local security authority subsystem (lsass.exe)' = "9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2"
+	# 'Block all Office applications from creating child processes' = "d4f940ab-401b-4efc-aadc-ad5f3c50688a"
+	# 'Block JavaScript or VBScript from launching downloaded executable content' = "d3e037e1-3eb8-44c8-a917-57927947596d"
+	# 'Block execution of potentially obfuscated scripts ' = "5beb7efe-fd9a-4556-801d-275e5ffc04cc"
+	# 'Block Office applications from creating executable content' = "3b576869-a4ec-4529-8536-b80a7769e899"
+	# 'Block Office communication application from creating child processes' = "26190899-1602-49e8-8b27-eb1d0a1ce869"
+	# 'Block Win32 API calls from Office macros' = "92e97fa1-2edf-4476-bdd6-9dd0b4dddc7b"
+	# 'Block Adobe Reader from creating child processes' = "7674ba52-37eb-4a4f-a9a1-f0f9a1619a2c"
+	# 'Block Office applications from injecting code into other processes' = "75668c1f-73b5-4cf0-bb93-3ecf5cb7cc842"
+$Values = @("be9ba2d9-53ea-4cdc-84e5-9b1eeee46550","b2b3f03d-6a65-4f7b-a9c7-1c7ef74a9ba4","9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2","d4f940ab-401b-4efc-aadc-ad5f3c50688a","d3e037e1-3eb8-44c8-a917-57927947596d","5beb7efe-fd9a-4556-801d-275e5ffc04cc","3b576869-a4ec-4529-8536-b80a7769e899","26190899-1602-49e8-8b27-eb1d0a1ce869","92e97fa1-2edf-4476-bdd6-9dd0b4dddc7b","7674ba52-37eb-4a4f-a9a1-f0f9a1619a2c","75668c1f-73b5-4cf0-bb93-3ecf5cb7cc842")
+Set-MpPreference -AttackSurfaceReductionRules_Actions Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled -AttackSurfaceReductionRules_Ids $values
 Write-Host "Downloading Policies"
 Invoke-WebRequest -Uri 'https://github.com/LeighdePaor/Azure-postdeploy-vm/raw/main/GroupPolicy.zip' -OutFile "$($env:TEMP)\GroupPolicy.zip"
 Write-Host "Deploying Policies"
