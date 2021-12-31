@@ -25,17 +25,17 @@
 
 ######################################
 function set-reg_keys{
-Param(
+  Param(
     #Parameter that can be modified to control which resource groups this runs against
     [Parameter(
         Mandatory=$false,
         ValueFromPipeline=$true,
-        HelpMessage="Enter one or more Windows registry setting as a hashtable object."    
+        HelpMessage="Enter one or more Windows registry setting as a hashtable object."
         )
     ]
     [System.Collections.Hashtable]
     $RegSet = $null
-)
+  )
 	if(!($RegSet.count -eq 5)){
 		Write-Host "RegSet parameter requires 5 key pairs in the hashtable: Path, Name, Type, Value, Hive" -ForegroundColor Red
     break
@@ -113,6 +113,49 @@ Param(
 		}		
 	}
 }
+
+function Get-NugetVersion {
+  Param(
+    #Parameter that can be modified to control which resource groups this runs against
+    [Parameter(
+        Mandatory=$true,
+        HelpMessage="Enter the version of nuget installed as a four part system version object: Major Minor Build Revision"
+        )
+    ]
+    [Microsoft.PackageManagement.Internal.Utility.Versions.FourPartVersion]
+    $installed,
+
+    [Parameter(
+      Mandatory=$false,
+      HelpMessage="Enter the lowest version of nuget required as a four part string: e.g. '2.8.5.201'"
+      )
+    ]
+    [Microsoft.PackageManagement.Internal.Utility.Versions.FourPartVersion]
+    $required = "2.8.5.201"
+  )
+
+  $returnvalue = $false
+
+  #Major Minor Build Revision
+  switch($installed){
+    {$_ -ge $required}{
+      $returnvalue = $true
+      break
+    }
+    {$_ -lt $required}{
+      $returnvalue = $false
+      break
+    }
+    {$_ -gt $required}{
+      $returnvalue = $true
+      break
+    }
+    default {$returnvalue = $false}
+
+  }
+  return $returnvalue
+}
+
 ######################################
 
 $RegSettings = @()
@@ -672,20 +715,42 @@ $arguments = "unload HKLM\ntuser.dat"
 Start-Process reg.exe -ArgumentList $arguments -Wait
 
 ######################################
-Write-Host "Ensuring SMB1 is off" -Foregroundcolor Green
-if((Get-WindowsOptionalFeature -Online -FeatureName smb1protocol).state -notlike "DisabledWithPayloadRemoved"){Disable-WindowsOptionalFeature -Online -FeatureName smb1protocol}
+Write-Verbose "Ensuring SMB1 is off" -Foregroundcolor Green
+if((Get-WindowsOptionalFeature -Online -FeatureName smb1protocol).state -notlike "DisabledWithPayloadRemoved"){Disable-WindowsOptionalFeature -Online -FeatureName smb1protocol -verbose}
 #generate random 16-32 character name for guest account
 $Array = @();$Array+=@(48..57);$array+=@(65..90);$array+=@(97..122)
 $alphanumericstring = ""
 for ($i=1; $i -le (get-random @(16..32)); $i++) {$alphanumericstring += [char](get-random $array)}
 Write-Host "Renaming Guest Account" -Foregroundcolor Green
 wmic useraccount where "name='Guest'" rename $alphanumericstring
-Write-Host "Setting network profile to public" -Foregroundcolor Green
-Set-NetConnectionProfile -InterfaceAlias Ethernet -NetworkCategory "Public"
-Write-Host "Adding Nuget" -Foregroundcolor Green
-Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force | Out-Null
-Write-Host "Setting PSGallery as trusted repository" -Foregroundcolor Green
-Set-PSRepository -name PSGallery -InstallationPolicy trusted
+
+Write-Verbose "Setting network profile to public" -Foregroundcolor Green
+Set-NetConnectionProfile -InterfaceAlias Ethernet -NetworkCategory "Public" -verbose
+
+Write-Verbose "Adding Nuget" -Foregroundcolor Green
+try{
+  $Nuget = Get-PackageProvider -name NuGet -ErrorAction stop
+  if(!(Get-NugetVersion -installed ($Nuget.Version) -required "2.8.5.201")){
+    Write-Host "NuGet version is too low, attempting to set higher" -ForegroundColor Red
+    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force | Out-Null
+  }
+}catch{
+  Write-Host "Error getting or adding Nuget as a package provider, trying to add version 2.8.5.201 or higher" -ForegroundColor Red
+  Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force | Out-Null
+}
+
+
+Write-Verbose "Getting PSGallery trusted repository status" -Foregroundcolor Green
+try{
+  $PSGallery = Get-PSRepository -name PSGallery -ErrorAction stop
+  if(!($PSGallery.InstallationPolicy -like "Trusted")){
+    Write-Host "PSGallery.InstallationPolicy is not set to trusted, attempting to set" -ForegroundColor Red
+    Set-PSRepository -name PSGallery -InstallationPolicy trusted -verbose
+  }
+}catch{
+  Write-Host "Error recovering PSGallery as a PS Repository" -ForegroundColor Red
+}
+
 Write-Host "Installing Windows Update PowerShell module" -Foregroundcolor Green
 Install-Module -Name PSWindowsUpdate
 Write-Host "Setting Windows Defender preferences" -Foregroundcolor Green
