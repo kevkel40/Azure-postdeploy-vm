@@ -5,7 +5,7 @@
     .DESCRIPTION
 	Set a selection of security specific registry keys
 	Rename Guest Account
-	Set netowrk profile to public
+	Set network profile to public
 	Add Nuget
 	Set PSGallery as trusted repository
 	Install Windows Update PowerShell module
