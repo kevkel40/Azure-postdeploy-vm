@@ -37,7 +37,8 @@ Param(
     $RegSet = $null
 )
 	if(!($RegSet.count -eq 5)){
-		Write-Host "RegSet parameter requires 5 key pairs in the hashtable: Path, Name, Type, Value, Hive"
+		Write-Host "RegSet parameter requires 5 key pairs in the hashtable: Path, Name, Type, Value, Hive" -ForegroundColor Red
+    break
 	}else{
 		switch($RegSet.Hive){
 			{$_ -eq "HKEY_LOCAL_MACHINE"}{$Hive = "HKLM"}
@@ -72,14 +73,14 @@ Param(
         $CurrentPath = "$($CurrentPath)\$($Item)"
       }
       try{
-        Write-Host "Testing $($Hive):\$($CurrentPath)"
+        Write-Verbose "Testing $($Hive):\$($CurrentPath)"
         $testpath = Test-Path -path "$($Hive):\$($CurrentPath)" -erroraction stop
         if(!$testpath){
-          Write-Host "Reg path $($Hive):\$($CurrentPath) not found, attempting to create $($Item) at $($Hive):\$($OldPath)"
+          Write-Host "Reg path $($Hive):\$($CurrentPath) not found, attempting to create $($Item) at $($Hive):\$($OldPath)" -ForegroundColor Red
           New-Item -Path "$($Hive):\$($OldPath)\" -Name $Item
         }
       }catch{
-        Write-Host "Failed at $($Hive):\$($CurrentPath), attempting to create $($Item) at $($Hive):\$($OldPath)"
+        Write-Host "Failed at $($Hive):\$($CurrentPath), attempting to create $($Item) at $($Hive):\$($OldPath)" -ForegroundColor Red
         New-Item -Path "$($Hive):\$($OldPath)\" -Name $Item
       } 
       $ItemNumber ++ 
@@ -88,11 +89,11 @@ Param(
     try{
 			#Get-Item -path "$($Hive):\$($Path)\$($Name)" -erroraction stop
 			if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -erroraction stop).$Name -eq $Value){
-  			Write-Host "$($Name) is already set to $($Value), no further action required."
+  			Write-Verbose "$($Name) is already set to $($Value), no further action required."
 			}else{
 				Set-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -Value $Value -Type $Type
 				if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name -eq $Value){
-					Write-Host "$($Name) succesfully set to $($Value), no further action required." -Foregroundcolor Green
+					Write-Verbose "$($Name) succesfully set to $($Value), no further action required."
 				}else{
 					Write-Host "Error setting $($Hive):\$($Path)\$($Name) to $($Value), please remediate." -Foregroundcolor Red
 				}
@@ -105,7 +106,7 @@ Param(
 
       }
 			if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name -eq $Value){
-				Write-Host "$($Name) succesfully set to $($Value), no further action required." -Foregroundcolor Green
+				Write-Verbose "$($Name) succesfully set to $($Value), no further action required."
 			}else{
 				Write-Host "Error setting $($Hive):\$($Path)\$($Name) to $($Value), please remediate." -Foregroundcolor Red
 			}
@@ -671,25 +672,25 @@ $arguments = "unload HKLM\ntuser.dat"
 Start-Process reg.exe -ArgumentList $arguments -Wait
 
 ######################################
-Write-Host "Ensuring SMB1 is off" -Foregroundcolor Yellow
+Write-Host "Ensuring SMB1 is off" -Foregroundcolor Green
 if((Get-WindowsOptionalFeature -Online -FeatureName smb1protocol).state -notlike "DisabledWithPayloadRemoved"){Disable-WindowsOptionalFeature -Online -FeatureName smb1protocol}
 #generate random 16-32 character name for guest account
 $Array = @();$Array+=@(48..57);$array+=@(65..90);$array+=@(97..122)
 $alphanumericstring = ""
 for ($i=1; $i -le (get-random @(16..32)); $i++) {$alphanumericstring += [char](get-random $array)}
-Write-Host "Renaming Guest Account" -Foregroundcolor Yellow
+Write-Host "Renaming Guest Account" -Foregroundcolor Green
 wmic useraccount where "name='Guest'" rename $alphanumericstring
-Write-Host "Setting network profile to public" -Foregroundcolor Yellow
+Write-Host "Setting network profile to public" -Foregroundcolor Green
 Set-NetConnectionProfile -InterfaceAlias Ethernet -NetworkCategory "Public"
-Write-Host "Adding Nuget" -Foregroundcolor Yellow
+Write-Host "Adding Nuget" -Foregroundcolor Green
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force | Out-Null
-Write-Host "Setting PSGallery as trusted repository" -Foregroundcolor Yellow
+Write-Host "Setting PSGallery as trusted repository" -Foregroundcolor Green
 Set-PSRepository -name PSGallery -InstallationPolicy trusted
-Write-Host "Installing Windows Update PowerShell module" -Foregroundcolor Yellow
+Write-Host "Installing Windows Update PowerShell module" -Foregroundcolor Green
 Install-Module -Name PSWindowsUpdate
-Write-Host "Setting Windows Defender preferences" -Foregroundcolor Yellow
+Write-Host "Setting Windows Defender preferences" -Foregroundcolor Green
 Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -ScanScheduleTime 12:00 -RemediationScheduleTime 13:00 -SignatureScheduleTime 11:00  -verbose
-Write-Host "Setting Windows Defender attack surface reduction rules" -Foregroundcolor Yellow
+Write-Host "Setting Windows Defender attack surface reduction rules" -Foregroundcolor Green
 #Configure the following attack surface reduction rules: 
 #ref https://docs.microsoft.com/en-us/microsoft-365/security/defender-endpoint/attack-surface-reduction-rules-reference?view=o365-worldwide
 	# 'Block executable content from email client and webmail' = "be9ba2d9-53ea-4cdc-84e5-9b1eeee46550"
@@ -705,9 +706,9 @@ Write-Host "Setting Windows Defender attack surface reduction rules" -Foreground
 	# 'Block Office applications from injecting code into other processes' = "75668c1f-73b5-4cf0-bb93-3ecf5cb7cc842"
 $Values = @("be9ba2d9-53ea-4cdc-84e5-9b1eeee46550","b2b3f03d-6a65-4f7b-a9c7-1c7ef74a9ba4","9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2","d4f940ab-401b-4efc-aadc-ad5f3c50688a","d3e037e1-3eb8-44c8-a917-57927947596d","5beb7efe-fd9a-4556-801d-275e5ffc04cc","3b576869-a4ec-4529-8536-b80a7769e899","26190899-1602-49e8-8b27-eb1d0a1ce869","92e97fa1-2edf-4476-bdd6-9dd0b4dddc7b","7674ba52-37eb-4a4f-a9a1-f0f9a1619a2c","75668c1f-73b5-4cf0-bb93-3ecf5cb7cc842")
 Set-MpPreference -AttackSurfaceReductionRules_Actions Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled -AttackSurfaceReductionRules_Ids $values
-Write-Host "Downloading Policies"
+Write-Host "Downloading Policies" -Foregroundcolor Green
 Invoke-WebRequest -Uri 'https://github.com/LeighdePaor/Azure-postdeploy-vm/raw/main/GroupPolicy.zip' -OutFile "$($env:TEMP)\GroupPolicy.zip"
-Write-Host "Deploying Policies"
+Write-Host "Deploying Policies" -Foregroundcolor Green
 Expand-Archive -Path "$($env:TEMP)\GroupPolicy.zip" -DestinationPath "C:\Windows\System32\GroupPolicy" -force
 gpupdate /force
 Write-Host "Running Windows updates, system may reboot" -Foregroundcolor Yellow
