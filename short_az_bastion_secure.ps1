@@ -445,10 +445,10 @@ foreach($Item in $RegSettings){
 $arguments = "load HKLM\ntuser.dat c:\users\default\ntuser.dat"
 Start-Process reg.exe -ArgumentList $arguments -Wait
 
-$arguments = "add HKLM\ntuser.dat\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+$arguments = "add HKLM\ntuser.dat\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer /f"
 Start-Process reg.exe -ArgumentList $arguments -Wait
 
-$arguments = "add HKLM\ntuser.dat\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer /v NoDriveTypeAutoRun /t REG_DWORD /d 255"
+$arguments = "add HKLM\ntuser.dat\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer /v NoDriveTypeAutoRun /t REG_DWORD /d 255 /f"
 Start-Process reg.exe -ArgumentList $arguments -Wait
 
 $arguments = "unload HKLM\ntuser.dat"
