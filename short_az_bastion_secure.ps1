@@ -715,7 +715,7 @@ $arguments = "unload HKLM\ntuser.dat"
 Start-Process reg.exe -ArgumentList $arguments -Wait
 
 ######################################
-Write-Verbose "Ensuring SMB1 is off" -Foregroundcolor Green
+Write-Verbose "Ensuring SMB1 is off"
 if((Get-WindowsOptionalFeature -Online -FeatureName smb1protocol).state -notlike "DisabledWithPayloadRemoved"){Disable-WindowsOptionalFeature -Online -FeatureName smb1protocol -verbose}
 #generate random 16-32 character name for guest account
 $Array = @();$Array+=@(48..57);$array+=@(65..90);$array+=@(97..122)
@@ -724,10 +724,10 @@ for ($i=1; $i -le (get-random @(16..32)); $i++) {$alphanumericstring += [char](g
 Write-Host "Renaming Guest Account" -Foregroundcolor Green
 wmic useraccount where "name='Guest'" rename $alphanumericstring
 
-Write-Verbose "Setting network profile to public" -Foregroundcolor Green
+Write-Verbose "Setting network profile to public"
 Set-NetConnectionProfile -InterfaceAlias Ethernet -NetworkCategory "Public" -verbose
 
-Write-Verbose "Adding Nuget" -Foregroundcolor Green
+Write-Verbose "Adding Nuget"
 try{
   $Nuget = Get-PackageProvider -name NuGet -ErrorAction stop
   if(!(Get-NugetVersion -installed ($Nuget.Version) -required "2.8.5.201")){
@@ -740,7 +740,7 @@ try{
 }
 
 
-Write-Verbose "Getting PSGallery trusted repository status" -Foregroundcolor Green
+Write-Verbose "Getting PSGallery trusted repository status"
 try{
   $PSGallery = Get-PSRepository -name PSGallery -ErrorAction stop
   if(!($PSGallery.InstallationPolicy -like "Trusted")){
