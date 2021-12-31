@@ -115,6 +115,115 @@ Param(
 ######################################
 
 $RegSettings = @()
+#undock stupid recommendation in Azure vm!
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Microsoft\Windows\CurrentVersion\Policies\System"
+	"Name" = "UndockWithoutLogon"
+	"Type" = "REG_DWORD"
+	"Value" = 0
+}
+$RegSettings += $RegSetting
+
+#software certificate restriction policies
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\Windows\Safer\CodeIdentifiers"
+	"Name" = "AuthenticodeEnabled"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+#log file sizes
+# application
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\Windows\EventLog\Application"
+	"Name" = "MaxSize"
+	"Type" = "REG_DWORD"
+	"Value" = 196608
+}
+$RegSettings += $RegSetting
+
+# system
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\Windows\EventLog\System"
+	"Name" = "MaxSize"
+	"Type" = "REG_DWORD"
+	"Value" = 196608
+}
+$RegSettings += $RegSetting
+
+# security
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\Windows\EventLog\Security"
+	"Name" = "MaxSize"
+	"Type" = "REG_DWORD"
+	"Value" = 196608
+}
+$RegSettings += $RegSetting
+
+# setup
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\Windows\EventLog\Setup"
+	"Name" = "MaxSize"
+	"Type" = "REG_DWORD"
+	"Value" = 196608
+}
+$RegSettings += $RegSetting
+
+#NTLM versions
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\Netlogon\Parameters"
+	"Name" = "AllowNT4Crypto"
+	"Type" = "REG_DWORD"
+	"Value" = 0
+}
+$RegSettings += $RegSetting
+
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "System\CurrentControlSet\Control\Lsa"
+	"Name" = "LmCompatibilityLevel"
+	"Type" = "REG_DWORD"
+	"Value" = 5
+}
+$RegSettings += $RegSetting
+
+#Windows Updates
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate"
+	"Name" = "SetDisablePauseUXAccess"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+#No to Cortana
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SOFTWARE\Policies\Microsoft\Windows\Windows Search"
+	"Name" = "AllowCortanaAboveLock"
+	"Type" = "REG_DWORD"
+	"Value" = 0
+}
+$RegSettings += $RegSetting
+
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SOFTWARE\Policies\Microsoft\Windows\Windows Search"
+	"Name" = "AllowCortana"
+	"Type" = "REG_DWORD"
+	"Value" = 0
+}
+$RegSettings += $RegSetting
+
 #NTLM
 $RegSetting = @{
 	"Hive" = "HKEY_LOCAL_MACHINE"
@@ -154,6 +263,46 @@ $RegSetting = @{
 }
 $RegSettings += $RegSetting
 
+#app credential entry
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Microsoft\Windows\CurrentVersion\Policies\CredUI"
+	"Name" = "EnableSecureCredentialPrompting"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+#credentials reveal
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\Windows\CredUI"
+	"Name" = "DisablePasswordReveal"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+#stupid questions blocking
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\Windows\System"
+	"Name" = "NoLocalPasswordResetQuestions"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+#app notificatio0ns on lock screen (don't ask!)
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\Windows\System"
+	"Name" = "DisableLockScreenAppNotifications"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
 #Microsoft data harvest
 # Do not show feedback notifications
 $RegSetting = @{
@@ -165,7 +314,55 @@ $RegSetting = @{
 }
 $RegSettings += $RegSetting
 
+# minimise telemetry colection
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\Windows\DataCollection"
+	"Name" = "AllowTelemetry"
+	"Type" = "REG_DWORD"
+	"Value" = 0
+}
+$RegSettings += $RegSetting
+
+#Google location harvest
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Google\Chrome"
+	"Name" = "DefaultGeolocationSetting"
+	"Type" = "REG_DWORD"
+	"Value" = 2
+}
+$RegSettings += $RegSetting
+
 #WindowsDefender
+# Spynet
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\Windows Defender\Spynet"
+	"Name" = "SubmitSamplesConsent"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\Windows Defender\Spynet"
+	"Name" = "SpynetReporting"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\Windows Defender\Spynet"
+	"Name" = "DisableBlockAtFirstSeen"
+	"Type" = "REG_DWORD"
+	"Value" = 0
+}
+$RegSettings += $RegSetting
+
 # Scan removable drives
 $RegSetting = @{
 	"Hive" = "HKEY_LOCAL_MACHINE"
@@ -210,6 +407,16 @@ $RegSetting = @{
 	"Name" = "DisableUnicastResponsesToMulticastBroadcast"
 	"Type" = "REG_DWORD"
 	"Value" = 1
+}
+$RegSettings += $RegSetting
+
+#Turn off multicast name resolution
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "Software\Policies\Microsoft\Windows NT\DNSClient"
+	"Name" = "EnableMulticast"
+	"Type" = "REG_DWORD"
+	"Value" = 0
 }
 $RegSettings += $RegSetting
 
@@ -432,6 +639,15 @@ $RegSetting = @{
 
 $RegSettings += $RegSetting
 
+#Clear pagefile on shutdown
+$RegSetting = @{
+	"Hive" = "HKEY_LOCAL_MACHINE"
+	"Path" = "SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management"
+	"Name" = "ClearPageFileAtShutdown"
+	"Type" = "REG_DWORD"
+	"Value" = 1
+}
+$RegSettings += $RegSetting
 
 ######################################
 Clear-Host
