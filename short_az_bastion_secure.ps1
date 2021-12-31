@@ -751,8 +751,13 @@ try{
   Write-Host "Error recovering PSGallery as a PS Repository" -ForegroundColor Red
 }
 
-Write-Host "Installing Windows Update PowerShell module" -Foregroundcolor Green
-Install-Module -Name PSWindowsUpdate
+if((get-module -ListAvailable |Select-Object Name).Name -contains "PSWindowsUpdate"){
+  Write-Verbose "PSWindowsUpdate PowerShell module detected as installed"
+}else{
+  Write-Host "Installing Windows Update PowerShell module" -Foregroundcolor Green
+  Install-Module -Name PSWindowsUpdate -verbose
+}
+
 Write-Host "Setting Windows Defender preferences" -Foregroundcolor Green
 Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -ScanScheduleTime 12:00 -RemediationScheduleTime 13:00 -SignatureScheduleTime 11:00  -verbose
 Write-Host "Setting Windows Defender attack surface reduction rules" -Foregroundcolor Green
@@ -776,5 +781,10 @@ Invoke-WebRequest -Uri 'https://github.com/LeighdePaor/Azure-postdeploy-vm/raw/m
 Write-Host "Deploying Policies" -Foregroundcolor Green
 Expand-Archive -Path "$($env:TEMP)\GroupPolicy.zip" -DestinationPath "C:\Windows\System32\GroupPolicy" -force
 gpupdate /force
+#Windows Defender signature updates
+$arguments = "-removedefinitions -dynamicsignatures"
+Start-Process "$($env:ProgramFiles)\Windows Defender\MpCmdRun.exe" -ArgumentList $arguments -Wait
+$arguments = "-SignatureUpdate"
+Start-Process "$($env:ProgramFiles)\Windows Defender\MpCmdRun.exe" -ArgumentList $arguments -Wait
 Write-Host "Running Windows updates, system may reboot" -Foregroundcolor Yellow
 Get-WindowsUpdate -Install -confirm:$false -forceinstall -autoreboot -acceptall
