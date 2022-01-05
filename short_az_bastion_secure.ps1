@@ -272,18 +272,18 @@ $RegSettings += $RegSetting
 $RegSetting = @{
 	"Hive" = "HKEY_LOCAL_MACHINE"
 	"Path" = "SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0"
-	"Name" = "NtlmMinClientSec"
+	"Name" = "NTLMMinClientSec"
 	"Type" = "REG_DWORD"
-	"Value" = 20080000
+	"Value" = 0x20080000
 }
 $RegSettings += $RegSetting
 
 $RegSetting = @{
 	"Hive" = "HKEY_LOCAL_MACHINE"
 	"Path" = "SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0"
-	"Name" = "NtlmMinServerSec"
+	"Name" = "NTLMMinServerSec"
 	"Type" = "REG_DWORD"
-	"Value" = 20080000
+	"Value" = 0x20080000
 }
 $RegSettings += $RegSetting
 
@@ -786,5 +786,9 @@ $arguments = "-removedefinitions -dynamicsignatures"
 Start-Process "$($env:ProgramFiles)\Windows Defender\MpCmdRun.exe" -ArgumentList $arguments -Wait
 $arguments = "-SignatureUpdate"
 Start-Process "$($env:ProgramFiles)\Windows Defender\MpCmdRun.exe" -ArgumentList $arguments -Wait
+#update Azure guest agent status
+$arguments = "ADD HKLM\SOFTWARE\Qualys\QualysAgent\ScanOnDemand\Vulnerability /v ScanOnDemand /t REG_DWORD /d 1 /f"
+Start-Process reg.exe -ArgumentList $arguments -Wait
+#install windows updates
 Write-Host "Running Windows updates, system may reboot" -Foregroundcolor Yellow
 Get-WindowsUpdate -Install -confirm:$false -forceinstall -autoreboot -acceptall
