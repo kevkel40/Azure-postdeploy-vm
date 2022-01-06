@@ -33,7 +33,6 @@ function set-reg_keys{
         HelpMessage="Enter one or more Windows registry setting as a hashtable object."
         )
     ]
-    [System.Management.Automation.PSCustomObject]
     $RegSet = $null
   )
   if(!(($RegSet | Get-Member | Where-Object {$_.MemberType -like "NoteProperty"}).count -eq 6)){
