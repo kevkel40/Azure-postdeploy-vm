@@ -33,11 +33,11 @@ function set-reg_keys{
         HelpMessage="Enter one or more Windows registry setting as a hashtable object."
         )
     ]
-    [System.Collections.Hashtable]
+    [System.Management.Automation.PSCustomObject]
     $RegSet = $null
   )
-	if(!($RegSet.count -eq 5)){
-		Write-Host "RegSet parameter requires 5 key pairs in the hashtable: Path, Name, Type, Value, Hive" -ForegroundColor Red
+	if(!(($RegSet.count -eq 5) -or ($RegSet.count -eq 6))){
+		Write-Host "RegSet parameter requires 5 or 6 key pairs in the hashtable: Path, Name, Type, Value, Hive, Comment" -ForegroundColor Red
     break
 	}else{
 		switch($RegSet.Hive){
