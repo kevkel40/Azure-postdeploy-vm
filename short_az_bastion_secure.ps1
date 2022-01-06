@@ -36,7 +36,7 @@ function set-reg_keys{
     [System.Management.Automation.PSCustomObject]
     $RegSet = $null
   )
-	if(!(($RegSet.count -eq 5) -or ($RegSet.count -eq 6))){
+  if(!(($RegSet | Get-Member | Where-Object {$_.MemberType -like "NoteProperty"}).count -eq 6)){
 		Write-Host "RegSet parameter requires 5 or 6 key pairs in the hashtable: Path, Name, Type, Value, Hive, Comment" -ForegroundColor Red
     break
 	}else{
@@ -167,14 +167,14 @@ $URI = 'https://raw.githubusercontent.com/LeighdePaor/Azure-postdeploy-vm/main/r
 if(Test-Path ".\regsettings.json"){
   $RegSettings = Get-Content .\regsettings.json | convertfrom-json
 }else{
-  $RegSettings = Invoke-WebRequest -Uri $URI | convertfrom-json
+  $RegSettings = (Invoke-WebRequest -Uri $URI | convertfrom-json).regsetting
 }
 
 ######################################
 Clear-Host
 Write-Host "Setting reg keys" -Foregroundcolor Yellow
 
-foreach($Item in $RegSettings.regsetting){
+foreach($Item in $RegSettings){
 	set-reg_keys -RegSet $Item
 }
 
