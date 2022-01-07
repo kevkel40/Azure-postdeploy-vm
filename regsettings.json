@@ -2,7 +2,7 @@
   "RegSetting" : 
   [
     {
-      "Comment": "NOT_ASSIGNED: Recovery console: Allow floppy copy and access to all drives and all folders",
+      "Comment": "AZ-WIN-00180: Recovery console: Allow floppy copy and access to all drives and all folders",
       "Name": "setcommand",
       "Value": 0,
       "Path": "Software\\Microsoft\\Windows NT\\CurrentVersion\\Setup\\RecoveryConsole",
@@ -90,6 +90,14 @@
       "Type": "REG_DWORD"
     },
     {
+      "Comment": "CCE-36925-6: Include command line in process creation events",
+      "Name": "ProcessCreationIncludeCmdLine_Enabled",
+      "Value": 1,
+      "Path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\Audit",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_DWORD"
+    },
+    {
       "Comment": "CCE-36533-8: Ensure 'User Account Control: Detect application installations and prompt for elevation' is set to 'Enabled'",
       "Name": "EnableInstallerDetection",
       "Value": 1,
@@ -130,7 +138,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Devices: Allow undock without having to log on",
+      "Comment": "AZ-WIN-00120: Devices: Allow undock without having to log on",
       "Name": "UndockWithoutLogon",
       "Value": 0,
       "Path": "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
@@ -194,7 +202,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Ensure 'Allow Input Personalization' is set to 'Disabled'",
+      "Comment": "AZ-WIN-00168: Ensure 'Allow Input Personalization' is set to 'Disabled'",
       "Name": "AllowInputPersonalization",
       "Value": 0,
       "Path": "Software\\Policies\\Microsoft\\InputPersonalization",
@@ -210,7 +218,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Specify the interval to check for definition updates",
+      "Comment": "AZ-WIN-00152: Specify the interval to check for definition updates",
       "Name": "SignatureUpdateInterval",
       "Value": 8,
       "Path": "Software\\Policies\\Microsoft\\Microsoft Antimalware\\Signature Updates",
@@ -226,7 +234,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Enable 'Turn on behavior monitoring'",
+      "Comment": "AZ-WIN-00178: Enable 'Turn on behavior monitoring'",
       "Name": "DisableBehaviorMonitoring",
       "Value": 0,
       "Path": "Software\\Policies\\Microsoft\\Windows Defender\\Real-Time Protection",
@@ -234,7 +242,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Enable 'Scan removable drives' by setting DisableRemovableDriveScanning  to 0",
+      "Comment": "AZ-WIN-00177: Enable 'Scan removable drives' by setting DisableRemovableDriveScanning  to 0",
       "Name": "DisableRemovableDriveScanning",
       "Value": 0,
       "Path": "Software\\Policies\\Microsoft\\Windows Defender\\Scan",
@@ -242,7 +250,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Disable 'Configure local setting override for reporting to Microsoft MAPS'",
+      "Comment": "AZ-WIN-00173: Disable 'Configure local setting override for reporting to Microsoft MAPS'",
       "Name": "LocalSettingOverrideSpynetReporting",
       "Value": 0,
       "Path": "Software\\Policies\\Microsoft\\Windows Defender\\SpyNet",
@@ -250,7 +258,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Enable 'Send file samples when further analysis is required' for 'Send Safe Samples'",
+      "Comment": "AZ-WIN-00126: Enable 'Send file samples when further analysis is required' for 'Send Safe Samples'",
       "Name": "SubmitSamplesConsent",
       "Value": 1,
       "Path": "Software\\Policies\\Microsoft\\Windows Defender\\SpyNet",
@@ -258,7 +266,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Ensure 'Turn off multicast name resolution' is set to 'Enabled'",
+      "Comment": "AZ-WIN-00145: Ensure 'Turn off multicast name resolution' is set to 'Enabled'",
       "Name": "EnableMulticast",
       "Value": 1,
       "Path": "Software\\Policies\\Microsoft\\Windows NT\\DNSClient",
@@ -306,7 +314,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Require user authentication for remote connections by using Network Level Authentication",
+      "Comment": "AZ-WIN-00149: Require user authentication for remote connections by using Network Level Authentication",
       "Name": "UserAuthentication",
       "Value": 1,
       "Path": "Software\\Policies\\Microsoft\\Windows NT\\Terminal Services",
@@ -346,7 +354,15 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Ensure 'Turn off Microsoft consumer experiences' is set to 'Enabled'",
+      "Comment": "CCE-37946-1: Do not delete temp folders upon exit",
+      "Name": "DeleteTempDirsOnExit",
+      "Value": 1,
+      "Path": "Software\\Policies\\Microsoft\\Windows NT\\Terminal Services",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_DWORD"
+    },
+    {
+      "Comment": "AZ-WIN-00144: Ensure 'Turn off Microsoft consumer experiences' is set to 'Enabled'",
       "Name": "DisableWindowsConsumerFeatures",
       "Value": 1,
       "Path": "Software\\Policies\\Microsoft\\Windows\\CloudContent",
@@ -370,7 +386,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Ensure 'Do not show feedback notifications' is set to 'Enabled'",
+      "Comment": "AZ-WIN-00140: Ensure 'Do not show feedback notifications' is set to 'Enabled'",
       "Name": "DoNotShowFeedbackNotifications",
       "Value": 1,
       "Path": "Software\\Policies\\Microsoft\\Windows\\DataCollection",
@@ -506,7 +522,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Ensure 'Enable insecure guest logons' is set to 'Disabled'",
+      "Comment": "AZ-WIN-00171: Ensure 'Enable insecure guest logons' is set to 'Disabled'",
       "Name": "AllowInsecureGuestAuth",
       "Value": 0,
       "Path": "Software\\Policies\\Microsoft\\Windows\\LanmanWorkstation",
@@ -538,6 +554,14 @@
       "Type": "REG_DWORD"
     },
     {
+      "Comment": "AZ-WIN-00172: Prohibit use of Internet Connection Sharing on your DNS domain network",
+      "Name": "NC_ShowSharedAccessUI",
+      "Value": 0,
+      "Path": "Software\\Policies\\Microsoft\\Windows\\Network Connections",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_DWORD"
+    },
+    {
       "Comment": "CCE-38348-9: Ensure 'Prevent enabling lock screen slide show' is set to 'Enabled'",
       "Name": "NoLockScreenSlideshow",
       "Value": 1,
@@ -554,7 +578,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: System settings: Use Certificate Rules on Windows Executables for Software Restriction Policies",
+      "Comment": "AZ-WIN-00155: System settings: Use Certificate Rules on Windows Executables for Software Restriction Policies",
       "Name": "AuthenticodeEnabled",
       "Value": 1,
       "Path": "Software\\Policies\\Microsoft\\Windows\\Safer\\CodeIdentifiers",
@@ -586,7 +610,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Ensure 'Block user from showing account details on sign-in' is set to 'Enabled'",
+      "Comment": "AZ-WIN-00138: Ensure 'Block user from showing account details on sign-in' is set to 'Enabled'",
       "Name": "BlockUserFromShowingAccountDetailsOnSignin",
       "Value": 1,
       "Path": "Software\\Policies\\Microsoft\\Windows\\System",
@@ -618,7 +642,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Ensure 'Continue experiences on this device' is set to 'Disabled'",
+      "Comment": "AZ-WIN-00170: Ensure 'Continue experiences on this device' is set to 'Disabled'",
       "Name": "EnableCdp",
       "Value": 0,
       "Path": "Software\\Policies\\Microsoft\\Windows\\System",
@@ -634,7 +658,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Ensure 'Allow search and Cortana to use location' is set to 'Disabled'",
+      "Comment": "AZ-WIN-00133: Ensure 'Allow search and Cortana to use location' is set to 'Disabled'",
       "Name": "AllowSearchToUseLocation",
       "Value": 0,
       "Path": "Software\\Policies\\Microsoft\\Windows\\Windows Search",
@@ -650,7 +674,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Ensure 'Allow Cortana' is set to 'Disabled'",
+      "Comment": "AZ-WIN-00131: Ensure 'Allow Cortana' is set to 'Disabled'",
       "Name": "AllowCortana",
       "Value": 0,
       "Path": "Software\\Policies\\Microsoft\\Windows\\Windows Search",
@@ -658,7 +682,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Ensure 'Allow Cortana above lock screen' is set to 'Disabled'",
+      "Comment": "AZ-WIN-00130: Ensure 'Allow Cortana above lock screen' is set to 'Disabled'",
       "Name": "AllowCortanaAboveLock",
       "Value": 0,
       "Path": "Software\\Policies\\Microsoft\\Windows\\Windows Search",
@@ -698,7 +722,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Windows Firewall: Domain: Allow unicast response",
+      "Comment": "AZ-WIN-00088: Windows Firewall: Domain: Allow unicast response",
       "Name": "DisableUnicastResponsesToMulticastBroadcast",
       "Value": 0,
       "Path": "Software\\Policies\\Microsoft\\WindowsFirewall\\DomainProfile",
@@ -826,7 +850,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Windows Firewall: Private: Allow unicast response",
+      "Comment": "AZ-WIN-00089: Windows Firewall: Private: Allow unicast response",
       "Name": "DisableUnicastResponsesToMulticastBroadcast",
       "Value": 0,
       "Path": "Software\\Policies\\Microsoft\\WindowsFirewall\\PrivateProfile",
@@ -906,7 +930,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Windows Firewall: Public: Allow unicast response",
+      "Comment": "AZ-WIN-00090: Windows Firewall: Public: Allow unicast response",
       "Name": "DisableUnicastResponsesToMulticastBroadcast",
       "Value": 1,
       "Path": "Software\\Policies\\Microsoft\\WindowsFirewall\\PublicProfile",
@@ -962,7 +986,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Ensure 'Network access: Restrict clients allowed to make remote calls to SAM' is set to 'Administrators: Remote Access: Allow'",
+      "Comment": "AZ-WIN-00142: Ensure 'Network access: Restrict clients allowed to make remote calls to SAM' is set to 'Administrators: Remote Access: Allow'",
       "Name": "RestrictRemoteSAM",
       "Value": "O:BAG:BAD:(A;;RC;;;BA)",
       "Path": "System\\CurrentControlSet\\Control\\Lsa",
@@ -1018,7 +1042,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "CE-37615-2: Ensure Accounts: Limit local account use of blank passwords to console logon only is set to Enabled",
+      "Comment": "CCE-37615-2: Limit local account use of blank passwords to console logon only is set to Enabled",
       "Name": "LimitBlankPasswordUse",
       "Value": 1,
       "Path": "System\\CurrentControlSet\\Control\\Lsa",
@@ -1066,6 +1090,22 @@
       "Type": "REG_DWORD"
     },
     {
+      "Comment": "CCE-37194-8: Network access: Remotely accessible registry paths",
+      "Name": "Machine",
+      "Value": "System\\CurrentControlSet\\Control\\ProductOptions\\0System\\CurrentControlSet\\Control\\Server Applications\\0Software\\Microsoft\\Windows NT\\CurrentVersion\\0\\0",
+      "Path": "System\\CurrentControlSet\\Control\\SecurePipeServers\\Winreg\\AllowedExactPaths",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_MULTI_SZ"
+    },
+    {
+      "Comment": "CCE-36347-3: Network access: Remotely accessible registry paths and sub-paths",
+      "Name": "Machine",
+      "Value": "System\\CurrentControlSet\\Control\\Print\\Printers\\0System\\CurrentControlSet\\Services\\Eventlog\\0Software\\Microsoft\\OLAP Server\\0Software\\Microsoft\\Windows NT\\CurrentVersion\\Print\\0Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows\\0System\\CurrentControlSet\\Control\\ContentIndex\\0System\\CurrentControlSet\\Control\\Terminal Server\\0System\\CurrentControlSet\\Control\\Terminal Server\\UserConfig\\0System\\CurrentControlSet\\Control\\Terminal Server\\DefaultUserConfiguration\\0Software\\Microsoft\\Windows NT\\CurrentVersion\\Perflib\\0System\\CurrentControlSet\\Services\\SysmonLog\\0\\0",
+      "Path": "System\\CurrentControlSet\\Control\\SecurePipeServers\\Winreg\\AllowedPaths",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_MULTI_SZ"
+    },
+    {
       "Comment": "CCE-37644-2: Ensure 'System objects: Strengthen default permissions of internal system objects ' is set to 'Enabled'",
       "Name": "ProtectionMode",
       "Value": 1,
@@ -1082,7 +1122,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Shutdown: Clear virtual memory pagefile",
+      "Comment": "AZ-WIN-00181: Shutdown: Clear virtual memory pagefile",
       "Name": "ClearPageFileAtShutdown",
       "Value": 0,
       "Path": "System\\CurrentControlSet\\Control\\Session Manager\\Memory Management",
@@ -1096,6 +1136,14 @@
       "Path": "System\\CurrentControlSet\\Control\\Session Manager\\SubSYSTEMs",
       "Hive": "HKEY_LOCAL_MACHINE",
       "Type": "REG_MULTI_SZ"
+    },
+    {
+      "Comment": "AZ-WIN-00156: Detect change from default RDP port",
+      "Name": "PortNumber",
+      "Value": 3389,
+      "Path": "System\\CurrentControlSet\\Control\\Terminal Server\\WinStations\\RDP-Tcp",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_DWORD"
     },
     {
       "Comment": "CCE-37912-3: Ensure 'Boot-Start Driver Initialization Policy' is set to 'Enabled: Good, unknown and bad but critical'",
@@ -1130,7 +1178,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Disable SMB v1 server",
+      "Comment": "AZ-WIN-00175: Disable SMB v1 server",
       "Name": "SMB1",
       "Value": 0,
       "Path": "System\\CurrentControlSet\\Services\\LanmanServer\\Parameters",
@@ -1250,7 +1298,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Disable Windows Search Service",
+      "Comment": "AZ-WIN-00176: Disable Windows Search Service",
       "Name": "Start",
       "Value": 4,
       "Path": "System\\CurrentControlSet\\Services\\Wsearch",
