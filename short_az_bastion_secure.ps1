@@ -215,7 +215,7 @@ $URI = 'https://raw.githubusercontent.com/LeighdePaor/Azure-postdeploy-vm/main/r
 if(Test-Path ".\regsettings.json"){
   $RegSettings = (Get-Content .\regsettings.json | convertfrom-json).regsetting
 }else{
-  $RegSettings = (Invoke-WebRequest -Uri $URI | convertfrom-json).regsetting
+  $RegSettings = (Invoke-WebRequest -Uri $URI -UseBasicParsing | convertfrom-json).regsetting
 }
 
 ######################################
@@ -302,7 +302,7 @@ Write-Verbose "Setting Windows Defender attack surface reduction rules"
 $Values = @("be9ba2d9-53ea-4cdc-84e5-9b1eeee46550","b2b3f03d-6a65-4f7b-a9c7-1c7ef74a9ba4","9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2","d4f940ab-401b-4efc-aadc-ad5f3c50688a","d3e037e1-3eb8-44c8-a917-57927947596d","5beb7efe-fd9a-4556-801d-275e5ffc04cc","3b576869-a4ec-4529-8536-b80a7769e899","26190899-1602-49e8-8b27-eb1d0a1ce869","92e97fa1-2edf-4476-bdd6-9dd0b4dddc7b","7674ba52-37eb-4a4f-a9a1-f0f9a1619a2c","75668c1f-73b5-4cf0-bb93-3ecf5cb7cc842")
 Set-MpPreference -AttackSurfaceReductionRules_Actions Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled -AttackSurfaceReductionRules_Ids $values
 Write-Verbose "Downloading Policies"
-Invoke-WebRequest -Uri 'https://github.com/LeighdePaor/Azure-postdeploy-vm/raw/main/GroupPolicy.zip' -OutFile "$($env:TEMP)\GroupPolicy.zip"
+Invoke-WebRequest -Uri 'https://github.com/LeighdePaor/Azure-postdeploy-vm/raw/main/GroupPolicy.zip' -UseBasicParsing -OutFile "$($env:TEMP)\GroupPolicy.zip"
 Write-Verbose "Deploying Policies"
 Expand-Archive -Path "$($env:TEMP)\GroupPolicy.zip" -DestinationPath "C:\Windows\System32\GroupPolicy" -force
 gpupdate /force
