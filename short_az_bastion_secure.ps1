@@ -220,7 +220,7 @@ if(Test-Path ".\regsettings.json"){
 
 ######################################
 Clear-Host
-Write-Host "Setting reg keys" -Foregroundcolor Yellow
+Write-Verbose "Setting reg keys" -Foregroundcolor Yellow
 
 foreach($Item in $RegSettings){
 	set-reg_keys -RegSet $Item
@@ -246,7 +246,7 @@ if((Get-WindowsOptionalFeature -Online -FeatureName smb1protocol).state -notlike
 $Array = @();$Array+=@(48..57);$array+=@(65..90);$array+=@(97..122)
 $alphanumericstring = ""
 for ($i=1; $i -le (get-random @(16..32)); $i++) {$alphanumericstring += [char](get-random $array)}
-Write-Host "Renaming Guest Account" -Foregroundcolor Green
+Write-Verbose "Renaming Guest Account"
 wmic useraccount where "name='Guest'" rename $alphanumericstring
 
 Write-Verbose "Setting network profile to public"
@@ -256,7 +256,7 @@ Write-Verbose "Adding Nuget"
 try{
   $Nuget = Get-PackageProvider -name NuGet -ErrorAction stop
   if(!(Get-NugetVersion -installed ($Nuget.Version) -required "2.8.5.201")){
-    Write-Host "NuGet version is too low, attempting to set higher" -ForegroundColor Red
+    Write-Host "NuGet version is too low, attempting to set higher" -ForegroundColor Green
     Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force | Out-Null
   }
 }catch{
@@ -269,7 +269,7 @@ Write-Verbose "Getting PSGallery trusted repository status"
 try{
   $PSGallery = Get-PSRepository -name PSGallery -ErrorAction stop
   if(!($PSGallery.InstallationPolicy -like "Trusted")){
-    Write-Host "PSGallery.InstallationPolicy is not set to trusted, attempting to set" -ForegroundColor Red
+    Write-Host "PSGallery.InstallationPolicy is not set to trusted, attempting to set" -ForegroundColor Green
     Set-PSRepository -name PSGallery -InstallationPolicy trusted -verbose
   }
 }catch{
@@ -279,13 +279,13 @@ try{
 if((get-module -ListAvailable |Select-Object Name).Name -contains "PSWindowsUpdate"){
   Write-Verbose "PSWindowsUpdate PowerShell module detected as installed"
 }else{
-  Write-Host "Installing Windows Update PowerShell module" -Foregroundcolor Green
+  Write-Verbose "Installing Windows Update PowerShell module"
   Install-Module -Name PSWindowsUpdate -verbose
 }
 
-Write-Host "Setting Windows Defender preferences" -Foregroundcolor Green
+Write-Verbose "Setting Windows Defender preferences"
 Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -ScanScheduleTime 12:00 -RemediationScheduleTime 13:00 -SignatureScheduleTime 11:00  -verbose
-Write-Host "Setting Windows Defender attack surface reduction rules" -Foregroundcolor Green
+Write-Verbose "Setting Windows Defender attack surface reduction rules"
 #Configure the following attack surface reduction rules: 
 #ref https://docs.microsoft.com/en-us/microsoft-365/security/defender-endpoint/attack-surface-reduction-rules-reference?view=o365-worldwide
 	# 'Block executable content from email client and webmail' = "be9ba2d9-53ea-4cdc-84e5-9b1eeee46550"
@@ -301,27 +301,30 @@ Write-Host "Setting Windows Defender attack surface reduction rules" -Foreground
 	# 'Block Office applications from injecting code into other processes' = "75668c1f-73b5-4cf0-bb93-3ecf5cb7cc842"
 $Values = @("be9ba2d9-53ea-4cdc-84e5-9b1eeee46550","b2b3f03d-6a65-4f7b-a9c7-1c7ef74a9ba4","9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2","d4f940ab-401b-4efc-aadc-ad5f3c50688a","d3e037e1-3eb8-44c8-a917-57927947596d","5beb7efe-fd9a-4556-801d-275e5ffc04cc","3b576869-a4ec-4529-8536-b80a7769e899","26190899-1602-49e8-8b27-eb1d0a1ce869","92e97fa1-2edf-4476-bdd6-9dd0b4dddc7b","7674ba52-37eb-4a4f-a9a1-f0f9a1619a2c","75668c1f-73b5-4cf0-bb93-3ecf5cb7cc842")
 Set-MpPreference -AttackSurfaceReductionRules_Actions Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled -AttackSurfaceReductionRules_Ids $values
-Write-Host "Downloading Policies" -Foregroundcolor Green
+Write-Verbose "Downloading Policies"
 Invoke-WebRequest -Uri 'https://github.com/LeighdePaor/Azure-postdeploy-vm/raw/main/GroupPolicy.zip' -OutFile "$($env:TEMP)\GroupPolicy.zip"
-Write-Host "Deploying Policies" -Foregroundcolor Green
+Write-Verbose "Deploying Policies"
 Expand-Archive -Path "$($env:TEMP)\GroupPolicy.zip" -DestinationPath "C:\Windows\System32\GroupPolicy" -force
 gpupdate /force
 #Windows Defender signature updates
+Write-Verbose "Forcing Windows Defender to update"
 $arguments = "-removedefinitions -dynamicsignatures"
 Start-Process "$($env:ProgramFiles)\Windows Defender\MpCmdRun.exe" -ArgumentList $arguments -Wait
 $arguments = "-SignatureUpdate"
 Start-Process "$($env:ProgramFiles)\Windows Defender\MpCmdRun.exe" -ArgumentList $arguments -Wait
 #update Azure guest agent status
+Write-Verbose "Forcing Azure Qualys scan agent to update"
 $arguments = "ADD HKLM\SOFTWARE\Qualys\QualysAgent\ScanOnDemand\Vulnerability /v ScanOnDemand /t REG_DWORD /d 1 /f"
 Start-Process reg.exe -ArgumentList $arguments -Wait
 #install windows subsystem for linux
-Write-Host "Installing Windows Linux subsystem" -Foregroundcolor Yellow
-if((wsl --status).count -lt 50 ){
+Write-Verbose "Checking if Windows Linux subsystem is installed"
+if((wsl --status).count -gt 50 ){
   Write-Host "Installing Windows subsystem for Linux" -Foregroundcolor Yellow
   wsl --install
 }else{
-  Write-Host "Windows subsystem for Linux already installed" -Foregroundcolor green
+  Write-Verbose "Windows subsystem for Linux already installed"
 }
 #install windows updates
 Write-Host "Running Windows updates, system may reboot" -Foregroundcolor Yellow
 Get-WindowsUpdate -Install -confirm:$false -forceinstall -autoreboot -acceptall
+Write-Host "Running Windows updates, system may reboot" -Foregroundcolor Yellow
