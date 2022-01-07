@@ -220,7 +220,7 @@ if(Test-Path ".\regsettings.json"){
 
 ######################################
 Clear-Host
-Write-Verbose "Setting reg keys" -Foregroundcolor Yellow
+Write-Verbose "Setting reg keys"
 
 foreach($Item in $RegSettings){
 	set-reg_keys -RegSet $Item
