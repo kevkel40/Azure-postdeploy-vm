@@ -36,30 +36,79 @@ function set-reg_keys{
     $RegSet = $null
   )
   if(!(($RegSet | Get-Member | Where-Object {$_.MemberType -like "NoteProperty"}).count -eq 6)){
-		Write-Host "RegSet parameter requires 5 or 6 key pairs in the hashtable: Path, Name, Type, Value, Hive, Comment" -ForegroundColor Red
+		Write-Host "Cannot process item RegSet parameter requires psobject with 6 NoteProperty items: Path, Name, Type, Value, Hive, Comment" -ForegroundColor Red
     break
 	}else{
-		switch($RegSet.Hive){
-			{$_ -eq "HKEY_LOCAL_MACHINE"}{$Hive = "HKLM"}
-			{$_ -eq "HKEY_CURRENT_USER"}{$Hive = "HKCU"}
-			default {$Hive = $false; break}
+    $Names = (($RegSet | Get-Member | Where-Object {$_.MemberType -like "NoteProperty"}).name)
+    foreach($Name in $names){
+      if(!(@("Path", "Name", "Type", "Value", "Hive", "Comment") -contains  $name)){
+        Write-Host "Cannot process item RegSet parameter requires psobject with 6 NoteProperty items: Path, Name, Type, Value, Hive, Comment" -ForegroundColor Red
+        break
+      }else{Write-Verbose "Valid noteproperty field object found"}
+    }
+		
+    switch($RegSet.Hive){
+			{$_ -eq "HKEY_LOCAL_MACHINE"}{
+        $Hive = "HKLM"
+        Write-Verbose "Hive = HKLM"
+      }
+			{$_ -eq "HKEY_CURRENT_USER"}{
+        $Hive = "HKCU"
+        Write-Verbose "Hive = HKCU"
+      }
+			default {
+        $Hive = $false
+        Write-Host "Error invalid Hive type, should be either HKEY_LOCAL_MACHINE or HKEY_CURRENT_USER" -ForegroundColor Red
+        break
+      }
 		}
 		switch($RegSet.Type){
-			{$_ -eq "REG_SZ"}{$Type = "String"}
-			{$_ -eq "REG_EXPAND_SZ"}{$Type = "ExpandString"}
-			{$_ -eq "REG_BINARY"}{$Type = "Binary"}
-			{$_ -eq "REG_DWORD"}{$Type = "DWord"}
-			{$_ -eq "REG_MULTI_SZ"}{$Type = "MultiString"}
-			{$_ -eq "REG_QWORD"}{$Type = "Qword"}
-			default {$Type = $false; break}
+			{$_ -eq "REG_SZ"}{
+        $Type = "String"
+        Write-Verbose "Data Type = String"
+        break
+      }
+			{$_ -eq "REG_EXPAND_SZ"}{
+        $Type = "ExpandString"
+        Write-Verbose "Data Type = ExpandString"
+        break
+      }
+			{$_ -eq "REG_BINARY"}{
+        $Type = "Binary"
+        Write-Verbose "Data Type = Binary"
+        break
+      }
+			{$_ -eq "REG_DWORD"}{
+        $Type = "DWord"
+        Write-Verbose "Data Type = DWord"
+        break
+      }
+			{$_ -eq "REG_MULTI_SZ"}{
+        $Type = "MultiString"
+        Write-Verbose "Data Type = MultiString"
+        break
+      }
+			{$_ -eq "REG_QWORD"}{
+        $Type = "Qword"
+        Write-Verbose "Data Type = QWord"
+        break
+      }
+			default {
+        $Type = $false
+        Write-Host "Error invalid data type, should be one of REG_SZ, REG_EXPAND_SZ, REG_BINARY, REG_DWORD, REG_MULTI_SZ or REG_QWORD" -ForegroundColor Red        
+        break
+      }
 		}
 		if(($Hive -eq $false) -or ($Type -eq $false)){
 			Write-Host "Error with type or hive specified, cannot continue" -Foregroundcolor Red
 			break
 		}
 		[string]$Path = $RegSet.Path
+    Write-Verbose "Looking for registry path $($Path)"
 		[string]$Name = $RegSet.Name
+    Write-Verbose "Looking for registry key $($Name)"
 		$Value = $RegSet.Value
+    Write-Verbose "Looking for key value $($Value)"
     #see if reg path works, create if not
     $pathitems = $Path.split("\")
     $CurrentPath = ""
@@ -75,7 +124,7 @@ function set-reg_keys{
         Write-Verbose "Testing $($Hive):\$($CurrentPath)"
         $testpath = Test-Path -path "$($Hive):\$($CurrentPath)" -erroraction stop
         if(!$testpath){
-          Write-Host "Reg path $($Hive):\$($CurrentPath) not found, attempting to create $($Item) at $($Hive):\$($OldPath)" -ForegroundColor Red
+          Write-Host "Reg path $($Hive):\$($CurrentPath) not found, attempting to create $($Item) at $($Hive):\$($OldPath)" -ForegroundColor Green
           New-Item -Path "$($Hive):\$($OldPath)\" -Name $Item
         }
       }catch{
@@ -98,7 +147,7 @@ function set-reg_keys{
 				}
 			}
 		}catch{
-			Write-Host "Item $($Name) does not exist at $($Hive):\$($Path), attempting to create"
+			Write-Host "Item $($Name) does not exist at $($Hive):\$($Path), attempting to create" -ForegroundColor Green
 			try{
         Set-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -Value $Value -Type $Type -ErrorAction Stop
       }catch{
@@ -164,7 +213,7 @@ function Get-NugetVersion {
 $URI = 'https://raw.githubusercontent.com/LeighdePaor/Azure-postdeploy-vm/main/regsettings.json'
 
 if(Test-Path ".\regsettings.json"){
-  $RegSettings = Get-Content .\regsettings.json | convertfrom-json
+  $RegSettings = (Get-Content .\regsettings.json | convertfrom-json).regsetting
 }else{
   $RegSettings = (Invoke-WebRequest -Uri $URI | convertfrom-json).regsetting
 }
