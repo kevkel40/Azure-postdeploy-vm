@@ -76,7 +76,7 @@
     {
       "Comment": "CCE-37029-6: Ensure 'User Account Control: Behavior of the elevation prompt for administrators in Admin Approval Mode' is set to 'Prompt for consent on the secure desktop'",
       "Name": "ConsentPromptBehaviorAdmin",
-      "Value": 5,
+      "Value": 2,
       "Path": "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
       "Hive": "HKEY_LOCAL_MACHINE",
       "Type": "REG_DWORD"
@@ -1092,7 +1092,7 @@
     {
       "Comment": "CCE-37194-8: Network access: Remotely accessible registry paths",
       "Name": "Machine",
-      "Value": "System\\CurrentControlSet\\Control\\ProductOptions\\0System\\CurrentControlSet\\Control\\Server Applications\\0Software\\Microsoft\\Windows NT\\CurrentVersion\\0\\0",
+      "Value": "System\\CurrentControlSet\\Control\\ProductOptions|#|System\\CurrentControlSet\\Control\\Server Applications|#|Software\\Microsoft\\Windows NT\\CurrentVersion",
       "Path": "System\\CurrentControlSet\\Control\\SecurePipeServers\\Winreg\\AllowedExactPaths",
       "Hive": "HKEY_LOCAL_MACHINE",
       "Type": "REG_MULTI_SZ"
@@ -1100,7 +1100,7 @@
     {
       "Comment": "CCE-36347-3: Network access: Remotely accessible registry paths and sub-paths",
       "Name": "Machine",
-      "Value": "System\\CurrentControlSet\\Control\\Print\\Printers\\0System\\CurrentControlSet\\Services\\Eventlog\\0Software\\Microsoft\\OLAP Server\\0Software\\Microsoft\\Windows NT\\CurrentVersion\\Print\\0Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows\\0System\\CurrentControlSet\\Control\\ContentIndex\\0System\\CurrentControlSet\\Control\\Terminal Server\\0System\\CurrentControlSet\\Control\\Terminal Server\\UserConfig\\0System\\CurrentControlSet\\Control\\Terminal Server\\DefaultUserConfiguration\\0Software\\Microsoft\\Windows NT\\CurrentVersion\\Perflib\\0System\\CurrentControlSet\\Services\\SysmonLog\\0\\0",
+      "Value": "System\\CurrentControlSet\\Control\\Print\\Printers|#|System\\CurrentControlSet\\Services\\Eventlog|#|Software\\Microsoft\\OLAP Server|#|Software\\Microsoft\\Windows NT\\CurrentVersion\\Print|#|Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows|#|System\\CurrentControlSet\\Control\\ContentIndex|#|System\\CurrentControlSet\\Control\\Terminal Server|#|System\\CurrentControlSet\\Control\\Terminal Server\\UserConfig|#|System\\CurrentControlSet\\Control\\Terminal Server\\DefaultUserConfiguration|#|Software\\Microsoft\\Windows NT\\CurrentVersion\\Perflib|#|System\\CurrentControlSet\\Services\\SysmonLog",
       "Path": "System\\CurrentControlSet\\Control\\SecurePipeServers\\Winreg\\AllowedPaths",
       "Hive": "HKEY_LOCAL_MACHINE",
       "Type": "REG_MULTI_SZ"
