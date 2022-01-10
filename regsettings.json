@@ -1164,7 +1164,7 @@
     {
       "Comment": "CCE-38095-6: Ensure 'Network access: Shares that can be accessed anonymously' is set to 'None'",
       "Name": "NullSessionShares",
-      "Value": "0",
+      "Value": "",
       "Path": "System\\CurrentControlSet\\Services\\LanManServer\\Parameters",
       "Hive": "HKEY_LOCAL_MACHINE",
       "Type": "REG_MULTI_SZ"
