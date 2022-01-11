@@ -287,13 +287,6 @@ if((get-module -ListAvailable |Select-Object Name).Name -contains "PSWindowsUpda
   Install-Module -Name PSWindowsUpdate -verbose
 }
 
-Write-Verbose "Checking/Installing required PowerShell Modules"
-$RequiredModules = @('PSDesiredStateConfiguration','AuditPolicyDSC','SecurityPolicyDSC')
-foreach($Module in $RequiredModules){
-	if(!((get-module -ListAvailable).name -contains $module)){
-		Install-module -name $Module -force -scope currentuser
-	}
-}
 Write-Verbose "Getting and applying Desired State Configuration"
 Invoke-Expression(New-Object Net.WebClient).downloadString('https://raw.githubusercontent.com/LeighdePaor/Azure-postdeploy-vm/main/SecurityBaselineConfig.ps1')
 #allow time for security baseline to apply
