@@ -412,7 +412,7 @@
     {
       "Comment": "CCE-37695-4: Ensure 'Security: Specify the maximum log file size ' is set to 'Enabled: 196,608 or greater'",
       "Name": "MaxSize",
-      "Value": "0x30000",
+      "Value": 196608,
       "Path": "Software\\Policies\\Microsoft\\Windows\\EventLog\\Security",
       "Hive": "HKEY_LOCAL_MACHINE",
       "Type": "REG_DWORD"
@@ -538,7 +538,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Ensure 'Prohibit use of Internet Connection Sharing on your DNS domain network' is set to 'Enabled'",
+      "Comment": "AZ-WIN-00172: Ensure 'Prohibit use of Internet Connection Sharing on your DNS domain network' is set to 'Enabled'",
       "Name": "NC_PersonalFirewallConfig",
       "Value": 0,
       "Path": "Software\\Policies\\Microsoft\\Windows\\Network Connections",
@@ -1210,7 +1210,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "NOT_ASSIGNED: Disable SMB v1 client",
+      "Comment": "AZ-WIN-00175: Disable SMB v1 client",
       "Name": "DependsOnService",
       "Value": "Bowser\",\"MRxSmb20\",\"NSI",
       "Path": "System\\CurrentControlSet\\Services\\LanmanWorkstation",
