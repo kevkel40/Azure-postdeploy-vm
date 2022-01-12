@@ -396,7 +396,7 @@
     {
       "Comment": "CCE-37948-7: Ensure 'Application: Specify the maximum log file size ' is set to 'Enabled: 32,768 or greater'",
       "Name": "MaxSize",
-      "Value": "0x8000",
+      "Value": 32768,
       "Path": "Software\\Policies\\Microsoft\\Windows\\EventLog\\Application",
       "Hive": "HKEY_LOCAL_MACHINE",
       "Type": "REG_DWORD"
@@ -428,7 +428,7 @@
     {
       "Comment": "CCE-37526-1: Ensure 'Setup: Specify the maximum log file size ' is set to 'Enabled: 32,768 or greater'",
       "Name": "MaxSize",
-      "Value": "0x8000",
+      "Value": 32768,
       "Path": "Software\\Policies\\Microsoft\\Windows\\EventLog\\Setup",
       "Hive": "HKEY_LOCAL_MACHINE",
       "Type": "REG_DWORD"
@@ -444,7 +444,7 @@
     {
       "Comment": "CCE-36092-5: Ensure 'System: Specify the maximum log file size ' is set to 'Enabled: 32,768 or greater'",
       "Name": "MaxSize",
-      "Value": "0x8000",
+      "Value": 32768,
       "Path": "Software\\Policies\\Microsoft\\Windows\\EventLog\\System",
       "Hive": "HKEY_LOCAL_MACHINE",
       "Type": "REG_DWORD"
