@@ -514,6 +514,15 @@ Configuration SecurityBaselineConfig
 			Identity = @('BUILTIN\Administrators')
 		}
 
+		Registry "CCE-37695-4: Ensure 'Security: Specify the maximum log file size ' is set to 'Enabled: 196,608 or greater'"
+	 	{
+	 	 	ValueName = 'MaxSize'
+	 	 	ValueType = 'DWORD'
+	 	 	Key = 'HKLM:\Software\Policies\Microsoft\Windows\EventLog\Security'
+	 	 	ValueData = 196608
+
+	 	}
+
     # UserRightsAssignment "CCE-36860-5: Configure 'Enable computer and user accounts to be trusted for delegation'"
 		# {
 		# 	Policy = 'Enable_computer_and_user_accounts_to_be_trusted_for_delegation'
