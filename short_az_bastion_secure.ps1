@@ -140,23 +140,29 @@ function set-reg_keys{
   			Write-Verbose "$($Name) is already set to $($Value), no further action required."
 			}else{
 				#handle null values
-        if($null -eq $Value){
+        if(($null -like $RegSet.Value) -or ($RegSet.Value -eq "")){
           Clear-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name
+          #check result of actions
+          if( ($null -like ((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name)) -or (((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name) -eq "")){
+            Write-Verbose "$($Name) succesfully set to NULL, no further action required."
+          }else{
+            Write-Host "Error setting $($Hive):\$($Path)\$($Name) to NULL, please remediate." -Foregroundcolor Red
+          }
         }else{
           Set-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -Value $Value -Type $Type
+          #check result of actions
+          if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name -eq $Value){
+            Write-Verbose "$($Name) succesfully set to $($Value), no further action required."
+          }else{
+            Write-Host "Error setting $($Hive):\$($Path)\$($Name) to $($Value), please remediate." -Foregroundcolor Red
+          }
         }
-        #check result of actions
-				if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name -eq $Value){
-					Write-Verbose "$($Name) succesfully set to $($Value), no further action required."
-				}else{
-					Write-Host "Error setting $($Hive):\$($Path)\$($Name) to $($Value), please remediate." -Foregroundcolor Red
-				}
 			}
 		}catch{
 			Write-Host "Item $($Name) does not exist at $($Hive):\$($Path), attempting to create" -ForegroundColor Green
 			try{
 				#handle null values
-        if($null -eq $Value){
+        if(($null -like $RegSet.Value) -or ($RegSet.Value -eq "")){
           Clear-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name
         }else{
           Set-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -Value $Value -Type $Type -ErrorAction Stop
