@@ -139,7 +139,13 @@ function set-reg_keys{
 			if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -erroraction stop).$Name -eq $Value){
   			Write-Verbose "$($Name) is already set to $($Value), no further action required."
 			}else{
-				Set-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -Value $Value -Type $Type
+				#handle null values
+        if($null -eq $Value){
+          Clear-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name
+        }else{
+          Set-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -Value $Value -Type $Type
+        }
+        #check result of actions
 				if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name -eq $Value){
 					Write-Verbose "$($Name) succesfully set to $($Value), no further action required."
 				}else{
@@ -149,7 +155,12 @@ function set-reg_keys{
 		}catch{
 			Write-Host "Item $($Name) does not exist at $($Hive):\$($Path), attempting to create" -ForegroundColor Green
 			try{
-        Set-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -Value $Value -Type $Type -ErrorAction Stop
+				#handle null values
+        if($null -eq $Value){
+          Clear-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name
+        }else{
+          Set-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -Value $Value -Type $Type -ErrorAction Stop
+        }
       }catch{
 
       }
