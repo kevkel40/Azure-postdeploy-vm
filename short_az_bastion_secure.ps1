@@ -288,7 +288,13 @@ if((get-module -ListAvailable |Select-Object Name).Name -contains "PSWindowsUpda
 }
 
 Write-Verbose "Getting and applying Desired State Configuration"
-Invoke-Expression(New-Object Net.WebClient).downloadString('https://raw.githubusercontent.com/LeighdePaor/Azure-postdeploy-vm/main/SecurityBaselineConfig.ps1')
+if(Test-Path "$($PSScriptRoot)\SecurityBaselineConfig.ps1"){
+  Write-Host "Local copy of SecurityBaselineConfig.ps1 found, applying"
+  Invoke-Expression -Command "$($PSScriptRoot)\SecurityBaselineConfig.ps1"
+}else{
+  Invoke-Expression(New-Object Net.WebClient).downloadString('https://raw.githubusercontent.com/LeighdePaor/Azure-postdeploy-vm/main/SecurityBaselineConfig.ps1')
+}
+
 #allow time for security baseline to apply
 Start-Sleep -Seconds 10
 Write-Verbose "Setting Windows Defender preferences"
