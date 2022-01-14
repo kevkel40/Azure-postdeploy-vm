@@ -268,7 +268,7 @@
     {
       "Comment": "AZ-WIN-00145: Ensure 'Turn off multicast name resolution' is set to 'Enabled'",
       "Name": "EnableMulticast",
-      "Value": 0,
+      "Value": 1,
       "Path": "Software\\Policies\\Microsoft\\Windows NT\\DNSClient",
       "Hive": "HKEY_LOCAL_MACHINE",
       "Type": "REG_DWORD"
@@ -412,7 +412,7 @@
     {
       "Comment": "CCE-37695-4: Ensure 'Security: Specify the maximum log file size ' is set to 'Enabled: 196,608 or greater'",
       "Name": "MaxSize",
-      "Value": 196608,
+      "Value": 212345,
       "Path": "Software\\Policies\\Microsoft\\Windows\\EventLog\\Security",
       "Hive": "HKEY_LOCAL_MACHINE",
       "Type": "REG_DWORD"
@@ -1164,7 +1164,7 @@
     {
       "Comment": "CCE-38095-6: Ensure 'Network access: Shares that can be accessed anonymously' is set to 'None'",
       "Name": "NullSessionShares",
-      "Value": "None",
+      "Value": null,
       "Path": "System\\CurrentControlSet\\Services\\LanManServer\\Parameters",
       "Hive": "HKEY_LOCAL_MACHINE",
       "Type": "REG_MULTI_SZ"
