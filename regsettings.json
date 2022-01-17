@@ -412,7 +412,7 @@
     {
       "Comment": "CCE-37695-4: Ensure 'Security: Specify the maximum log file size ' is set to 'Enabled: 196,608 or greater'",
       "Name": "MaxSize",
-      "Value": 212345,
+      "Value": 196608,
       "Path": "Software\\Policies\\Microsoft\\Windows\\EventLog\\Security",
       "Hive": "HKEY_LOCAL_MACHINE",
       "Type": "REG_DWORD"
