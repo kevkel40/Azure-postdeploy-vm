@@ -1,7 +1,7 @@
-$RequiredModules = @('PSDesiredStateConfiguration','AuditPolicyDSC','SecurityPolicyDSC')
+$RequiredModules = @('PSDesiredStateConfiguration','AuditPolicyDSC','SecurityPolicyDSC','GPRegistryPolicyDsc')
 foreach($Module in $RequiredModules){
 	if(!((get-module -ListAvailable).name -contains $module)){
-		Install-module -name $Module -force -scope currentuser
+		Install-module -name $Module -force
 	}
 }
 
@@ -12,6 +12,7 @@ Configuration SecurityBaselineConfig
 	Import-DSCResource -ModuleName 'PSDesiredStateConfiguration'
 	Import-DSCResource -ModuleName 'AuditPolicyDSC'
 	Import-DSCResource -ModuleName 'SecurityPolicyDSC'
+	Import-DSCResource -ModuleName 'GPRegistryPolicyDsc'
 	
 	Node localhost
 	{
@@ -295,16 +296,17 @@ Configuration SecurityBaselineConfig
 			AuditFlag = 'Success'
 		}
     
-    AccountPolicy AccountPolicies
-    {
-        Name = 'PasswordPolicies'
-        Enforce_password_history = "24"
-        Maximum_Password_Age = "42"
-        Minimum_Password_Age = "1"
-        Minimum_Password_Length = "14"
-        Password_must_meet_complexity_requirements = 'Enabled'
-        Store_passwords_using_reversible_encryption = 'Disabled'
-    }
+		AccountPolicy AccountPolicies
+		{
+			Name = 'PasswordPolicies'
+			Enforce_password_history = "24"
+			Maximum_Password_Age = "42"
+			Minimum_Password_Age = "1"
+			Minimum_Password_Length = "14"
+			Password_must_meet_complexity_requirements = 'Enabled'
+			Store_passwords_using_reversible_encryption = 'Disabled'
+		}
+		
 		UserRightsAssignment "CCE-35818-4: Configure 'Access this computer from the network'"
 		{
 			Policy = 'Access_this_computer_from_the_network'
@@ -513,6 +515,25 @@ Configuration SecurityBaselineConfig
 			Force = $True
 			Identity = @('BUILTIN\Administrators')
 		}
+
+		RegistryPolicyFile 'Registry(POL): HKLM:\software\Policies\Microsoft\Windows NT\DNSClient\EnableMulticast'
+        {
+              ValueData = 0
+              Key = 'HKLM:\software\Policies\Microsoft\Windows NT\DNSClient'
+              TargetType = 'ComputerConfiguration'
+              ValueName = 'EnableMulticast'
+              ValueType = 'Dword'
+		}
+		
+		RegistryPolicyFile 'Registry(POL): HKLM:\software\Policies\Microsoft\Windows\EventLog\Security\MaxSize'
+		{
+			ValueData = 196608
+			Key = 'HKLM:\software\Policies\Microsoft\Windows\EventLog\Security'
+			TargetType = 'ComputerConfiguration'
+			ValueName = 'MaxSize'
+			ValueType = 'Dword'
+		}
+
 
     # UserRightsAssignment "CCE-36860-5: Configure 'Enable computer and user accounts to be trusted for delegation'"
 		# {
