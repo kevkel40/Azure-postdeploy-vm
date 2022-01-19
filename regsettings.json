@@ -268,7 +268,7 @@
     {
       "Comment": "AZ-WIN-00145: Ensure 'Turn off multicast name resolution' is set to 'Enabled'",
       "Name": "EnableMulticast",
-      "Value": 0,
+      "Value": 1,
       "Path": "Software\\Policies\\Microsoft\\Windows NT\\DNSClient",
       "Hive": "HKEY_LOCAL_MACHINE",
       "Type": "REG_DWORD"
