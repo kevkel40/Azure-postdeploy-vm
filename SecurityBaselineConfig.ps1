@@ -516,9 +516,9 @@ Configuration SecurityBaselineConfig
 			Identity = @('BUILTIN\Administrators')
 		}
 
-		RegistryPolicyFile 'Registry(POL): HKLM:\software\Policies\Microsoft\Windows NT\DNSClient\EnableMulticast'
+		RegistryPolicyFile 'AZ-WIN-00145: Registry(POL): HKLM:\software\Policies\Microsoft\Windows NT\DNSClient\EnableMulticast'
         {
-              ValueData = 0
+              ValueData = 1
               Key = 'HKLM:\software\Policies\Microsoft\Windows NT\DNSClient'
               TargetType = 'ComputerConfiguration'
               ValueName = 'EnableMulticast'
