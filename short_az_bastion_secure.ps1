@@ -311,9 +311,17 @@ if(Test-Path "$($PSScriptRoot)\SecurityBaselineConfig.ps1"){
 }else{
   Invoke-Expression(New-Object Net.WebClient).downloadString('https://raw.githubusercontent.com/LeighdePaor/Azure-postdeploy-vm/main/SecurityBaselineConfig.ps1')
 }
-
 #allow time for security baseline to apply
 Start-Sleep -Seconds 10
+#disable NetBios on each adapter
+$HVNIC = @(Get-WmiObject -Class Win32_NetworkAdapterConfiguration -Filter "Description='Microsoft Hyper-V Network Adapter'")
+if($HVNIC.count -gt 1){
+  Write-Host "More than one Hyper-V NIC installed, attempting disable NetBIOS per adapter" -ForegroundColor Red
+}
+foreach($NIC in $HVNIC){
+  $NIC.SetWINSServer("$Null","$Null")
+  $NIC.SetTcpipNetbios("2")
+}
 Write-Verbose "Setting Windows Defender preferences"
 Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -ScanScheduleTime 12:00 -RemediationScheduleTime 13:00 -SignatureScheduleTime 11:00  -ExclusionPath "$($env:USERPROFILE)\Documents\PowerShell" -verbose
 Write-Verbose "Setting Windows Defender attack surface reduction rules"
