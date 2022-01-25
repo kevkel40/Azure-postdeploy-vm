@@ -534,7 +534,6 @@ Configuration SecurityBaselineConfig
 			ValueType = 'Dword'
 		}
 
-
     # UserRightsAssignment "CCE-36860-5: Configure 'Enable computer and user accounts to be trusted for delegation'"
 		# {
 		# 	Policy = 'Enable_computer_and_user_accounts_to_be_trusted_for_delegation'
