@@ -18,7 +18,7 @@
     Screen as collection of tabulated text
 
     .EXAMPLE
-    PS> .\Bastion-SW-Install.ps1
+    PS> .\short_az_bastion_secure.ps1
     
 #>
 #post deploy commands
@@ -323,7 +323,7 @@ foreach($NIC in $HVNIC){
   $NIC.SetTcpipNetbios("2")
 }
 Write-Verbose "Setting Windows Defender preferences"
-Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -ScanScheduleTime 12:00 -RemediationScheduleTime 13:00 -SignatureScheduleTime 11:00  -ExclusionPath "$($env:USERPROFILE)\Documents\PowerShell" -verbose
+Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -ScanScheduleTime 12:00 -RemediationScheduleTime 13:00 -SignatureScheduleTime 11:00  -ExclusionPath "$($env:USERPROFILE)\Documents\PowerShell" -ExclusionProcess "MicrosoftDependencyAgent.exe" -verbose
 Write-Verbose "Setting Windows Defender attack surface reduction rules"
 #Configure the following attack surface reduction rules: 
 #ref https://docs.microsoft.com/en-us/microsoft-365/security/defender-endpoint/attack-surface-reduction-rules-reference?view=o365-worldwide
