@@ -362,3 +362,4 @@ if((wsl --status).count -gt 50 ){
 Write-Host "Running Windows updates, system may reboot" -Foregroundcolor Yellow
 Get-WindowsUpdate -Install -confirm:$false -forceinstall -autoreboot -acceptall
 Write-Host "Running Windows updates, system may reboot" -Foregroundcolor Yellow
+Exit 0
