@@ -1,7 +1,38 @@
+Skip to content
+ Enterprise
+Search or jump to…
+
+Pull requests
+Issues
+Explore
+ 
+@ldepaor 
+iHUB
+/
+powershell-utilities
+1
+1
+0
+Code
+Issues
+Pull requests
+Projects
+Wiki
+Security
+Insights
+Settings
+powershell-utilities/short_az_bastion_secure.ps1
+@ldepaor
+ldepaor Updates for securing vm's (#8)
+…
+Latest commit 17983b4 21 days ago
+ History
+ 1 contributor
+355 lines (324 sloc)  15.1 KB
+  
 <#
     .SYNOPSIS
     Configure required security on bastion vm's
-
     .DESCRIPTION
 	Set a selection of security specific registry keys
 	Rename Guest Account
@@ -16,9 +47,8 @@
 	Run Windows updates, system may reboot
     .OUTPUTS
     Screen as collection of tabulated text
-
     .EXAMPLE
-    PS> .\short_az_bastion_secure.ps1
+    PS> .\Bastion-SW-Install.ps1
     
 #>
 #post deploy commands
@@ -313,17 +343,8 @@ if(Test-Path "$($PSScriptRoot)\SecurityBaselineConfig.ps1"){
 }
 #allow time for security baseline to apply
 Start-Sleep -Seconds 10
-#disable NetBios on each adapter
-$HVNIC = @(Get-WmiObject -Class Win32_NetworkAdapterConfiguration -Filter "Description='Microsoft Hyper-V Network Adapter'")
-if($HVNIC.count -gt 1){
-  Write-Host "More than one Hyper-V NIC installed, attempting disable NetBIOS per adapter" -ForegroundColor Red
-}
-foreach($NIC in $HVNIC){
-  $NIC.SetWINSServer("$Null","$Null")
-  $NIC.SetTcpipNetbios("2")
-}
 Write-Verbose "Setting Windows Defender preferences"
-Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -ScanScheduleTime 12:00 -RemediationScheduleTime 13:00 -SignatureScheduleTime 11:00  -ExclusionPath "$($env:USERPROFILE)\Documents\PowerShell" -ExclusionProcess "MicrosoftDependencyAgent.exe" -verbose
+Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -ScanScheduleTime 12:00 -RemediationScheduleTime 13:00 -SignatureScheduleTime 11:00  -ExclusionPath "$($env:USERPROFILE)\Documents\PowerShell" -verbose
 Write-Verbose "Setting Windows Defender attack surface reduction rules"
 #Configure the following attack surface reduction rules: 
 #ref https://docs.microsoft.com/en-us/microsoft-365/security/defender-endpoint/attack-surface-reduction-rules-reference?view=o365-worldwide
@@ -362,4 +383,12 @@ if((wsl --status).count -gt 50 ){
 Write-Host "Running Windows updates, system may reboot" -Foregroundcolor Yellow
 Get-WindowsUpdate -Install -confirm:$false -forceinstall -autoreboot -acceptall
 Write-Host "Running Windows updates, system may reboot" -Foregroundcolor Yellow
+© 2022 GitHub, Inc.
+Help
+Support
+API
+Training
+Blog
+About
+GitHub Enterprise Server 3.1.14
 Exit 0
