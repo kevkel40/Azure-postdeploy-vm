@@ -143,7 +143,7 @@ function set-reg_keys{
         if(($null -like $Value) -or ($Value -eq "")){
           Clear-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -ErrorAction stop
           #check result of actions
-          if( ($null -like ((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name)) -or (((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name) -eq "")){
+          if( ($null -like ((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -ErrorAction stop).$Name)) -or (((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -ErrorAction stop).$Name) -eq "")){
             Write-Verbose "$($Name) succesfully set to NULL, no further action required."
           }else{
             Write-Host "Error setting $($Hive):\$($Path)\$($Name) to NULL, please remediate." -Foregroundcolor Red
@@ -151,7 +151,7 @@ function set-reg_keys{
         }else{
           Set-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -Value $Value -Type $Type
           #check result of actions
-          if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name -eq $Value){
+          if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -ErrorAction stop).$Name -eq $Value){
             Write-Verbose "$($Name) succesfully set to $($Value), no further action required."
           }else{
             Write-Host "Error setting $($Hive):\$($Path)\$($Name) to $($Value), please remediate." -Foregroundcolor Red
@@ -170,7 +170,7 @@ function set-reg_keys{
       }catch{
 
       }
-			if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name -eq $Value){
+			if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -ErrorAction stop).$Name -eq $Value){
 				Write-Verbose "$($Name) succesfully set to $($Value), no further action required."
 			}else{
 				Write-Host "Error setting $($Hive):\$($Path)\$($Name) to $($Value), please remediate." -Foregroundcolor Red
