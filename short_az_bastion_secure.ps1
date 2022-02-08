@@ -18,7 +18,7 @@
     Screen as collection of tabulated text
 
     .EXAMPLE
-    PS> .\Bastion-SW-Install.ps1
+    PS> .\short_az_bastion_secure.ps1
     
 #>
 #post deploy commands
@@ -136,12 +136,12 @@ function set-reg_keys{
 
     try{
 			#Get-Item -path "$($Hive):\$($Path)\$($Name)" -erroraction stop
-			if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -erroraction stop).$Name -eq $Value){
+			if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -ErrorAction stop).$Name -eq $Value){
   			Write-Verbose "$($Name) is already set to $($Value), no further action required."
 			}else{
 				#handle null values
-        if(($null -like $RegSet.Value) -or ($RegSet.Value -eq "")){
-          Clear-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name
+        if(($null -like $Value) -or ($Value -eq "")){
+          Clear-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -ErrorAction stop
           #check result of actions
           if( ($null -like ((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name)) -or (((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name).$Name) -eq "")){
             Write-Verbose "$($Name) succesfully set to NULL, no further action required."
@@ -163,7 +163,7 @@ function set-reg_keys{
 			try{
 				#handle null values
         if(($null -like $RegSet.Value) -or ($RegSet.Value -eq "")){
-          Clear-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name
+          Clear-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -ErrorAction stop
         }else{
           Set-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -Value $Value -Type $Type -ErrorAction Stop
         }
@@ -313,8 +313,17 @@ if(Test-Path "$($PSScriptRoot)\SecurityBaselineConfig.ps1"){
 }
 #allow time for security baseline to apply
 Start-Sleep -Seconds 10
+#disable NetBios on each adapter
+$HVNIC = @(Get-WmiObject -Class Win32_NetworkAdapterConfiguration -Filter "Description='Microsoft Hyper-V Network Adapter'")
+if($HVNIC.count -gt 1){
+  Write-Host "More than one Hyper-V NIC installed, attempting disable NetBIOS per adapter" -ForegroundColor Red
+}
+foreach($NIC in $HVNIC){
+  $NIC.SetWINSServer("$Null","$Null")
+  $NIC.SetTcpipNetbios("2")
+}
 Write-Verbose "Setting Windows Defender preferences"
-Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -ScanScheduleTime 12:00 -RemediationScheduleTime 13:00 -SignatureScheduleTime 11:00  -ExclusionPath "$($env:USERPROFILE)\Documents\PowerShell" -verbose
+Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -ScanScheduleTime 12:00 -RemediationScheduleTime 13:00 -SignatureScheduleTime 11:00  -ExclusionPath "$($env:USERPROFILE)\Documents\PowerShell" -ExclusionProcess "MicrosoftDependencyAgent.exe" -verbose
 Write-Verbose "Setting Windows Defender attack surface reduction rules"
 #Configure the following attack surface reduction rules: 
 #ref https://docs.microsoft.com/en-us/microsoft-365/security/defender-endpoint/attack-surface-reduction-rules-reference?view=o365-worldwide
