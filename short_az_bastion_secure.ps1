@@ -1,38 +1,7 @@
-Skip to content
- Enterprise
-Search or jump to…
-
-Pull requests
-Issues
-Explore
- 
-@ldepaor 
-iHUB
-/
-powershell-utilities
-1
-1
-0
-Code
-Issues
-Pull requests
-Projects
-Wiki
-Security
-Insights
-Settings
-powershell-utilities/short_az_bastion_secure.ps1
-@ldepaor
-ldepaor Updates for securing vm's (#8)
-…
-Latest commit 17983b4 21 days ago
- History
- 1 contributor
-355 lines (324 sloc)  15.1 KB
-  
 <#
     .SYNOPSIS
     Configure required security on bastion vm's
+
     .DESCRIPTION
 	Set a selection of security specific registry keys
 	Rename Guest Account
@@ -47,6 +16,7 @@ Latest commit 17983b4 21 days ago
 	Run Windows updates, system may reboot
     .OUTPUTS
     Screen as collection of tabulated text
+
     .EXAMPLE
     PS> .\Bastion-SW-Install.ps1
     
@@ -383,12 +353,4 @@ if((wsl --status).count -gt 50 ){
 Write-Host "Running Windows updates, system may reboot" -Foregroundcolor Yellow
 Get-WindowsUpdate -Install -confirm:$false -forceinstall -autoreboot -acceptall
 Write-Host "Running Windows updates, system may reboot" -Foregroundcolor Yellow
-© 2022 GitHub, Inc.
-Help
-Support
-API
-Training
-Blog
-About
-GitHub Enterprise Server 3.1.14
 Exit 0
