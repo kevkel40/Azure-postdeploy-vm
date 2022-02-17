@@ -1,7 +1,7 @@
 $RequiredModules = @('PSDesiredStateConfiguration','AuditPolicyDSC','SecurityPolicyDSC','GPRegistryPolicyDsc','xChrome')
 foreach($Module in $RequiredModules){
 	if(!((get-module -ListAvailable).name -contains $module)){
-		Install-module -name $Module -force
+		Install-module -name $Module -force -confirm:$false
 	}
 }
 
