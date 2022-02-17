@@ -1,4 +1,4 @@
-$RequiredModules = @('PSDesiredStateConfiguration','AuditPolicyDSC','SecurityPolicyDSC','GPRegistryPolicyDsc')
+$RequiredModules = @('PSDesiredStateConfiguration','AuditPolicyDSC','SecurityPolicyDSC','GPRegistryPolicyDsc','xChrome')
 foreach($Module in $RequiredModules){
 	if(!((get-module -ListAvailable).name -contains $module)){
 		Install-module -name $Module -force
@@ -13,6 +13,7 @@ Configuration SecurityBaselineConfig
 	Import-DSCResource -ModuleName 'AuditPolicyDSC'
 	Import-DSCResource -ModuleName 'SecurityPolicyDSC'
 	Import-DSCResource -ModuleName 'GPRegistryPolicyDsc'
+	Import-DSCResource -ModuleName 'xChrome'
 	
 	Node localhost
 	{
@@ -1837,6 +1838,13 @@ Configuration SecurityBaselineConfig
 			Key = 'HKLM:\System\CurrentControlSet\Services\Wsearch'
 			ValueType = 'Dword'
 		}
+
+		
+		MSFT_xChrome chrome
+    {
+			Language = 'English'
+			LocalPath = 'C:\Program Files\Google\Chrome\Application'
+    }
 
     # UserRightsAssignment 'CCE-36860-5: Configure Enable computer and user accounts to be trusted for delegation''
 		# {
