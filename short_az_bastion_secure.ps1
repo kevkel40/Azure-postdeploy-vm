@@ -318,6 +318,12 @@ if((get-module -ListAvailable |Select-Object Name).Name -contains "PSWindowsUpda
   Install-Module -Name PSWindowsUpdate -verbose
 }
 
+Write-Verbose "Installing Modules required for Desired State Configuration"
+$RequiredModules = @('PSDesiredStateConfiguration','AuditPolicyDSC','SecurityPolicyDSC','GPRegistryPolicyDsc')
+foreach($Module in $RequiredModules){
+		Install-module -name $Module -force -confirm:$false
+}
+
 Write-Verbose "Getting and applying Desired State Configuration"
 if(Test-Path "$($PSScriptRoot)\SecurityBaselineConfig.ps1"){
   Write-Host "Local copy of SecurityBaselineConfig.ps1 found, applying"
