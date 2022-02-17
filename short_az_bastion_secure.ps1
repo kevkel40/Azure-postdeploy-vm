@@ -161,14 +161,20 @@ function set-reg_keys{
 		}catch{
 
 			Write-Host "Item $($Name) does not exist at $($Hive):\$($Path), attempting to create" -ForegroundColor Green
-			try{
-				#handle null values
-				if(($null -like $RegSet.Value) -or ($RegSet.Value -eq "")){
+			#handle null values
+			if(($null -like $RegSet.Value) -or ($RegSet.Value -eq "")){
+			  try{
 				  Clear-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -ErrorAction stop
-				}else{
-				  Set-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -Value $Value -Type $Type -ErrorAction Stop
-				}
-			}catch{}
+  			}catch{
+   			  $arguments = "add `"$($Hive)\$($Path)`" /f"
+				  Start-Process reg.exe -ArgumentList $arguments -Wait
+
+				  $arguments = "add `"$($Hive)\$($Path)`" /v $($Name) /t $($RegSet.Type) /ve /f"
+				  Start-Process reg.exe -ArgumentList $arguments -Wait
+        }
+			}else{
+				Set-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -Value $Value -Type $Type -ErrorAction Stop
+			}
 			
 			try{
 				if((Get-ItemProperty -Path "$($Hive):\$($Path)" -Name $Name -ErrorAction stop).$Name -eq $Value){
@@ -180,9 +186,8 @@ function set-reg_keys{
 				$arguments = "add `"$($Hive)\$($Path)`" /f"
 				Start-Process reg.exe -ArgumentList $arguments -Wait
 
-				$arguments = "add `"$($Hive)\$($Path)`" /v $($Name) /t $($Type) /d $($Value) /f"
+				$arguments = "add `"$($Hive)\$($Path)`" /v $($Name) /t $($RegSet.Type) /d $($Value) /f"
 				Start-Process reg.exe -ArgumentList $arguments -Wait
-
 			}
 		}		
 	}
