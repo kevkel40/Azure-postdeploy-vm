@@ -2003,11 +2003,11 @@ Configuration SecurityBaselineConfig
 		}
 
 		
-		MSFT_xChrome chrome
-    {
-			Language = 'English'
-			LocalPath = 'C:\Program Files\Google\Chrome\Application'
-    }
+#	MSFT_xChrome chrome
+#    {
+#			Language = 'English'
+#			LocalPath = 'C:\Program Files\Google\Chrome\Application'
+#    }
 
     # UserRightsAssignment 'CCE-36860-5: Configure Enable computer and user accounts to be trusted for delegation''
 		# {
