@@ -293,11 +293,11 @@ try{
   $Nuget = Get-PackageProvider -name NuGet -ErrorAction stop
   if(!(Get-NugetVersion -installed ($Nuget.Version) -required "2.8.5.201")){
     Write-Host "NuGet version is too low, attempting to set higher" -ForegroundColor Green
-    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force | Out-Null
+    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -confirm:$false | Out-Null
   }
 }catch{
   Write-Host "Error getting or adding Nuget as a package provider, trying to add version 2.8.5.201 or higher" -ForegroundColor Red
-  Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force | Out-Null
+  Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force  -confirm:$false | Out-Null
 }
 
 Write-Verbose "Getting PSGallery trusted repository status"
