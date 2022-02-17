@@ -289,6 +289,8 @@ Write-Verbose "Setting network profile to public"
 Set-NetConnectionProfile -InterfaceAlias Ethernet -NetworkCategory "Public" -verbose
 
 Write-Verbose "Adding Nuget"
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -confirm:$false | Out-Null
+
 try{
   $Nuget = Get-PackageProvider -name NuGet -ErrorAction stop
   if(!(Get-NugetVersion -installed ($Nuget.Version) -required "2.8.5.201")){
