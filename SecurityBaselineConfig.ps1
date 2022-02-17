@@ -1765,7 +1765,7 @@ Configuration SecurityBaselineConfig
 			ValueName = 'Machine'
 			ValueData = 'System\CurrentControlSet\Control\ProductOptions|#|System\CurrentControlSet\Control\Server Applications|#|Software\Microsoft\Windows NT\CurrentVersion'
 			Key = 'HKLM:\System\CurrentControlSet\Control\SecurePipeServers\Winreg\AllowedExactPaths'
-			ValueType = 'REG_MULTI_SZ'
+			ValueType = 'MultiString'
 		}
 
 		RegistryPolicyFile 'Registry(POL): CCE-36347-3: Network access: Remotely accessible registry paths and sub-paths'
@@ -1774,7 +1774,7 @@ Configuration SecurityBaselineConfig
 			ValueName = 'Machine'
 			ValueData = 'System\CurrentControlSet\Control\Print\Printers|#|System\CurrentControlSet\Services\Eventlog|#|Software\Microsoft\OLAP Server|#|Software\Microsoft\Windows NT\CurrentVersion\Print|#|Software\Microsoft\Windows NT\CurrentVersion\Windows|#|System\CurrentControlSet\Control\ContentIndex|#|System\CurrentControlSet\Control\Terminal Server|#|System\CurrentControlSet\Control\Terminal Server\UserConfig|#|System\CurrentControlSet\Control\Terminal Server\DefaultUserConfiguration|#|Software\Microsoft\Windows NT\CurrentVersion\Perflib|#|System\CurrentControlSet\Services\SysmonLog'
 			Key = 'HKLM:\System\CurrentControlSet\Control\SecurePipeServers\Winreg\AllowedPaths'
-			ValueType = 'REG_MULTI_SZ'
+			ValueType = 'MultiString'
 		}
 
 		RegistryPolicyFile 'Registry(POL): CCE-37644-2: Ensure System objects: Strengthen default permissions of internal system objects is set to Enabled'
@@ -1810,7 +1810,7 @@ Configuration SecurityBaselineConfig
 			ValueName = 'Optional'
 			ValueData = '0'
 			Key = 'HKLM:\System\CurrentControlSet\Control\Session Manager\SubSYSTEMs'
-			ValueType = 'REG_MULTI_SZ'
+			ValueType = 'MultiString'
 		}
 
 		RegistryPolicyFile 'Registry(POL): AZ-WIN-00156: Detect change from default RDP port'
@@ -1844,9 +1844,9 @@ Configuration SecurityBaselineConfig
 		{
 			TargetType = 'ComputerConfiguration'
 			ValueName = 'NullSessionShares'
-			ValueData = null
+			ValueData = $null
 			Key = 'HKLM:\System\CurrentControlSet\Services\LanManServer\Parameters'
-			ValueType = 'REG_MULTI_SZ'
+			ValueType = 'MultiString'
 		}
 
 		RegistryPolicyFile 'Registry(POL): CCE-36021-4: Ensure Network access: Restrict anonymous access to Named Pipes and Shares is set to Enabled'
@@ -1900,7 +1900,7 @@ Configuration SecurityBaselineConfig
 			ValueName = 'DependsOnService'
 			ValueData = "'Bowser','MRxSmb20','NSI'"
 			Key = 'HKLM:\System\CurrentControlSet\Services\LanmanWorkstation'
-			ValueType = 'REG_MULTI_SZ'
+			ValueType = 'MultiString'
 		}
 		
 		RegistryPolicyFile 'Registry(POL): CCE-36325-9: Ensure Microsoft network client: Digitally sign communications (always) is set to Enabled'
