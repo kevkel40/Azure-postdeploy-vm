@@ -58,7 +58,18 @@ function get-gitwinlatest ($realTagUrl, $version){
 	$Outfile = "$($env:TEMP)\$($fileName)"
 	$realDownloadUrl = "$($realTagUrl.Replace('tag', 'download'))/$($fileName)"
 	Write-Host "Downloading $($fileName) from github..." -Foregroundcolor Yellow
-	Invoke-WebRequest -Uri $realDownloadUrl -OutFile $Outfile
+	try{
+		Invoke-WebRequest -Uri $realDownloadUrl -OutFile $Outfile -erroraction stop
+	}catch{
+		#Perhaps the new release format has dropped the word "windows" from the file, try that instead
+		$newversion = $version.replace("windows.","")
+		$fileName = "git-$($newversion)-64-bit.exe"
+		$realDownloadUrl = "$($realTagUrl.Replace('tag', 'download'))/$($fileName)"
+		Write-Host "Downloading $($fileName) from github..." -Foregroundcolor Yellow
+		try{
+			Invoke-WebRequest -Uri $realDownloadUrl -OutFile $Outfile -erroraction stop
+		}catch{Write-Host "Unable to download git for windows latest version, will need manual install" -Foregroundcolor red}
+	}
 	if(Test-Path $Outfile){
 		Write-Host "Installing $($fileName)..." -Foregroundcolor Yellow
 		$arguments = @("/VERYSILENT","/NORESTART","/CURRENTUSER")
@@ -99,6 +110,17 @@ if(Test-Path $Outfile){
 }
 ##################################
 
+#azure-cli latest version
+$url = 'https://aka.ms/installazurecliwindows'
+$fileName = "AzureCLI.msi"
+$Outfile = "$($env:TEMP)\$($fileName)"
+Invoke-WebRequest -Uri $url -Outfile $Outfile
+if(Test-Path $Outfile){
+  Write-Host "Installing $($fileName)..." -Foregroundcolor Yellow
+  $arguments = @("/I $($Outfile)", "/quiet") #??
+  Start-Process msiexec.exe -ArgumentList $arguments -Wait
+}
+##################################
 function DownloadAndRunExeMSI($url, $arguments){
 	Write-Host "Downloading $($url)" -Foregroundcolor Yellow
 	#get output filename from URL
@@ -122,18 +144,6 @@ function DownloadAndRunExeMSI($url, $arguments){
 		}
 	}
 }
-
-#azure-cli latest version
-$url = 'https://aka.ms/installazurecliwindows'
-$fileName = "AzureCLI.msi"
-$Outfile = "$($env:TEMP)\$($fileName)"
-Invoke-WebRequest -Uri $url -Outfile $Outfile
-if(Test-Path $Outfile){
-  Write-Host "Installing $($fileName)..." -Foregroundcolor Yellow
-  $arguments = @("/I $($Outfile)", "/quiet") #??
-  Start-Process msiexec.exe -ArgumentList $arguments -Wait
-}
-##################################
 
 $urls = @()
 
@@ -277,3 +287,4 @@ switch( hostname ){
 foreach($item in $urls){
 	DownloadAndRunExeMSI $item.url $item.arguments
 }
+Exit 0
