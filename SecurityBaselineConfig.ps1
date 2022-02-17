@@ -2002,61 +2002,54 @@ Configuration SecurityBaselineConfig
 			ValueType = 'Dword'
 		}
 
-		
-#	MSFT_xChrome chrome
-#    {
-#			Language = 'English'
-#			LocalPath = 'C:\Program Files\Google\Chrome\Application'
-#    }
+		UserRightsAssignment 'CCE-36860-5: Configure Enable computer and user accounts to be trusted for delegation'
+		{
+				Policy = 'Enable_computer_and_user_accounts_to_be_trusted_for_delegation'
+		 		Force = $True
+		 		Identity = @()
+		}
 
-    # UserRightsAssignment 'CCE-36860-5: Configure Enable computer and user accounts to be trusted for delegation''
-		# {
-		# 	Policy = 'Enable_computer_and_user_accounts_to_be_trusted_for_delegation'
-		# 	Force = $True
-		# 	Identity = @()
-		# }
-
-		# UserRightsAssignment 'CCE-36495-0: Ensure 'Lock pages in memory' is set to 'No One''
-		# {
-		# 	Policy = 'Lock_pages_in_memory'
-		# 	Force = $True
-		# 	Identity = @()
-		# }
+		UserRightsAssignment 'CCE-36495-0: Ensure Lock pages in memory is set to No One'
+		{
+				Policy = 'Lock_pages_in_memory'
+				Force = $True
+				Identity = @()
+		}
 		
-		# UserRightsAssignment 'CCE-36054-5: Ensure 'Modify an object label' is set to 'No One''
-		# {
-		# 	Policy = 'Modify_an_object_label'
-		# 	Force = $True
-		# 	Identity = @()
-		# }
+		UserRightsAssignment 'CCE-36054-5: Ensure Modify an object label is set to No One'
+		{
+	 		Policy = 'Modify_an_object_label'
+	 		Force = $True
+	 		Identity = @()
+		}
     
-		# UserRightsAssignment 'CCE-36861-3: Ensure 'Create a token object' is set to 'No One''
-		# {
-		# 	Policy = 'Create_a_token_object'
-		# 	Force = $True
-		# 	Identity = @()
-		# }
+		UserRightsAssignment 'CCE-36861-3: Ensure Create a token object is set to No One'
+		{
+			Policy = 'Create_a_token_object'
+			Force = $True
+			Identity = @()
+		}
 
-		# UserRightsAssignment 'CCE-36532-0: Ensure 'Create permanent shared objects' is set to 'No One''
-		# {
-		# 	Policy = 'Create_permanent_shared_objects'
-		# 	Force = $True
-		# 	Identity = @()
-		# }
+		UserRightsAssignment 'CCE-36532-0: Ensure Create permanent shared objects is set to No One'
+		{
+			Policy = 'Create_permanent_shared_objects'
+			Force = $True
+			Identity = @()
+		}
 
-		# UserRightsAssignment 'CCE-37056-9: Ensure 'Access Credential Manager as a trusted caller' is set to 'No One''
-		# {
-		# 	Policy = 'Access_Credential_Manager_as_a_trusted_caller'
-		# 	Force = $True
-		# 	Identity = @()
-		# }
+		UserRightsAssignment 'CCE-37056-9: Ensure Access Credential Manager as a trusted caller is set to No One'
+		{
+			Policy = 'Access_Credential_Manager_as_a_trusted_caller'
+			Force = $True
+			Identity = @()
+		}
 
-		# UserRightsAssignment 'CCE-36876-1: Ensure 'Act as part of the operating system' is set to 'No One''
-		# {
-		# 	Policy = 'Act_as_part_of_the_operating_system'
-		# 	Force = $True
-		# 	Identity = @()
-		# }
+		UserRightsAssignment 'CCE-36876-1: Ensure Act as part of the operating system is set to No One'
+		{
+			Policy = 'Act_as_part_of_the_operating_system'
+			Force = $True
+			Identity = @()
+		}
 
 	}
 }
