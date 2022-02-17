@@ -180,7 +180,7 @@ function set-reg_keys{
 				$arguments = "add `"$($Hive)\$($Path)`" /f"
 				Start-Process reg.exe -ArgumentList $arguments -Wait
 
-				$arguments = "add `"$($Hive)\$($Path)`" /v $($Name) /t $($$Type) /d $($Value) /f"
+				$arguments = "add `"$($Hive)\$($Path)`" /v $($Name) /t $($Type) /d $($Value) /f"
 				Start-Process reg.exe -ArgumentList $arguments -Wait
 
 			}
