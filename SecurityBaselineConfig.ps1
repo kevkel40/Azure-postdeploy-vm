@@ -2055,4 +2055,3 @@ Configuration SecurityBaselineConfig
 }
 SecurityBaselineConfig
 Start-DscConfiguration -Path .\SecurityBaselineConfig\ -force -verbose
-Exit 0
