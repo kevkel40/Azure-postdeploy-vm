@@ -1,10 +1,3 @@
-$RequiredModules = @('PSDesiredStateConfiguration','AuditPolicyDSC','SecurityPolicyDSC','GPRegistryPolicyDsc','xChrome')
-foreach($Module in $RequiredModules){
-	if(!((get-module -ListAvailable).name -contains $module)){
-		Install-module -name $Module -force -confirm:$false
-	}
-}
-
 Configuration SecurityBaselineConfig
 {
   param ()
@@ -13,7 +6,6 @@ Configuration SecurityBaselineConfig
 	Import-DSCResource -ModuleName 'AuditPolicyDSC'
 	Import-DSCResource -ModuleName 'SecurityPolicyDSC'
 	Import-DSCResource -ModuleName 'GPRegistryPolicyDsc'
-	Import-DSCResource -ModuleName 'xChrome'
 	
 	Node localhost
 	{
@@ -2053,5 +2045,7 @@ Configuration SecurityBaselineConfig
 
 	}
 }
+
 SecurityBaselineConfig
+
 Start-DscConfiguration -Path .\SecurityBaselineConfig\ -force -verbose
