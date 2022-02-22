@@ -48,7 +48,7 @@ try{
 	}
 }catch{
 	Write-Host "PowerShell Core install not detected, preparing to download from github"
-	get-powershelllatest $realTagUrl $version
+	#get-powershelllatest $realTagUrl $version
 }
 
 ##### - Git Win - #####
