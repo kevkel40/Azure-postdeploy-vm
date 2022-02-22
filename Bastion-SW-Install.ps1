@@ -194,13 +194,13 @@ switch( hostname ){
 			"arguments" = "-q"
 		}
 		#intellij
-		$configfile = "$($env:TEMP)\silent.config"
-		Invoke-WebRequest -Uri 'https://download.jetbrains.com/idea/silent.config' -OutFile $configfile
+		#$configfile = "$($env:TEMP)\silent.config"
+		#Invoke-WebRequest -Uri 'https://download.jetbrains.com/idea/silent.config' -OutFile $configfile
 			#doesn't work "arguments" = @("/S","/CONFIG=$($configfile)","/D=C:\Program Files\IntelliJ IDEA 2021")
-		$urls += @{
-			"url" = 'https://download-cdn.jetbrains.com/idea/ideaIC-2021.2.3.exe'
-			"arguments" = ""
-		}
+		#$urls += @{
+		#	"url" = 'https://download-cdn.jetbrains.com/idea/ideaIC-2021.2.3.exe'
+		#	"arguments" = ""
+		#}
 		Write-Host "Checking latest stable version of Maven available"
 		$url = "https://dlcdn.apache.org/maven/maven-3/"
 		$maven_versions = ((Invoke-WebRequest -Uri $url).links.href -match '\d.\d.\d').replace("/","")
