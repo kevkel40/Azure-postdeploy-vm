@@ -288,12 +288,15 @@ wmic useraccount where "name='Guest'" rename $alphanumericstring
 Write-Verbose "Setting network profile to public"
 Set-NetConnectionProfile -InterfaceAlias Ethernet -NetworkCategory "Public" -verbose
 
+#Set TLS to 1.2
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 Write-Verbose "Adding Nuget"
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -confirm:$false | Out-Null
 
 try{
   $Nuget = Get-PackageProvider -name NuGet -ErrorAction stop
-  if(!(Get-NugetVersion -installed ($Nuget.Version) -required "2.8.5.201")){
+  if(!(Get-NugetVersion -installed ($Nuget.Version) -required "2.8.5.201" -ErrorAction stop)){
     Write-Host "NuGet version is too low, attempting to set higher" -ForegroundColor Green
     Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -confirm:$false | Out-Null
   }
@@ -321,7 +324,8 @@ if((get-module -ListAvailable |Select-Object Name).Name -contains "PSWindowsUpda
 }
 
 Write-Verbose "Installing Modules required for Desired State Configuration"
-$RequiredModules = @('PSDesiredStateConfiguration','AuditPolicyDSC','SecurityPolicyDSC','GPRegistryPolicyDsc')
+#$RequiredModules = @('PSDesiredStateConfiguration','AuditPolicyDSC','SecurityPolicyDSC','GPRegistryPolicyDsc')
+$RequiredModules = @('AuditPolicyDSC','SecurityPolicyDSC','GPRegistryPolicyDsc')
 foreach($Module in $RequiredModules){
 	if(!((get-module -ListAvailable).name -contains $module)){
 		Install-module -name $Module -force -confirm:$false
