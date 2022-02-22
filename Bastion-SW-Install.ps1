@@ -150,30 +150,36 @@ $urls = @()
 #common software
 write-host "selecting common software" -Foregroundcolor Green
 
+#Azure data studio
 $urls += @{
 	"url" = 'https://sqlopsbuilds.azureedge.net/stable/4a45ba7cf20dd4129f1a08e5e776dfb33e3d1d1e/azuredatastudio-windows-setup-1.32.0.exe'
 	"arguments" = @("/VERYSILENT","/NORESTART","/CURRENTUSER","/MERGETASKS=!runcode")
 }
+#Azure storage explorer
 $urls += @{
 	"url" = 'https://download.microsoft.com/download/A/E/3/AE32C485-B62B-4437-92F7-8B6B2C48CB40/StorageExplorer.exe'
 	"arguments" = @("/VERYSILENT","/NORESTART","/CURRENTUSER","/MERGETASKS=!runcode","/SP-")
 }
+#Google Chrome
 $urls += @{
 	"url" = 'https://dl.google.com/tag/s/appguid%3D%7B8A69D345-D564-463C-AFF1-A69D9E530F96%7D%26iid%3D%7B993F11EB-8372-361A-18C9-9B64A947F988%7D%26lang%3Den%26browser%3D4%26usagestats%3D0%26appname%3DGoogle%2520Chrome%26needsadmin%3Dtrue%26ap%3Dx64-stable-statsdef_0%26brand%3DGCEA/dl/chrome/install/googlechromestandaloneenterprise64.msi'
 	"arguments" = @("MSI")
 }
+#7-Zip
 $urls += @{
 	"url" = 'https://cfhcable.dl.sourceforge.net/project/sevenzip/7-Zip/19.00/7z1900.exe'
 	"arguments" = @("/S")
 }
+#Visual Studio Code
 $urls += @{
 	"url" = 'https://az764295.vo.msecnd.net/stable/6cba118ac49a1b88332f312a8f67186f7f3c1643/VSCodeUserSetup-x64-1.61.2.exe'
 	"arguments" = @("/VERYSILENT","/NORESTART","/CURRENTUSER","/MERGETASKS=!runcode")
 }
-$urls += @{
-	"url" = 'https://ninite.com/filezilla-notepadplusplus-putty-sumatrapdf-winscp/ninite.exe'
-	"arguments" = ""
-}
+#Ninite installs require interaction
+#$urls += @{
+#	"url" = 'https://ninite.com/filezilla-notepadplusplus-putty-sumatrapdf-winscp/ninite.exe'
+#	"arguments" = ""
+#}
 
 switch( hostname ){
 	{$_ -match "datavm"}{
@@ -193,10 +199,6 @@ switch( hostname ){
 			#doesn't work "arguments" = @("/S","/CONFIG=$($configfile)","/D=C:\Program Files\IntelliJ IDEA 2021")
 		$urls += @{
 			"url" = 'https://download-cdn.jetbrains.com/idea/ideaIC-2021.2.3.exe'
-			"arguments" = ""
-		}
-		$urls += @{
-			"url" = 'https://ninite.com/eclipse-filezilla-notepadplusplus-putty-sumatrapdf-winscp/ninite.exe'
 			"arguments" = ""
 		}
 		Write-Host "Checking latest stable version of Maven available"
@@ -248,10 +250,6 @@ switch( hostname ){
 	{$_ -match "webvm"}{
 		write-host "webvm detected, selecting software" -Foregroundcolor Green
 		#Web/API team software
-		$urls += @{
-			"url" = 'https://ninite.com/filezilla-notepadplusplus-putty-sumatrapdf-winscp/ninite.exe'
-			"arguments" = ""
-		}
 		#redis cli
 		$url = "https://github.com/microsoftarchive/redis/releases/download/win-3.2.100/Redis-x64-3.2.100.msi"
 		$fileName = $url.split("/")[-1]
