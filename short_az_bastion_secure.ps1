@@ -22,6 +22,11 @@
     
 #>
 #post deploy commands
+trap
+{
+  $Err = ( get-error -newest 1 )
+  Write-Host ($Err.Exception.Message).ToString() -foregroundcolor red
+}
 
 ######################################
 function set-reg_keys{
