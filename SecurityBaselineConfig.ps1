@@ -545,6 +545,15 @@ Configuration SecurityBaselineConfig
 			ValueType = 'String'
 		}
 
+		RegistryPolicyFile 'Registry(POL): Qualys ID90007: Enabled Cached Logon Credential and ensure it is set to 0'
+		{
+			TargetType = 'ComputerConfiguration'
+			ValueName = 'CachedLogonsCount'
+			ValueData = '0'
+			Key = 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon'
+			ValueType = 'String'
+		}
+
 		RegistryPolicyFile 'Registry(POL): CCE-36512-2: Ensure Enumerate administrator accounts on elevation is set to Disabled'
 		{
 			TargetType = 'ComputerConfiguration'
