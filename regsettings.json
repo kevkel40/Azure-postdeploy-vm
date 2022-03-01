@@ -18,6 +18,14 @@
       "Type": "REG_SZ"
     },
     {
+      "Comment": "Qualys ID90007: Enabled Cached Logon Credential and ensure it is set to 0",
+      "Name": "CachedLogonsCount",
+      "Value": "0",
+      "Path": "Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_SZ"
+    },
+    {
       "Comment": "CCE-36512-2: Ensure 'Enumerate administrator accounts on elevation' is set to 'Disabled'",
       "Name": "EnumerateAdministrators",
       "Value": 0,
