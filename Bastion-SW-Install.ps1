@@ -81,7 +81,7 @@ function get-gitwinlatest ($realTagUrl, $version){
 #Check latest version of Git win from github
 $url = 'https://github.com/git-for-windows/git/releases/latest'
 $realTagUrl = (([System.Net.WebRequest]::Create($url)).GetResponse()).ResponseUri.OriginalString
-$version = $realTagUrl.split('/')[-1].Trim('v').replace('.windows.1','')
+$version = $realTagUrl.split('/')[-1].Trim('v').replace('.windows','')
 #todo check if already installed
 
 #Check version of Git win installed
@@ -285,4 +285,14 @@ switch( hostname ){
 foreach($item in $urls){
 	DownloadAndRunExeMSI $item.url $item.arguments
 }
+
+#install windows subsystem for linux
+Write-Verbose "Checking if Windows Linux subsystem is installed"
+if((wsl --status).count -gt 50 ){
+  Write-Host "Installing Windows subsystem for Linux" -Foregroundcolor Yellow
+  wsl --install
+}else{
+  Write-Verbose "Windows subsystem for Linux already installed"
+}
+
 Exit 0
