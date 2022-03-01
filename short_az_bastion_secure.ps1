@@ -382,14 +382,6 @@ Start-Process "$($env:ProgramFiles)\Windows Defender\MpCmdRun.exe" -ArgumentList
 Write-Verbose "Forcing Azure Qualys scan agent to update"
 $arguments = "ADD HKLM\SOFTWARE\Qualys\QualysAgent\ScanOnDemand\Vulnerability /v ScanOnDemand /t REG_DWORD /d 1 /f"
 Start-Process reg.exe -ArgumentList $arguments -Wait
-#install windows subsystem for linux
-Write-Verbose "Checking if Windows Linux subsystem is installed"
-if((wsl --status).count -gt 50 ){
-  Write-Host "Installing Windows subsystem for Linux" -Foregroundcolor Yellow
-  wsl --install
-}else{
-  Write-Verbose "Windows subsystem for Linux already installed"
-}
 #install windows updates
 Write-Host "Running Windows updates, system may reboot" -Foregroundcolor Yellow
 Get-WindowsUpdate -Install -confirm:$false -forceinstall -autoreboot -acceptall
