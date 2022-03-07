@@ -289,17 +289,6 @@ Configuration SecurityBaselineConfig
 			AuditFlag = 'Success'
 		}
     
-		AccountPolicy AccountPolicies
-		{
-			Name = 'PasswordPolicies'
-			Enforce_password_history = "24"
-			Maximum_Password_Age = "42"
-			Minimum_Password_Age = "1"
-			Minimum_Password_Length = "14"
-			Password_must_meet_complexity_requirements = 'Enabled'
-			Store_passwords_using_reversible_encryption = 'Disabled'
-		}
-		
 		UserRightsAssignment "CCE-35818-4: Configure 'Access this computer from the network'"
 		{
 			Policy = 'Access_this_computer_from_the_network'
@@ -2051,6 +2040,27 @@ Configuration SecurityBaselineConfig
 			Force = $True
 			Identity = @()
 		}
+
+		AccountPolicy AccountPolicies
+		{
+			Name = 'PasswordPolicies'
+			Enforce_password_history = "24"
+			Maximum_Password_Age = "42"
+			Minimum_Password_Age = "1"
+			Minimum_Password_Length = "14"
+			Password_must_meet_complexity_requirements = 'Enabled'
+			Store_passwords_using_reversible_encryption = 'Disabled'
+		}
+		
+		#SecurityOption 'ee6b9d20-8c62-4f14-8719-a425e09244ed - Network access: Shares that can be accessed anonymously'
+		#{
+		#	Network_access_ Shares_that_can_be_ accessed_anonymously = ''
+		#}
+
+		#SecurityOption 'No MS Accounts Allowed'
+		#{
+		#	Accounts_Block_ Microsoft_accounts
+		#}
 
 	}
 }
