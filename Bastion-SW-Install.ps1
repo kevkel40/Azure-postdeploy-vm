@@ -47,10 +47,10 @@ try{
 		Write-Host "PowerShell version $($version) is already installed, no further action required."
 	}else{
 		Write-Host "PowerShell version $($version) is currently installed, update required."
-		get-powershelllatest $realTagUrl $version
+		#get-powershelllatest $realTagUrl $version
 	}
 }catch{
-	Write-Host "PowerShell Core install not detected, preparing to download from github"
+	#Write-Host "PowerShell Core install not detected, preparing to download from github"
 	#get-powershelllatest $realTagUrl $version
 }
 
@@ -102,6 +102,7 @@ try{
 }
 
 ##### - Postman Win - #####
+Write-Host "Preparing to download Postman for Windows"
 $url = 'https://dl.pstmn.io/download/latest/win64'
 $fileName = "Postman-win64-Setup.exe"
 $Outfile = "$($env:TEMP)\$($fileName)"
@@ -114,6 +115,7 @@ if(Test-Path $Outfile){
 ##################################
 
 #azure-cli latest version
+Write-Host "Preparing to download Azure CLI for Windows"
 $url = 'https://aka.ms/installazurecliwindows'
 $fileName = "AzureCLI.msi"
 $Outfile = "$($env:TEMP)\$($fileName)"
