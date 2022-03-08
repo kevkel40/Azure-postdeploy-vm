@@ -2247,8 +2247,8 @@ Configuration SecurityBaselineConfig
 		SecurityOption LocalPolicies
 		{
 			Name = 'SecurityOptions'
-			Accounts_Block_Microsoft_accounts = 'Enabled'
-			Network_access_Shares_that_can_be_accessed_anonymously = ''
+			Accounts_Block_Microsoft_accounts = 'This policy is disabled'
+			Network_access_Shares_that_can_be_accessed_anonymously = $null
 		}
 	}
 }
