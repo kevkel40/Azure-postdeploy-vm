@@ -72,14 +72,14 @@ Configuration SecurityBaselineConfig
 	 		Ensure = 'Absent'
 		}
 
- 		AuditPolicySubcategory "CCE-36265-7: Ensure 'Audit Distribution Group Management' is set to 'Success and Failure' (Failure)"
+ 		AuditPolicySubcategory "CCE-36265-7: Ensure Audit Distribution Group Management is set to Success and Failure (Failure)"
 		{
 	 		Name = 'Distribution Group Management'
 	 		AuditFlag = 'Failure'
 	 		Ensure = 'Absent'
 		}
 		 
-			AuditPolicySubcategory "AZ-WIN-00026: Ensure 'Audit Group Membership' is set to 'Success'"
+		AuditPolicySubcategory "AZ-WIN-00026: Ensure 'Audit Group Membership' is set to 'Success'"
 		{
 	 		Name = 'Group Membership'
 	 		AuditFlag = 'Success'
@@ -129,7 +129,7 @@ Configuration SecurityBaselineConfig
 	 		Ensure = 'Absent'
 		}
 
-			AuditPolicySubcategory "CCE-37855-4: Ensure 'Audit Other Account Management Events' is set to 'Success and Failure' (Failure)"
+		AuditPolicySubcategory "CCE-37855-4: Ensure 'Audit Other Account Management Events' is set to 'Success and Failure' (Failure)"
 		{
 	 		Name = 'Other Account Management Events'
 	 		AuditFlag = 'Failure'
@@ -276,7 +276,7 @@ Configuration SecurityBaselineConfig
 			Ensure = 'Present'
 		}
 
-			AuditPolicySubcategory "CCE-36267-3: Ensure 'Audit Sensitive Privilege Use' is set to 'Success and Failure' (Failure)"
+		AuditPolicySubcategory "CCE-36267-3: Ensure 'Audit Sensitive Privilege Use' is set to 'Success and Failure' (Failure)"
 		{
 			Name      = 'Sensitive Privilege Use'
 			AuditFlag = 'Failure'
@@ -306,7 +306,7 @@ Configuration SecurityBaselineConfig
 			Ensure = 'Present'
 		}
 
-			UserRightsAssignment "CCE-37659-0: Configure 'Allow log on locally'"
+		UserRightsAssignment "CCE-37659-0: Configure 'Allow log on locally'"
 		{
 			Policy = 'Allow_log_on_locally'
 			Force = $True
@@ -2247,9 +2247,8 @@ Configuration SecurityBaselineConfig
 		SecurityOption LocalPolicies
 		{
 			Name = 'SecurityOptions'
-			Accounts_Block_Microsoft_accounts = 'Disabled'
-			Network_access_ Shares_that_can_be_ accessed_anonymously = ''
-			
+			Accounts_Block_Microsoft_accounts = 'Enabled'
+			Network_access_Shares_that_can_be_accessed_anonymously = ''
 		}
 	}
 }
