@@ -246,14 +246,14 @@ function Get-NugetVersion {
 
 #test for file locally, download from github if not found
 
-$URI = 'https://raw.githubusercontent.com/LeighdePaor/Azure-postdeploy-vm/main/regsettings.json'
+#$URI = 'https://raw.githubusercontent.com/LeighdePaor/Azure-postdeploy-vm/main/regsettings.json'
 
-if(Test-Path ".\regsettings.json"){
-  Write-Host "Local copy of regsettings.json found, applying"
-  $RegSettings = (Get-Content .\regsettings.json | convertfrom-json).regsetting
-}else{
-  $RegSettings = (Invoke-WebRequest -Uri $URI -UseBasicParsing | convertfrom-json).regsetting
-}
+#if(Test-Path ".\regsettings.json"){
+#  Write-Host "Local copy of regsettings.json found, applying"
+#  $RegSettings = (Get-Content .\regsettings.json | convertfrom-json).regsetting
+#}else{
+#  $RegSettings = (Invoke-WebRequest -Uri $URI -UseBasicParsing | convertfrom-json).regsetting
+#}
 
 ######################################
 Clear-Host
@@ -261,11 +261,12 @@ Clear-Host
 #Allow PowerShell Modules install
 Set-MpPreference -EnableControlledFolderAccess Disabled
 
-Write-Verbose "Setting reg keys"
+#Write-Verbose "Setting reg keys"
+#Reg settings moved to DSC SecurityBaselineConfig.ps1
 
-foreach($Item in $RegSettings){
-	set-reg_keys -RegSet $Item
-}
+#foreach($Item in $RegSettings){
+#	set-reg_keys -RegSet $Item
+#}
 
 #default user setting change
 $arguments = "load HKLM\ntuser.dat c:\users\default\ntuser.dat"
