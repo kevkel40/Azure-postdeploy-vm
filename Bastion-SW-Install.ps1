@@ -19,40 +19,40 @@
 try{Set-MpPreference -EnableControlledFolderAccess Disabled -ErrorAction stop}catch{exit 1}
 
 ##### - PowerShell Core - #####
-function get-powershelllatest ($realTagUrl, $version){
-	$fileName = "PowerShell-$($version)-win-x64.msi"
-	$Outfile = "$($env:TEMP)\$($fileName)"
-	$realDownloadUrl = "$($realTagUrl.Replace('tag', 'download'))/$($fileName)"
-
-	Write-Host "Downloading $($fileName) from github..." -Foregroundcolor Yellow
-	Invoke-WebRequest -Uri $realDownloadUrl -OutFile $Outfile
-	if(Test-Path $Outfile){
-		Write-Host "Installing $($fileName)..." -Foregroundcolor Yellow
-		$arguments = "/i `"$($Outfile)`" /passive"
-		Start-Process msiexec.exe -ArgumentList $arguments -Wait
-	}
-}
+#function get-powershelllatest ($realTagUrl, $version){
+#	$fileName = "PowerShell-$($version)-win-x64.msi"
+#	$Outfile = "$($env:TEMP)\$($fileName)"
+#	$realDownloadUrl = "$($realTagUrl.Replace('tag', 'download'))/$($fileName)"
+#
+#	Write-Host "Downloading $($fileName) from github..." -Foregroundcolor Yellow
+#	Invoke-WebRequest -Uri $realDownloadUrl -OutFile $Outfile
+#	if(Test-Path $Outfile){
+#		Write-Host "Installing $($fileName)..." -Foregroundcolor Yellow
+#		$arguments = "/i `"$($Outfile)`" /passive"
+#		Start-Process msiexec.exe -ArgumentList $arguments -Wait
+#	}
+#}
 
 ##### - PowerShell Core - #####
 #Check latest version of PowerShell Core from github
-$url = 'https://github.com/PowerShell/PowerShell/releases/latest'
-$realTagUrl = (([System.Net.WebRequest]::Create($url)).GetResponse()).ResponseUri.OriginalString
-$version = $realTagUrl.split('/')[-1].Trim('v')
-Write-Host "Latest PowerShell version on github: $($version)" -Foregroundcolor Yellow
+#$url = 'https://github.com/PowerShell/PowerShell/releases/latest'
+#$realTagUrl = (([System.Net.WebRequest]::Create($url)).GetResponse()).ResponseUri.OriginalString
+#$version = $realTagUrl.split('/')[-1].Trim('v')
+#Write-Host "Latest PowerShell version on github: $($version)" -Foregroundcolor Yellow
 
 #Check version of PowerShell Core installed
-try{
-	Get-Item -path "HKLM:\SOFTWARE\Microsoft\PowerShellCore\InstalledVersions\31ab5147-9a97-4452-8443-d9709f0516e1" -erroraction stop
-	if((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PowerShellCore\InstalledVersions\31ab5147-9a97-4452-8443-d9709f0516e1" -Name "SemanticVersion")."SemanticVersion" -match $version){
-		Write-Host "PowerShell version $($version) is already installed, no further action required."
-	}else{
-		Write-Host "PowerShell version $($version) is currently installed, update required."
-		#get-powershelllatest $realTagUrl $version
-	}
-}catch{
-	#Write-Host "PowerShell Core install not detected, preparing to download from github"
-	#get-powershelllatest $realTagUrl $version
-}
+#try{
+#	Get-Item -path "HKLM:\SOFTWARE\Microsoft\PowerShellCore\InstalledVersions\31ab5147-9a97-4452-8443-d9709f0516e1" -erroraction stop
+#	if((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PowerShellCore\InstalledVersions\31ab5147-9a97-4452-8443-d9709f0516e1" -Name "SemanticVersion")."SemanticVersion" -match $version){
+#		Write-Host "PowerShell version $($version) is already installed, no further action required."
+#	}else{
+#		Write-Host "PowerShell version $($version) is currently installed, update required."
+#		#get-powershelllatest $realTagUrl $version
+#	}
+#}catch{
+#	#Write-Host "PowerShell Core install not detected, preparing to download from github"
+#	#get-powershelllatest $realTagUrl $version
+#}
 
 ##### - Git Win - #####
 
