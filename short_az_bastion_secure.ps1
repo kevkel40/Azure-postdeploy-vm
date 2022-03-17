@@ -264,7 +264,7 @@ Clear-Host
 Set-MpPreference -EnableControlledFolderAccess Disabled
 
 Write-Verbose "Setting reg keys"
-Reg settings moved to DSC SecurityBaselineConfig.ps1
+#Reg settings moved to DSC SecurityBaselineConfig.ps1
 
 foreach($Item in $RegSettings){
 	set-reg_keys -RegSet $Item
