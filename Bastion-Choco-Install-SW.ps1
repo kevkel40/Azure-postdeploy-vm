@@ -22,7 +22,7 @@ if($ChocoInstalled){
 	Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 }
 
-$packages = @("googlechrome","git","visualstudiocode","postman","powershell-core","azure-cli","microsoftazurestorageexplorer","7-zip")
+$packages = @("googlechrome","git","visualstudiocode","postman","powershell-core","azure-cli","microsoftazurestorageexplorer","7-zip","dotnet-windowshosting")
 
 switch( hostname ){
 	{$_ -match "datavm"}{
