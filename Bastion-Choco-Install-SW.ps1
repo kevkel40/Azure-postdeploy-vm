@@ -1,5 +1,6 @@
 <#
 	Installs packages if chocolatey is installed
+	Package selection changes based on hostname
 #>
 
 ################### - Functions - ####################
@@ -178,9 +179,9 @@ function set-reg_keys{
 try{Set-MpPreference -EnableControlledFolderAccess Disabled -ErrorAction stop}catch{exit 1}
 
 #check chocolatey installed
-try{$ChocoInstalled = Get-ChildItem C:\ProgramData\chocolatey\choco.exe -erroraction stop}catch{$ChocoInstalled = $false}
+try{$ChocoInstalled = Get-ChildItem "C:\ProgramData\chocolatey\choco.exe" -erroraction stop}catch{$ChocoInstalled = $false}
 if($ChocoInstalled){
-	$ChocoVersion = $ChocoInstalled.VersionInfo.ProductVersionRaw
+	$ChocoVersion = ($ChocoInstalled.VersionInfo.ProductVersionRaw)
 	#get
 	$url = 'https://github.com/chocolatey/choco/releases/latest'
 	$realTagUrl = (([System.Net.WebRequest]::Create($url)).GetResponse()).ResponseUri.OriginalString
@@ -196,7 +197,7 @@ if($ChocoInstalled){
 }
 
 #install IIS minimal
-Install-WindowsFeature –name Web-Server -IncludeManagementTools -erroraction silentlycontinue -verbose
+Install-WindowsFeature -name Web-Server -IncludeManagementTools -erroraction silentlycontinue -verbose
 
 #configure chocolatey packages to be installed on every vm
 $packages = @("googlechrome","git","visualstudiocode","postman","powershell-core","azure-cli","microsoftazurestorageexplorer","7zip","dotnet-windowshosting")
@@ -250,19 +251,19 @@ foreach($package in $packages){
 }
 
 #install windows subsystem for linux
-Write-Verbose "Checking if Windows Linux subsystem is installed"
+Write-Host "Checking if Windows Linux subsystem is installed" -Foregroundcolor green
 if((wsl --status).count -gt 50 ){
   Write-Host "Installing Windows subsystem for Linux" -Foregroundcolor Yellow
   wsl --install
 }else{
-  Write-Verbose "Windows subsystem for Linux already installed"
+  Write-Host "Windows subsystem for Linux already installed" -Foregroundcolor green
 }
 
 #add registry entry to show which software was installed
 $RegSettings = @{
   "Comment" = "List of software installed by Chocolatey on this VM";
   "Name" = "ChocoInstalls";
-  "Value" = "'$($packages -join ", ")'";
+  "Value" = '"$($packages -join ", ")"';
   "Path" = "Software\\UHG";
   "Hive" = "HKEY_LOCAL_MACHINE";
   "Type" = "REG_SZ"
@@ -273,7 +274,7 @@ set-reg_keys -RegSet @($RegSettings|convertto-json|convertfrom-json)
 $RegSettings = @{
   "Comment" = "Date software installed by Chocolatey on this VM";
   "Name" = "ChocoInstallDate";
-  "Value" = "'$(get-date)'";
+  "Value" = '"$(get-date)"';
   "Path" = "Software\\UHG";
   "Hive" = "HKEY_LOCAL_MACHINE";
   "Type" = "REG_SZ"
@@ -281,6 +282,10 @@ $RegSettings = @{
 set-reg_keys -RegSet @($RegSettings|convertto-json|convertfrom-json)
 
 #re-enable defender
-try{Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -ScanScheduleTime 12:00 -RemediationScheduleTime 13:00 -SignatureScheduleTime 11:00  -ExclusionPath "$($env:USERPROFILE)\Documents\PowerShell" -verbose -ErrorAction stop}catch{exit 1}
+try{
+  Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -ScanScheduleTime 12:00 -RemediationScheduleTime 13:00 -SignatureScheduleTime 11:00  -ExclusionPath "$($env:USERPROFILE)\Documents\PowerShell" -verbose -ErrorAction stop
+}catch{
+  exit 1
+}
 
 Exit 0
