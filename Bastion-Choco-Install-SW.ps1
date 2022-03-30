@@ -202,7 +202,7 @@ Install-WindowsFeature -name Web-Server -IncludeManagementTools -erroraction sil
 #configure chocolatey packages to be installed on every vm
 $packages = @("googlechrome","git","visualstudiocode","postman","powershell-core","azure-cli","microsoftazurestorageexplorer","7zip","dotnet-windowshosting")
 
-#ensure chocolatey is latest version 
+#ensure chocolatey is latest version
 choco upgrade chocolatey
 
 #configure chocolatey packages to be installed on specific use-case vms
@@ -266,7 +266,7 @@ if((wsl --status).count -gt 50 ){
 $RegSettings = @{
   "Comment" = "List of software installed by Chocolatey on this VM";
   "Name" = "ChocoInstalls";
-  "Value" = '"$($packages -join ", ")"';
+  "Value" = "'$($packages -join ", ")'";
   "Path" = "Software\\UHG";
   "Hive" = "HKEY_LOCAL_MACHINE";
   "Type" = "REG_SZ"
@@ -277,7 +277,7 @@ set-reg_keys -RegSet @($RegSettings|convertto-json|convertfrom-json)
 $RegSettings = @{
   "Comment" = "Date software installed by Chocolatey on this VM";
   "Name" = "ChocoInstallDate";
-  "Value" = '"$(get-date)"';
+  "Value" = "'$(get-date)'";
   "Path" = "Software\\UHG";
   "Hive" = "HKEY_LOCAL_MACHINE";
   "Type" = "REG_SZ"
