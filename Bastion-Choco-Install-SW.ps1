@@ -211,6 +211,7 @@ switch( hostname ){
 		write-host "webvm detected, selecting software" -Foregroundcolor Green
 		#Web/API team software
 			$packages += "stunnel"
+			$packages += "cosmosdbexplorer"
 			$packages += "jdk8"
 			$packages += "sql-server-management-studio"
 			$packages += "studio3t"
