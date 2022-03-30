@@ -200,7 +200,7 @@ if($ChocoInstalled){
 Install-WindowsFeature -name Web-Server -IncludeManagementTools -erroraction silentlycontinue -verbose
 
 #configure chocolatey packages to be installed on every vm
-$packages = @("googlechrome","git","visualstudiocode","postman","powershell-core","azure-cli","microsoftazurestorageexplorer","7zip","dotnet-windowshosting")
+$packages = @("googlechrome","git","visualstudiocode","postman","powershell-core","azure-cli","microsoftazurestorageexplorer","7zip","dotnet-5.0-windowshosting","dotnet-windowshosting")
 
 #ensure chocolatey is latest version
 choco upgrade chocolatey
