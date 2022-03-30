@@ -232,6 +232,7 @@ switch( hostname ){
 		write-host "Infravm detected, selecting software" -Foregroundcolor Green
 		#Infra team software
 		$packages += "notepadplusplus"
+		$packages += "pwsh"
 	}
 }
 
