@@ -202,6 +202,9 @@ Install-WindowsFeature -name Web-Server -IncludeManagementTools -erroraction sil
 #configure chocolatey packages to be installed on every vm
 $packages = @("googlechrome","git","visualstudiocode","postman","powershell-core","azure-cli","microsoftazurestorageexplorer","7zip","dotnet-windowshosting")
 
+#ensure chocolatey is latest version 
+choco upgrade chocolatey
+
 #configure chocolatey packages to be installed on specific use-case vms
 switch( hostname ){
 	{$_ -match "datavm"}{
