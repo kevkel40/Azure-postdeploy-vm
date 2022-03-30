@@ -281,4 +281,8 @@ try{
   exit 1
 }
 
+#reregister changes with defender qualys scan
+$arguments = "ADD HKLM\SOFTWARE\Qualys\QualysAgent\ScanOnDemand\Vulnerability /v ScanOnDemand /t REG_DWORD /d 1 /f"
+try{Start-Process reg.exe -ArgumentList $arguments -Wait -ErrorAction stop}catch{exit 1}
+
 Exit 0
