@@ -181,17 +181,8 @@ try{Set-MpPreference -EnableControlledFolderAccess Disabled -ErrorAction stop}ca
 #check chocolatey installed
 try{$ChocoInstalled = Get-ChildItem "C:\ProgramData\chocolatey\choco.exe" -erroraction stop}catch{$ChocoInstalled = $false}
 if($ChocoInstalled){
-	$ChocoVersion = ($ChocoInstalled.VersionInfo.ProductVersionRaw)
-	#get
-	$url = 'https://github.com/chocolatey/choco/releases/latest'
-	$realTagUrl = (([System.Net.WebRequest]::Create($url)).GetResponse()).ResponseUri.OriginalString
-	[system.version]$WebVersion = $realTagUrl.split('/')[-1].Trim('v')
-
-	if($ChocoVersion -ge $WebVersion){
-		Write-Host "Choco version installed is latest" -foregroundcolor green
-	}else{
-		Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-	}
+  #ensure chocolatey is latest version
+  choco upgrade chocolatey -y
 }else{
 	Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 }
@@ -201,9 +192,6 @@ Install-WindowsFeature -name Web-Server -IncludeManagementTools -erroraction sil
 
 #configure chocolatey packages to be installed on every vm
 $packages = @("googlechrome","git","visualstudiocode","postman","powershell-core","azure-cli","microsoftazurestorageexplorer","7zip","dotnet-5.0-windowshosting","dotnet-windowshosting")
-
-#ensure chocolatey is latest version
-choco upgrade chocolatey
 
 #configure chocolatey packages to be installed on specific use-case vms
 switch( hostname ){
