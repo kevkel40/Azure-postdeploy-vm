@@ -28,6 +28,8 @@ trap
   Write-Host ($Err.Exception.Message).ToString() -foregroundcolor red
 }
 
+$version = "1.10"
+
 ######################################
 function set-reg_keys{
   Param(
@@ -389,9 +391,9 @@ Start-Process reg.exe -ArgumentList $arguments -Wait
 #add registry entry to show when security update script was last run
 $RegSettings = @{
   "Comment" = "Date security updates scripts run on this VM";
-  "Name" = "AZ_Bastion_SecureDate";
-  "Value" = "'$(get-date)'";
-  "Path" = "Software\\UHG";
+  "Name" = "'$(get-date)'";
+  "Value" = "$($version)";
+  "Path" = "Software\\UHG\\BastionSecure";
   "Hive" = "HKEY_LOCAL_MACHINE";
   "Type" = "REG_SZ"
 }
