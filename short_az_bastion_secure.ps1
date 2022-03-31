@@ -385,6 +385,19 @@ Start-Process "$($env:ProgramFiles)\Windows Defender\MpCmdRun.exe" -ArgumentList
 Write-Verbose "Forcing Azure Qualys scan agent to update"
 $arguments = "ADD HKLM\SOFTWARE\Qualys\QualysAgent\ScanOnDemand\Vulnerability /v ScanOnDemand /t REG_DWORD /d 1 /f"
 Start-Process reg.exe -ArgumentList $arguments -Wait
+
+#add registry entry to show when security update script was last run
+$RegSettings = @{
+  "Comment" = "Date security updates scripts run on this VM";
+  "Name" = "AZ_Bastion_SecureDate";
+  "Value" = "'$(get-date)'";
+  "Path" = "Software\\UHG";
+  "Hive" = "HKEY_LOCAL_MACHINE";
+  "Type" = "REG_SZ"
+}
+set-reg_keys -RegSet @($RegSettings|convertto-json|convertfrom-json)
+
+
 #install windows updates
 Write-Host "Running Windows updates, system may reboot" -Foregroundcolor Yellow
 Get-WindowsUpdate -Install -confirm:$false -forceinstall -autoreboot -acceptall
