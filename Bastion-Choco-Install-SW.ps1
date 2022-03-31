@@ -212,7 +212,7 @@ switch( hostname ){
 		#Web/API team software
 			$packages += "stunnel"
 			$packages += "cosmosdbexplorer"
-			#$packages += "jdk8" # old and insecure
+			#$packages += "jdk8"
 			$packages += "sql-server-management-studio"
 			$packages += "studio3t"
 			#maven --version=3.6.3 ?
@@ -255,20 +255,9 @@ if((wsl --status).count -gt 50 ){
 #add registry entry to show which software was installed
 $RegSettings = @{
   "Comment" = "List of software installed by Chocolatey on this VM";
-  "Name" = "ChocoInstalls";
+  "Name" = "$(get-date)";
   "Value" = "'$($packages -join ", ")'";
-  "Path" = "Software\\UHG";
-  "Hive" = "HKEY_LOCAL_MACHINE";
-  "Type" = "REG_SZ"
-}
-set-reg_keys -RegSet @($RegSettings|convertto-json|convertfrom-json)
-
-#add registry entry to show when software was last installed
-$RegSettings = @{
-  "Comment" = "Date software installed by Chocolatey on this VM";
-  "Name" = "ChocoInstallDate";
-  "Value" = "'$(get-date)'";
-  "Path" = "Software\\UHG";
+  "Path" = "Software\\UHG\\ChocoInstalls";
   "Hive" = "HKEY_LOCAL_MACHINE";
   "Type" = "REG_SZ"
 }
