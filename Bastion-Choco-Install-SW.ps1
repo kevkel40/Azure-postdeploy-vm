@@ -212,7 +212,7 @@ switch( hostname ){
 		#Web/API team software
 			$packages += "stunnel"
 			$packages += "cosmosdbexplorer"
-			$packages += "jdk8"
+			#$packages += "jdk8" # old and insecure
 			$packages += "sql-server-management-studio"
 			$packages += "studio3t"
 			#maven --version=3.6.3 ?
