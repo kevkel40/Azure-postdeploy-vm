@@ -391,7 +391,7 @@ Start-Process reg.exe -ArgumentList $arguments -Wait
 #add registry entry to show when security update script was last run
 $RegSettings = @{
   "Comment" = "Date security updates scripts run on this VM";
-  "Name" = "'$(get-date)'";
+  "Name" = "$(get-date)";
   "Value" = "$($version)";
   "Path" = "Software\\UHG\\BastionSecure";
   "Hive" = "HKEY_LOCAL_MACHINE";
