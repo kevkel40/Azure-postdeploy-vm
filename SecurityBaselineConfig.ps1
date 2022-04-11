@@ -526,21 +526,21 @@ Configuration SecurityBaselineConfig
 			Ensure = 'Present'
 		}
 
-		RegistryPolicyFile 'AZ-WIN-00145: Registry(POL): HKLM:\software\Policies\Microsoft\Windows NT\DNSClient\EnableMulticast'
+		RegistryPolicyFile 'AZ-WIN-00145: Registry(POL): HKLM:\Software\Policies\Microsoft\Windows NT\DNSClient\EnableMulticast'
 		{
 			ValueData = 0
-			Key = 'HKLM:\software\Policies\Microsoft\Windows NT\DNSClient'
+			Key = 'HKLM:\Software\Policies\Microsoft\Windows NT\DNSClient'
 			TargetType = 'ComputerConfiguration'
 			ValueName = 'EnableMulticast'
 			ValueType = 'Dword'
 			Ensure = 'Present'
 		}
 		
-		RegistryPolicyFile 'Registry(POL): HKLM:\software\Policies\Microsoft\Windows\EventLog\Security\MaxSize'
+		RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\EventLog\Security\MaxSize'
 		{
 			ValueData = 196608
-			Key = 'HKLM:\software\Policies\Microsoft\Windows\EventLog\Security'
-			TargetType = 'ComputerConfiguration'
+			Key = 'HKLM:\Software\Policies\Microsoft\Windows\EventLog\Security'
+			#TargetType = 'ComputerConfiguration'
 			ValueName = 'MaxSize'
 			ValueType = 'Dword'
 			Ensure = 'Present'
