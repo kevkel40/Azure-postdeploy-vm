@@ -540,7 +540,7 @@ Configuration SecurityBaselineConfig
 		{
 			ValueData = 196608
 			Key = 'HKLM:\Software\Policies\Microsoft\Windows\EventLog\Security'
-			#TargetType = 'ComputerConfiguration'
+			TargetType = 'ComputerConfiguration'
 			ValueName = 'MaxSize'
 			ValueType = 'Dword'
 			Ensure = 'Present'
