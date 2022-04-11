@@ -886,16 +886,6 @@ Configuration SecurityBaselineConfig
 			Ensure = 'Present'
 		}
 
-		RegistryPolicyFile 'Registry(POL): AZ-WIN-00145: Ensure Turn off multicast name resolution is set to Enabled'
-		{
-			TargetType = 'ComputerConfiguration'
-			ValueName = 'EnableMulticast'
-			ValueData = 0
-			Key = 'HKLM:\Software\Policies\Microsoft\Windows NT\DNSClient'
-			ValueType = 'Dword'
-			Ensure = 'Present'
-		}
-
 		RegistryPolicyFile 'Registry(POL): CCE-36625-2: Ensure Turn off downloading of print drivers over HTTP is set to Enabled'
 		{
 			TargetType = 'ComputerConfiguration'
