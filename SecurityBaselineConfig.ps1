@@ -536,16 +536,6 @@ Configuration SecurityBaselineConfig
 			Ensure = 'Present'
 		}
 		
-		RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\EventLog\Security\MaxSize'
-		{
-			ValueData = 196608
-			Key = 'HKLM:\Software\Policies\Microsoft\Windows\EventLog\Security'
-			TargetType = 'ComputerConfiguration'
-			ValueName = 'MaxSize'
-			ValueType = 'Dword'
-			Ensure = 'Present'
-		}
-
 		RegistryPolicyFile 'Registry(POL): AZ-WIN-00180: Recovery console: Allow floppy copy and access to all drives and all folders'
 		{
 			TargetType = 'ComputerConfiguration'
@@ -1058,7 +1048,7 @@ Configuration SecurityBaselineConfig
 		{
 			TargetType = 'ComputerConfiguration'
 			ValueName = 'MaxSize'
-			ValueData = '0x30000'
+			ValueData = 196608
 			Key = 'HKLM:\Software\Policies\Microsoft\Windows\EventLog\Security'
 			ValueType = 'Dword'
 			Ensure = 'Present'
