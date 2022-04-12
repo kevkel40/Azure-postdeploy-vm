@@ -2157,6 +2157,16 @@ Configuration SecurityBaselineConfig
 			Ensure = 'Present'
 		}
 
+		RegistryPolicyFile "AZ-WIN-00145: Ensure 'Turn off multicast name resolution' is set to 'Enabled'"
+		{
+			TargetType = 'ComputerConfiguration'
+			ValueName = 'EnableMulticast'
+			ValueData = 0
+			Key = 'HKLM:\Software\Policies\Microsoft\Windows NT\DNSClient'
+			ValueType = 'Dword'
+			Ensure = 'Present'
+    }
+
 		UserRightsAssignment 'CCE-36860-5: Configure Enable computer and user accounts to be trusted for delegation'
 		{
 			Policy = 'Enable_computer_and_user_accounts_to_be_trusted_for_delegation'
