@@ -214,8 +214,8 @@ switch( hostname ){
 			$packages += "cosmosdbexplorer"
 			#$packages += "jdk8"
 			$packages += "sql-server-management-studio"
-			#$packages += "studio3t" #java vulnerabilities
-			#maven --version=3.6.3 ?
+			$packages += "mongodb-compass"
+			$packages += "maven" #--version=3.6.3 ?
 		#redis cli
 		$url = "https://github.com/microsoftarchive/redis/releases/download/win-3.2.100/Redis-x64-3.2.100.msi"
 		$fileName = $url.split("/")[-1]
