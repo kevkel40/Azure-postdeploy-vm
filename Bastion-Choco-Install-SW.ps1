@@ -206,15 +206,15 @@ switch( hostname ){
 			$packages += "db-visualizer"
 			$packages += "intellijidea-community"
 			$packages += "maven"
+			$packages += "mongodb-compass"
 	}
 	{$_ -match "webvm"}{
 		write-host "webvm detected, selecting software" -Foregroundcolor Green
 		#Web/API team software
 			$packages += "stunnel"
-			$packages += "cosmosdbexplorer"
+			$packages += "maven"
 			$packages += "sql-server-management-studio"
 			$packages += "mongodb-compass"
-			#$packages += "maven" #--version=3.6.3 ?
 		#redis cli
 		$url = "https://github.com/microsoftarchive/redis/releases/download/win-3.2.100/Redis-x64-3.2.100.msi"
 		$fileName = $url.split("/")[-1]
