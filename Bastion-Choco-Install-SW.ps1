@@ -238,6 +238,10 @@ switch( hostname ){
 #install or upgrade all the selected packages
 
 foreach($package in $packages){
+	#uninstall first just in case of file corruption
+  $arguments = @("uninstall $($package) -y --remove-dependencies")
+	Start-Process choco.exe -ArgumentList $arguments -Wait
+  #install
 	$arguments = @("upgrade $($package) -y")
 	Start-Process choco.exe -ArgumentList $arguments -Wait
 }
