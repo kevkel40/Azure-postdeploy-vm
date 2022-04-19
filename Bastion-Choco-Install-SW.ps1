@@ -191,7 +191,7 @@ if($ChocoInstalled){
 Install-WindowsFeature -name Web-Server -IncludeManagementTools -erroraction silentlycontinue -verbose
 
 #configure chocolatey packages to be installed on every vm
-$packages = @("googlechrome","git","visualstudiocode","postman","powershell-core","azure-cli","microsoftazurestorageexplorer","7zip","filezilla","sumatrapdf","putty","dotnet-5.0-windowshosting","dotnet-windowshosting","dotnetcore-windowshosting")
+$packages = @("googlechrome","git","vscode","postman","powershell-core","azure-cli","microsoftazurestorageexplorer","7zip","filezilla","sumatrapdf","putty","dotnet-5.0-windowshosting","dotnet-windowshosting","dotnetcore-windowshosting")
 
 #configure chocolatey packages to be installed on specific use-case vms
 switch( hostname ){
@@ -212,10 +212,9 @@ switch( hostname ){
 		#Web/API team software
 			$packages += "stunnel"
 			$packages += "cosmosdbexplorer"
-			#$packages += "jdk8"
 			$packages += "sql-server-management-studio"
 			$packages += "mongodb-compass"
-			$packages += "maven" #--version=3.6.3 ?
+			#$packages += "maven" #--version=3.6.3 ?
 		#redis cli
 		$url = "https://github.com/microsoftarchive/redis/releases/download/win-3.2.100/Redis-x64-3.2.100.msi"
 		$fileName = $url.split("/")[-1]
