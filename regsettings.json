@@ -1,6 +1,5 @@
 {
-  "RegSetting" : 
-  [
+  "RegSetting": [
     {
       "Comment": "AZ-WIN-00180: Recovery console: Allow floppy copy and access to all drives and all folders",
       "Name": "setcommand",
@@ -10,7 +9,7 @@
       "Type": "REG_DWORD"
     },
     {
-      "Comment": "CCE-37701-0: Ensure 'Devices: Allowed to format and eject removable media' is set to 'Administrators'",
+      "Comment": "CCE-37701-0: Ensure 'Devices: Allowed to format and eject removable media is set to Administrators",
       "Name": "AllocateDASD",
       "Value": "0",
       "Path": "Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon",
