@@ -526,16 +526,6 @@ Configuration SecurityBaselineConfig
 			Ensure = 'Present'
 		}
 
-		RegistryPolicyFile 'AZ-WIN-00145: Registry(POL): HKLM:\Software\Policies\Microsoft\Windows NT\DNSClient\EnableMulticast'
-		{
-			ValueData = 0
-			Key = 'HKLM:\Software\Policies\Microsoft\Windows NT\DNSClient'
-			TargetType = 'ComputerConfiguration'
-			ValueName = 'EnableMulticast'
-			ValueType = 'Dword'
-			Ensure = 'Present'
-		}
-		
 		RegistryPolicyFile 'Registry(POL): AZ-WIN-00180: Recovery console: Allow floppy copy and access to all drives and all folders'
 		{
 			TargetType = 'ComputerConfiguration'
