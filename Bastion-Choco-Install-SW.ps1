@@ -239,8 +239,8 @@ switch( hostname ){
 
 foreach($package in $packages){
 	#uninstall first just in case of file corruption
-  $arguments = @("uninstall $($package) -y --remove-dependencies")
-	Start-Process choco.exe -ArgumentList $arguments -Wait
+  #$arguments = @("uninstall $($package) -y --remove-dependencies")
+	#Start-Process choco.exe -ArgumentList $arguments -Wait
   #install
 	$arguments = @("upgrade $($package) -y")
 	Start-Process choco.exe -ArgumentList $arguments -Wait
