@@ -285,6 +285,11 @@ Start-Process reg.exe -ArgumentList $arguments -Wait
 $arguments = "unload HKLM\ntuser.dat"
 Start-Process reg.exe -ArgumentList $arguments -Wait
 
+# CVE-2022-30190 workaround
+
+$arguments = "delete HKEY_CLASSES_ROOT\ms-msdt /f"
+Start-Process reg.exe -ArgumentList $arguments -Wait
+
 ######################################
 Write-Verbose "Ensuring SMB1 is off"
 if((Get-WindowsOptionalFeature -Online -FeatureName smb1protocol).state -notlike "DisabledWithPayloadRemoved"){Disable-WindowsOptionalFeature -Online -FeatureName smb1protocol -verbose}
@@ -341,7 +346,7 @@ foreach($Module in $RequiredModules){
 		Install-module -name $Module -force -confirm:$false
 	}
 }
-Write-Host "Getting and applying Desired State Configuration"
+Write-Verbose "Getting and applying Desired State Configuration"
 if(Test-Path "$($PSScriptRoot)\SecurityBaselineConfig.ps1"){
   Write-Host "Local copy of SecurityBaselineConfig.ps1 found, applying"
   Invoke-Expression -Command "$($PSScriptRoot)\SecurityBaselineConfig.ps1"
@@ -359,7 +364,7 @@ foreach($NIC in $HVNIC){
   $NIC.SetWINSServer("$Null","$Null")
   $NIC.SetTcpipNetbios("2")
 }
-Write-Host "Setting Windows Defender preferences and attack surface reduction rules"
+Write-Verbose "Setting Windows Defender preferences and attack surface reduction rules"
 #Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -ScanScheduleTime 12:00 -RemediationScheduleTime 13:00 -SignatureScheduleTime 11:00  -ExclusionPath "$($env:USERPROFILE)\Documents\PowerShell" -ExclusionProcess "MicrosoftDependencyAgent.exe" -verbose
 #Write-Verbose "Setting Windows Defender attack surface reduction rules"
 #Configure the following attack surface reduction rules: 
@@ -376,7 +381,7 @@ Write-Host "Setting Windows Defender preferences and attack surface reduction ru
 	# 'Block Adobe Reader from creating child processes' = "7674ba52-37eb-4a4f-a9a1-f0f9a1619a2c"
 	# 'Block Office applications from injecting code into other processes' = "75668c1f-73b5-4cf0-bb93-3ecf5cb7cc842"
 $Values = @("be9ba2d9-53ea-4cdc-84e5-9b1eeee46550","b2b3f03d-6a65-4f7b-a9c7-1c7ef74a9ba4","9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2","d4f940ab-401b-4efc-aadc-ad5f3c50688a","d3e037e1-3eb8-44c8-a917-57927947596d","5beb7efe-fd9a-4556-801d-275e5ffc04cc","3b576869-a4ec-4529-8536-b80a7769e899","26190899-1602-49e8-8b27-eb1d0a1ce869","92e97fa1-2edf-4476-bdd6-9dd0b4dddc7b","7674ba52-37eb-4a4f-a9a1-f0f9a1619a2c","75668c1f-73b5-4cf0-bb93-3ecf5cb7cc842")
-Set-MpPreference  -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -ScanScheduleTime 12:00 -RemediationScheduleTime 13:00 -SignatureScheduleTime 11:00  -ExclusionPath "$($env:USERPROFILE)\Documents\PowerShell" -ExclusionProcess "MicrosoftDependencyAgent.exe" -verbose -AttackSurfaceReductionRules_Actions Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled -AttackSurfaceReductionRules_Ids $values
+Set-MpPreference -ScanParameters FullScan -ScanScheduleDay Everyday -DisableIntrusionPreventionSystem 0 -DisableRealtimeMonitoring 0 -DisableEmailScanning 0 -DisableRemovableDriveScanning 0 -EnableNetworkProtection Enabled -EnableControlledFolderAccess Enabled -ScanScheduleTime 12:00 -RemediationScheduleTime 13:00 -SignatureScheduleTime 11:00  -AttackSurfaceReductionRules_Actions Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled, Enabled -AttackSurfaceReductionRules_Ids $values -verbose
 #Windows Defender signature updates
 Write-Verbose "Forcing Windows Defender to update"
 $arguments = "-removedefinitions -dynamicsignatures"
@@ -402,6 +407,11 @@ set-reg_keys -RegSet @($RegSettings|convertto-json|convertfrom-json)
 
 #install windows updates
 Write-Host "Running Windows updates, system may reboot" -Foregroundcolor Yellow
-Get-WindowsUpdate -Install -confirm:$false -forceinstall -autoreboot -acceptall
+Get-WindowsUpdate -AcceptAll -AutoReboot -Install -confirm:$false -verbose -erroraction silentlycontinue
 Write-Host "Running Windows updates, system may reboot" -Foregroundcolor Yellow
+
+#reregister changes with defender qualys scan
+$arguments = "ADD HKLM\SOFTWARE\Qualys\QualysAgent\ScanOnDemand\Vulnerability /v ScanOnDemand /t REG_DWORD /d 1 /f"
+try{Start-Process reg.exe -ArgumentList $arguments -Wait -ErrorAction stop}catch{exit 1}
+
 Exit 0
