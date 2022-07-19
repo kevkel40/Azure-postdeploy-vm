@@ -187,9 +187,6 @@ if($ChocoInstalled){
 	Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 }
 
-#install IIS minimal
-Install-WindowsFeature -name Web-Server -IncludeManagementTools -erroraction silentlycontinue -verbose
-
 #configure chocolatey packages to be installed on every vm
 $packages = @("googlechrome","git","vscode","postman","powershell-core","azure-cli","microsoftazurestorageexplorer","7zip","filezilla","sumatrapdf","putty","dotnet-5.0-windowshosting","dotnet-windowshosting","dotnetcore-windowshosting")
 
@@ -210,6 +207,8 @@ switch( hostname ){
 	}
 	{$_ -match "webvm"}{
 		write-host "webvm detected, selecting software" -Foregroundcolor Green
+    #install IIS minimal
+    Install-WindowsFeature -name Web-Server -IncludeManagementTools -erroraction silentlycontinue -verbose
 		#Web/API team software
 			$packages += "stunnel"
 			$packages += "maven"
@@ -238,9 +237,8 @@ switch( hostname ){
 #install or upgrade all the selected packages
 
 foreach($package in $packages){
-	#uninstall first just in case of file corruption
-  #$arguments = @("uninstall $($package) -y --remove-dependencies")
-	#Start-Process choco.exe -ArgumentList $arguments -Wait
+	$arguments = @("uninstall $($package) -y --remove-dependencies")
+	Start-Process choco.exe -ArgumentList $arguments -Wait
   #install
 	$arguments = @("upgrade $($package) -y")
 	Start-Process choco.exe -ArgumentList $arguments -Wait
