@@ -1,5 +1,6 @@
 <#
-	Installs packages if chocolatey is installed
+	Installs chocolatey if not installed
+	Installs packages using chocolatey once installed
 	Package selection changes based on hostname
 #>
 
@@ -188,7 +189,7 @@ if($ChocoInstalled){
 }
 
 #configure chocolatey packages to be installed on every vm
-$packages = @("googlechrome","git","vscode","postman","powershell-core","azure-cli","microsoftazurestorageexplorer","7zip","filezilla","sumatrapdf","putty","dotnet-5.0-windowshosting","dotnet-windowshosting","dotnetcore-windowshosting")
+$packages = @("googlechrome","git","vscode","postman","powershell-core","azure-cli","microsoftazurestorageexplorer","7zip","filezilla","sumatrapdf","putty")
 
 #configure chocolatey packages to be installed on specific use-case vms
 switch( hostname ){
@@ -204,6 +205,7 @@ switch( hostname ){
 			$packages += "intellijidea-community"
 			$packages += "maven"
 			$packages += "mongodb-compass"
+			$packages += "azure-data-studio"
 	}
 	{$_ -match "webvm"}{
 		write-host "webvm detected, selecting software" -Foregroundcolor Green
@@ -214,6 +216,9 @@ switch( hostname ){
 			$packages += "maven"
 			$packages += "sql-server-management-studio"
 			$packages += "mongodb-compass"
+			$packages += "dotnet-5.0-windowshosting"
+			$packages += "dotnet-windowshosting"
+			$packages += "dotnetcore-windowshosting"
 		#redis cli
 		$url = "https://github.com/microsoftarchive/redis/releases/download/win-3.2.100/Redis-x64-3.2.100.msi"
 		$fileName = $url.split("/")[-1]

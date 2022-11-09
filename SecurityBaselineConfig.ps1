@@ -2222,6 +2222,7 @@ Configuration SecurityBaselineConfig
 			Minimum_Password_Length = "14"
 			Password_must_meet_complexity_requirements = 'Enabled'
 			Store_passwords_using_reversible_encryption = 'Disabled'
+			Account_lockout_threshold = '4'
 		}
 		
 		SecurityOption LocalPolicies
@@ -2229,6 +2230,13 @@ Configuration SecurityBaselineConfig
 			Name = 'SecurityOptions'
 			Accounts_Block_Microsoft_accounts = 'This policy is disabled'
 			Network_access_Shares_that_can_be_accessed_anonymously = $null
+			Interactive_logon_Number_of_previous_logons_to_cache_in_case_domain_controller_is_not_available = "2"
+			Interactive_logon_Machine_inactivity_limit = '850'
+			Network_security_Configure_encryption_types_allowed_for_Kerberos = "DES_CBC_CRC, DES_CBC_MD5, RC4_HMAC_MD5, AES128_HMAC_SHA1, AES256_HMAC_SHA1"
+			Network_access_Allow_anonymous = 'Disabled'
+			Network_access_Do_not_allow_anonymous_enumeration_of_SAM_accounts = 'Enabled'
+			Network_access_Do_not_allow_anonymous_enumeration_of_SAM_accounts_and_shares = 'Enabled'
+			System_cryptography_Force_strong_key_protection_for_user_keys_stored_on_the_computer = "User must enter a password each time they use a key"
 		}
 	}
 }

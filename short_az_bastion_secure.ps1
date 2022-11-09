@@ -28,7 +28,7 @@ trap
   Write-Host ($Err.Exception.Message).ToString() -foregroundcolor red
 }
 
-$version = "1.10"
+$version = "1.11"
 
 ######################################
 function set-reg_keys{
@@ -388,10 +388,6 @@ $arguments = "-removedefinitions -dynamicsignatures"
 Start-Process "$($env:ProgramFiles)\Windows Defender\MpCmdRun.exe" -ArgumentList $arguments -Wait
 $arguments = "-SignatureUpdate"
 Start-Process "$($env:ProgramFiles)\Windows Defender\MpCmdRun.exe" -ArgumentList $arguments -Wait
-#update Azure guest agent status
-Write-Verbose "Forcing Azure Qualys scan agent to update"
-$arguments = "ADD HKLM\SOFTWARE\Qualys\QualysAgent\ScanOnDemand\Vulnerability /v ScanOnDemand /t REG_DWORD /d 1 /f"
-Start-Process reg.exe -ArgumentList $arguments -Wait
 
 #add registry entry to show when security update script was last run
 $RegSettings = @{
@@ -404,6 +400,12 @@ $RegSettings = @{
 }
 set-reg_keys -RegSet @($RegSettings|convertto-json|convertfrom-json)
 
+#run desired state configuration because the Azure one is rubbish
+$URI = 'https://raw.githubusercontent.com/LeighdePaor/Azure-postdeploy-vm/main/SecurityBaselineConfig.ps1'
+Remove-DscConfigurationDocument -stage current -force
+Remove-DscConfigurationDocument -stage pending -force
+Remove-DscConfigurationDocument -stage previous -force
+IEX(New-Object Net.WebClient).downloadString($URI)
 
 #install windows updates
 Write-Host "Running Windows updates, system may reboot" -Foregroundcolor Yellow
