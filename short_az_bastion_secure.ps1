@@ -24,7 +24,7 @@
 #post deploy commands
 trap
 {
-  $Err = ( get-error -newest 1 )
+  $Err = ( $error[0] )
   Write-Host ($Err.Exception.Message).ToString() -foregroundcolor red
 }
 
