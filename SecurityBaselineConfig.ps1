@@ -2230,14 +2230,14 @@ Configuration SecurityBaselineConfig
 			Name = 'SecurityOptions'
 			Accounts_Block_Microsoft_accounts = 'This policy is disabled'
 			Accounts_Guest_account_status = 'Disabled'
-			Interactive_logon_Number_of_previous_logons_to_cache_in_case_domain_controller_is_not_available = "2"
+			Interactive_logon_Number_of_previous_logons_to_cache_in_case_domain_controller_is_not_available = '2'
 			Interactive_logon_Machine_inactivity_limit = '850'
 			Network_access_Shares_that_can_be_accessed_anonymously = $null
 			Network_access_Allow_anonymous_SID_Name_translation = 'Disabled'
 			Network_access_Do_not_allow_anonymous_enumeration_of_SAM_accounts = 'Enabled'
 			Network_access_Do_not_allow_anonymous_enumeration_of_SAM_accounts_and_shares = 'Enabled'
-			Network_security_Configure_encryption_types_allowed_for_Kerberos = "AES256_HMAC_SHA1"
-			System_cryptography_Force_strong_key_protection_for_user_keys_stored_on_the_computer = "User must enter a password each time they use a key"
+			Network_security_Configure_encryption_types_allowed_for_Kerberos = 'AES256_HMAC_SHA1'
+			System_cryptography_Force_strong_key_protection_for_user_keys_stored_on_the_computer = 'User must enter a password each time they use a key'
 		}
 	}
 }
