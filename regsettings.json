@@ -1311,6 +1311,46 @@
       "Path": "System\\CurrentControlSet\\Services\\Wsearch",
       "Hive": "HKEY_LOCAL_MACHINE",
       "Type": "REG_DWORD"
+    },
+    {
+      "Comment": "Google Chrome 1: Set secure settings & update page to homepage",
+      "Name": "PasswordManagerEnabled",
+      "Value": 0,
+      "Path": "SOFTWARE\\Policies\\Google\\Chrome",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_DWORD"
+    },
+    {
+      "Comment": "Google Chrome 2: Set secure settings & update page to homepage",
+      "Name": "RestoreOnStartup",
+      "Value": 4,
+      "Path": "SOFTWARE\\Policies\\Google\\Chrome",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_DWORD"
+    },
+    {
+      "Comment": "Google Chrome 3: Set secure settings & update page to homepage",
+      "Name": "HomepageIsNewTabPage",
+      "Value": 0,
+      "Path": "SOFTWARE\\Policies\\Google\\Chrome",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_DWORD"
+    },
+    {
+      "Comment": "Google Chrome 4: Set secure settings & update page to homepage",
+      "Name": "HomepageLocation",
+      "Value": "chrome://settings/help",
+      "Path": "SOFTWARE\\Policies\\Google\\Chrome",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_SZ"
+    },
+    {
+      "Comment": "Google Chrome 5: Set secure settings & update page to homepage",
+      "Name": "1",
+      "Value": "chrome://settings/help",
+      "Path": "SOFTWARE\\Policies\\Google\\Chrome\\RestoreOnStartupURLs",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_SZ"
     }
   ],
   "Comment": "https://docs.microsoft.com/en-us/azure/governance/policy/samples/guest-configuration-baseline-windows"
