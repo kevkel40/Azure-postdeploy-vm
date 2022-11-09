@@ -2236,7 +2236,7 @@ Configuration SecurityBaselineConfig
 			Network_access_Allow_anonymous_SID_Name_translation = 'Disabled'
 			Network_access_Do_not_allow_anonymous_enumeration_of_SAM_accounts = 'Enabled'
 			Network_access_Do_not_allow_anonymous_enumeration_of_SAM_accounts_and_shares = 'Enabled'
-			Network_security_Configure_encryption_types_allowed_for_Kerberos = "DES_CBC_CRC, DES_CBC_MD5, RC4_HMAC_MD5, AES128_HMAC_SHA1, AES256_HMAC_SHA1"
+			Network_security_Configure_encryption_types_allowed_for_Kerberos = "AES256_HMAC_SHA1"
 			System_cryptography_Force_strong_key_protection_for_user_keys_stored_on_the_computer = "User must enter a password each time they use a key"
 		}
 	}
