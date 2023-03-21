@@ -2237,6 +2237,7 @@ Configuration SecurityBaselineConfig
 			Network_access_Do_not_allow_anonymous_enumeration_of_SAM_accounts = 'Enabled'
 			Network_access_Do_not_allow_anonymous_enumeration_of_SAM_accounts_and_shares = 'Enabled'
 			System_cryptography_Force_strong_key_protection_for_user_keys_stored_on_the_computer = 'User must enter a password each time they use a key'
+			Network_security_Configure_encryption_types_allowed_for_Kerberos = @('RC4_HMAC_MD5','AES128_HMAC_SHA1','AES256_HMAC_SHA1','FUTURE')
 		}
 	}
 }
