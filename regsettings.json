@@ -1,6 +1,22 @@
 {
   "RegSetting": [
     {
+      "Comment": "CVE-2013-3900: WinVerifyTrust Signature Validation Vulnerability",
+      "Name": "EnableCertPaddingCheck",
+      "Value": 1,
+      "Path": "Software\\Microsoft\\Cryptography\\Wintrust\\Config",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_DWORD"
+    },
+    {
+      "Comment": "CVE-2013-3900: WinVerifyTrust Signature Validation Vulnerability",
+      "Name": "EnableCertPaddingCheck",
+      "Value": 1,
+      "Path": "Software\\Wow6432Node\\Microsoft\\Cryptography\\Wintrust\\Config",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_DWORD"
+    },
+    {
       "Comment": "AZ-WIN-00180: Recovery console: Allow floppy copy and access to all drives and all folders",
       "Name": "setcommand",
       "Value": 0,
