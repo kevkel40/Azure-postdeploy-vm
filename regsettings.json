@@ -1367,6 +1367,78 @@
       "Path": "SOFTWARE\\Policies\\Google\\Chrome\\RestoreOnStartupURLs",
       "Hive": "HKEY_LOCAL_MACHINE",
       "Type": "REG_SZ"
+    },
+    {
+      "Comment": "92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - Excel",
+      "Name": "Excel.exe",
+      "Value": "1",
+      "Path": "SOFTWARE\\Policies\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_DWORD"
+    },
+    {
+      "Comment": "92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - Graph",
+      "Name": "Graph.exe",
+      "Value": "1",
+      "Path": "SOFTWARE\\Policies\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_DWORD"
+    },
+    {
+      "Comment": "92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - MSAccess",
+      "Name": "MSAccess.exe",
+      "Value": "1",
+      "Path": "SOFTWARE\\Policies\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_DWORD"
+    },
+    {
+      "Comment": "92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - MSPub",
+      "Name": "MSPub.exe",
+      "Value": "1",
+      "Path": "SOFTWARE\\Policies\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_DWORD"
+    },
+    {
+      "Comment": "92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - PowerPoint",
+      "Name": "PowerPoint.exe",
+      "Value": "1",
+      "Path": "SOFTWARE\\Policies\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_DWORD"
+    },
+    {
+      "Comment": "92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - Visio",
+      "Name": "Visio.exe",
+      "Value": "1",
+      "Path": "SOFTWARE\\Policies\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_DWORD"
+    },
+    {
+      "Comment": "92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - WinProj",
+      "Name": "WinProj.exe",
+      "Value": "1",
+      "Path": "SOFTWARE\\Policies\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_DWORD"
+    },
+    {
+      "Comment": "92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - WinWord",
+      "Name": "WinWord.exe",
+      "Value": "1",
+      "Path": "SOFTWARE\\Policies\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_DWORD"
+    },
+    {
+      "Comment": "92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - Wordpad",
+      "Name": "Wordpad.exe",
+      "Value": "1",
+      "Path": "SOFTWARE\\Policies\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION",
+      "Hive": "HKEY_LOCAL_MACHINE",
+      "Type": "REG_DWORD"
     }
   ],
   "Comment": "https://docs.microsoft.com/en-us/azure/governance/policy/samples/guest-configuration-baseline-windows"
