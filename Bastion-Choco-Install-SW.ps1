@@ -189,14 +189,13 @@ if($ChocoInstalled){
 }
 
 #configure chocolatey packages to be installed on every vm
-$packages = @("googlechrome","git","vscode","postman","powershell-core","azure-cli","microsoftazurestorageexplorer","7zip","filezilla","sumatrapdf","putty")
+$packages = @("googlechrome","git","vscode","postman","powershell-core","azure-cli","microsoftazurestorageexplorer","7zip","filezilla","sumatrapdf","putty","azure-data-studio")
 
 #configure chocolatey packages to be installed on specific use-case vms
 switch( hostname ){
 	{$_ -match "datavm"}{
 		write-host "datavm detected, selecting software" -Foregroundcolor Green
 		#Data team software
-			$packages += "azure-data-studio"
 	}
 	{$_ -match "qavm"}{
 		write-host "qavm detected, selecting software" -Foregroundcolor Green
@@ -205,7 +204,6 @@ switch( hostname ){
 			$packages += "intellijidea-community"
 			$packages += "maven"
 			$packages += "mongodb-compass"
-			$packages += "azure-data-studio"
 	}
 	{$_ -match "webvm"}{
 		write-host "webvm detected, selecting software" -Foregroundcolor Green
@@ -216,7 +214,6 @@ switch( hostname ){
 			$packages += "maven"
 			$packages += "sql-server-management-studio"
 			$packages += "mongodb-compass"
-			$packages += "dotnet-5.0-windowshosting"
 			$packages += "dotnet-windowshosting"
 			$packages += "dotnetcore-windowshosting"
 		#redis cli
@@ -242,9 +239,6 @@ switch( hostname ){
 #install or upgrade all the selected packages
 
 foreach($package in $packages){
-	$arguments = @("uninstall $($package) -y --remove-dependencies")
-	Start-Process choco.exe -ArgumentList $arguments -Wait
-  #install
 	$arguments = @("upgrade $($package) -y")
 	Start-Process choco.exe -ArgumentList $arguments -Wait
 }
