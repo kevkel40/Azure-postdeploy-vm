@@ -2155,7 +2155,97 @@ Configuration SecurityBaselineConfig
 			Key = 'HKLM:\Software\Policies\Microsoft\Windows NT\DNSClient'
 			ValueType = 'Dword'
 			Ensure = 'Present'
-    }
+		}
+
+		RegistryPolicyFile '92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - Excel'
+		{
+		  TargetType = 'ComputerConfiguration'
+		  ValueName = 'Excel.exe'
+		  ValueData = 1
+		  Key = 'HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION'
+		  ValueType = 'Dword'
+		  Ensure = 'Present'
+		}
+		
+		RegistryPolicyFile '92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - Graph'
+		{
+		  ValueName = 'Graph.exe'
+		  ValueData = 1
+		  Key = 'HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION'
+		  TargetType = 'ComputerConfiguration'
+		  ValueType = 'Dword'
+		  Ensure = 'Present'
+		}
+		
+		RegistryPolicyFile '92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - MSAccess'
+		{
+		  ValueName = 'MSAccess.exe'
+		  ValueData = 1
+		  Key = 'HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION'
+		  TargetType = 'ComputerConfiguration'
+		  ValueType = 'Dword'
+		  Ensure = 'Present'
+		}
+		
+		RegistryPolicyFile '92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - MSPub'
+		{
+		  ValueName = 'MSPub.exe'
+		  ValueData = 1
+		  Key = 'HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION'
+		  TargetType = 'ComputerConfiguration'
+		  ValueType = 'Dword'
+		  Ensure = 'Present'
+		}
+		
+		RegistryPolicyFile '92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - PowerPoint'
+		{
+		  ValueName = 'PowerPoint.exe'
+		  ValueData = 1
+		  Key = 'HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION'
+		  TargetType = 'ComputerConfiguration'
+		  ValueType = 'Dword'
+		  Ensure = 'Present'
+		}
+		
+		RegistryPolicyFile '92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - Visio'
+		{
+		  ValueName = 'Visio.exe'
+		  ValueData = 1
+		  Key = 'HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION'
+		  TargetType = 'ComputerConfiguration'
+		  ValueType = 'Dword'
+		  Ensure = 'Present'
+		}
+		
+		RegistryPolicyFile '92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - WinProj'
+		{
+		  ValueName = 'WinProj.exe'
+		  ValueData = 1
+		  Key = 'HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION'
+		  TargetType = 'ComputerConfiguration'
+		  ValueType = 'Dword'
+		  Ensure = 'Present'
+		}
+		
+		RegistryPolicyFile '92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - WinWord'
+		{
+		  ValueName = 'WinWord.exe'
+		  ValueData = 1
+		  Key = 'HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION'
+		  TargetType = 'ComputerConfiguration'
+		  ValueType = 'Dword'
+		  Ensure = 'Present'
+		}
+		
+		RegistryPolicyFile '92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - Wordpad'
+		{
+		  ValueName = 'Wordpad.exe'
+		  ValueData = 1
+		  Key = 'HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION'
+		  TargetType = 'ComputerConfiguration'
+		  ValueType = 'Dword'
+		  Ensure = 'Present'
+		}
 
 		UserRightsAssignment 'CCE-36860-5: Configure Enable computer and user accounts to be trusted for delegation'
 		{
