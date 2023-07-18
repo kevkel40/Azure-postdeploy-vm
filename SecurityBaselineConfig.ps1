@@ -2199,7 +2199,7 @@ Configuration SecurityBaselineConfig
 		
 		RegistryPolicyFile '92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - PowerPoint'
 		{
-		  ValueName = 'PowerPoint.exe'
+		  ValueName = 'PowerPnt.exe'
 		  ValueData = 1
 		  Key = 'HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION'
 		  TargetType = 'ComputerConfiguration'

@@ -1402,7 +1402,7 @@
     },
     {
       "Comment": "92038-Microsoft Office and Windows HTML Remote Code Execution Vulnerability (Zero Day) for July 2023 - PowerPoint",
-      "Name": "PowerPoint.exe",
+      "Name": "PowerPnt.exe",
       "Value": "1",
       "Path": "SOFTWARE\\Policies\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BLOCK_CROSS_PROTOCOL_FILE_NAVIGATION",
       "Hive": "HKEY_LOCAL_MACHINE",
