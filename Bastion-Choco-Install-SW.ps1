@@ -189,7 +189,7 @@ if($ChocoInstalled){
 }
 
 #configure chocolatey packages to be installed on every vm
-$packages = @("googlechrome","git","vscode","postman","powershell-core","azure-cli","microsoftazurestorageexplorer","7zip","filezilla","sumatrapdf","putty","azure-data-studio")
+$packages = @("googlechrome","git","vscode","postman","powershell-core","azure-cli","microsoftazurestorageexplorer","7zip","filezilla","sumatrapdf","putty","azure-data-studio","microsoft-edge")
 
 #configure chocolatey packages to be installed on specific use-case vms
 switch( hostname ){
@@ -215,7 +215,7 @@ switch( hostname ){
 			$packages += "sql-server-management-studio"
 			$packages += "mongodb-compass"
 			$packages += "dotnet-windowshosting"
-			$packages += "dotnetcore-windowshosting"
+			#$packages += "dotnetcore-windowshosting"
 		#redis cli
 		$url = "https://github.com/microsoftarchive/redis/releases/download/win-3.2.100/Redis-x64-3.2.100.msi"
 		$fileName = $url.split("/")[-1]
