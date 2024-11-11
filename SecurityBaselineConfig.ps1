@@ -399,7 +399,7 @@ Configuration SecurityBaselineConfig
 			Ensure = 'Present'
 		}
 
-		UserRightsAssignment "CCE-36867-0: Ensure 'Deny log on through Remote Desktop Services' to include 'Guests, Local account'"
+		UserRightsAssignment "CCE-36867-0: Ensure 'Deny log on through Remote Desktop Services' to include 'Guests'"
 		{
 			Policy = 'Deny_log_on_through_Remote_Desktop_Services'
 			Force = $True
